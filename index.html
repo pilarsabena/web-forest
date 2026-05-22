@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forest SRL - Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años. ISO 9001, 14001, 45001.">
+    <title>Forest SRL | Limpieza Profesional</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        :root {
+            --white-base: #fafbf9;
+            --white-warm: #f5f7f3;
+            --smoke-light: #eaefea;
+            --smoke: #dce3dc;
+            --sage-light: #c5d5c5;
+            --sage: #a0bfa0;
+            --green-soft: #6ab04c;
+            --green-mid: #5a8a65;
+            --green-dark: #3a5a42;
+            --text: #1f2a22;
+            --text-soft: #4a554c;
+            --text-light: #7a857c;
+            --glass-bg: rgba(255,255,255,0.45);
+            --glass-border: rgba(180,200,180,0.25);
+            --glow: rgba(106,176,76,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: auto; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--white-base);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #nodes-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.8;
+        }
+
+        .bg-layers-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+
+        .bg-layer { position: absolute; width: 100%; height: 130%; will-change: transform; }
+        .layer-1 { z-index: 1; opacity: 0.85; }
+        .layer-2 { z-index: 2; opacity: 0.4; }
+        .layer-3 { z-index: 3; opacity: 0.25; }
+        .layer-4 { z-index: 4; opacity: 0.15; }
+        .layer-5 { z-index: 5; opacity: 0.1; }
+        .layer-6 { z-index: 6; opacity: 0.12; }
+
+        .floating-leaf {
+            position: fixed; pointer-events: none; z-index: 25;
+            will-change: transform; opacity: 0.65;
+        }
+
+        .main-wrap { position: relative; z-index: 10; }
+
+        .nav-float {
+            position: fixed; top: 1.8rem; left: 50%; transform: translateX(-50%);
+            z-index: 100; background: rgba(250,251,249,0.7); backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px); border-radius: 60px;
+            border: 1px solid rgba(180,200,180,0.3); padding: 0.5rem 1.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.03);
+            display: flex; align-items: center;
+        }
+        .nav-inner { display: flex; align-items: center; gap: 2rem; }
+        .nav-logo-img { height: 40px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            color: var(--text-soft); text-decoration: none; font-weight: 500;
+            font-size: 0.85rem; letter-spacing: 0.2px; transition: all 0.3s;
+            padding: 0.3rem 0.8rem; border-radius: 20px;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--green-dark); background: rgba(106,176,76,0.08); }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
+            color: #fff !important; padding: 0.7rem 1.8rem; border-radius: 50px;
+            font-weight: 700 !important; font-size: 0.85rem; letter-spacing: 0.5px;
+            transition: all 0.3s ease !important; box-shadow: 0 4px 15px rgba(106,176,76,0.3);
+            text-decoration: none;
+        }
+        .nav-cta:hover {
+            box-shadow: 0 8px 25px var(--glow); transform: translateY(-2px);
+            background: var(--green-mid); color: #fff !important;
+        }
+
+        .hero-canvas {
+            min-height: 100vh; display: flex; align-items: center;
+            padding: 8rem 2rem 5rem; position: relative; z-index: 5;
+        }
+        .hero-inner {
+            max-width: 1300px; margin: 0 auto; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+        }
+        .hero-content { max-width: 650px; }
+        .hero-eyebrow {
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 6px;
+            color: var(--green-mid); margin-bottom: 1.5rem; font-weight: 700;
+        }
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900;
+            color: var(--text); line-height: 1.2; letter-spacing: -1.5px; margin-bottom: 1.5rem;
+        }
+        .hero-title .accent { color: var(--green-soft); }
+        .hero-desc {
+            font-size: 1.2rem; color: var(--text-soft); max-width: 500px;
+            line-height: 1.7; margin-bottom: 2.5rem;
+        }
+        .hero-visual {
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .hero-leaf-svg {
+            width: 100%; max-width: 400px; animation: floatLeaf 8s ease-in-out infinite;
+        }
+        @keyframes floatLeaf {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-12px) rotate(2deg); }
+            50% { transform: translateY(-4px) rotate(-1deg); }
+            75% { transform: translateY(-18px) rotate(1deg); }
+        }
+
+        .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2.2rem; border-radius: 60px; font-weight: 600;
+            font-size: 0.95rem; text-decoration: none; letter-spacing: 0.3px;
+            transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1.2);
+            position: relative; overflow: hidden; border: none; cursor: pointer; font-family: inherit;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
+            color: #fff; box-shadow: 0 4px 15px rgba(106,176,76,0.25);
+        }
+        .btn-primary::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px var(--glow); }
+        .btn-outline {
+            background: transparent; border: 1.5px solid var(--sage); color: var(--green-mid);
+        }
+        .btn-outline:hover {
+            background: rgba(160,191,160,0.1); transform: translateY(-3px);
+            border-color: var(--green-soft);
+        }
+
+        .section-flow {
+            position: relative; padding: 7rem 2rem; z-index: 5;
+            transition: filter 0.8s ease, opacity 0.8s ease;
+        }
+        .section-flow.blur-out { filter: blur(15px); opacity: 0.3; }
+        .section-flow.no-blur { filter: none !important; opacity: 1 !important; }
+
+        .section-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 5; }
+        .sec-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 6px; color: var(--green-mid); margin-bottom: 1rem; font-weight: 700; }
+        .sec-title { font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 800; color: var(--text); margin-bottom: 1rem; letter-spacing: -1px; }
+        .sec-sub { font-size: 1.15rem; color: var(--text-soft); max-width: 550px; margin-bottom: 3rem; line-height: 1.7; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px); border-radius: 24px;
+            border: 1px solid var(--glass-border); padding: 2.5rem 2rem;
+            transition: all 0.5s cubic-bezier(0.25,0.8,0.25,1.2);
+            position: relative; text-align: center;
+        }
+        .glass-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--sage); box-shadow: 0 0 30px rgba(106,176,76,0.15);
+        }
+        .glass-card h3 { font-size: 1.25rem; color: var(--text); margin-bottom: 0.8rem; }
+        .glass-card p { color: var(--text-soft); line-height: 1.7; font-size: 0.95rem; }
+        .card-icon-wrap {
+            width: 70px; height: 70px; margin: 0 auto 1.5rem;
+            background: rgba(106,176,76,0.15); border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .stat-card {
+            text-align: center; padding: 2.5rem; background: var(--glass-bg);
+            backdrop-filter: blur(25px); border-radius: 24px; border: 1px solid var(--glass-border);
+        }
+        .stat-num { font-size: 3.5rem; font-weight: 900; color: var(--green-mid); display: block; letter-spacing: -1px; }
+        .stat-lbl { color: var(--text-soft); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; font-weight: 600; margin-top: 0.4rem; }
+
+        .valor-card {
+            background: var(--glass-bg); backdrop-filter: blur(25px); border-radius: 24px;
+            border: 1px solid var(--glass-border); border-left: 4px solid var(--sage); padding: 2.2rem;
+            transition: all 0.4s;
+        }
+        .valor-card:hover { transform: translateX(8px); background: rgba(255,255,255,0.6); }
+        .valor-card h3 { color: var(--text); font-size: 1.15rem; margin-bottom: 0.6rem; }
+        .valor-card p { color: var(--text-soft); font-size: 0.95rem; }
+
+        .politica-block {
+            background: var(--glass-bg); backdrop-filter: blur(30px); border-radius: 24px;
+            border: 1px solid var(--glass-border); padding: 3rem; margin-top: 3rem;
+        }
+        .politica-block h3 { color: var(--green-mid); font-size: 1.4rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        .politica-block ul { list-style: none; }
+        .politica-item {
+            display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0;
+            border-bottom: 1px solid rgba(180,200,180,0.12); color: var(--text-soft); transition: all 0.3s;
+        }
+        .politica-item:hover { color: var(--text); padding-left: 0.5rem; }
+        .politica-leaf { width: 24px; height: 24px; flex-shrink: 0; margin-top: 2px; }
+        .politica-leaf svg { width: 100%; height: 100%; }
+
+        .full-width-img {
+            width: 100%; max-height: 500px; object-fit: cover; border-radius: 20px;
+            margin: 3rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .cert-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+        .clientes-marquee { overflow: hidden; padding: 2rem 0; }
+        .clientes-track { display: flex; animation: marquee 50s linear infinite; width: max-content; }
+        .clientes-chip {
+            padding: 1rem 2.2rem; background: var(--glass-bg); backdrop-filter: blur(15px);
+            border-radius: 50px; border: 1px solid var(--glass-border); margin: 0 0.7rem;
+            color: var(--text); font-weight: 500; white-space: nowrap; font-size: 0.9rem; transition: all 0.3s;
+        }
+        .clientes-chip:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.05); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .calendar-container {
+            background: var(--glass-bg); backdrop-filter: blur(30px);
+            border-radius: 28px; border: 1px solid var(--glass-border);
+            padding: 2.5rem; max-width: 700px; margin: 0 auto;
+        }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-nav { display: flex; gap: 0.5rem; }
+        .calendar-nav button {
+            background: rgba(255,255,255,0.6); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 0.5rem 1rem; cursor: pointer;
+            font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); transition: all 0.3s;
+        }
+        .calendar-nav button:hover { background: rgba(106,176,76,0.2); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1.5rem; }
+        .calendar-day-header { text-align: center; font-weight: 700; font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; padding: 0.5rem; }
+        .calendar-day {
+            text-align: center; padding: 0.7rem; border-radius: 14px; cursor: pointer;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.3s; border: 1px solid transparent; color: var(--text);
+        }
+        .calendar-day:hover { background: rgba(106,176,76,0.2); border-color: var(--sage); }
+        .calendar-day.selected { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+        .calendar-day.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .calendar-day.empty { cursor: default; }
+        .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 1rem; }
+        .time-slot {
+            text-align: center; padding: 0.8rem; border-radius: 14px; cursor: pointer;
+            font-weight: 500; font-size: 0.85rem; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.4); transition: all 0.3s; color: var(--text);
+        }
+        .time-slot:hover { background: rgba(106,176,76,0.25); border-color: var(--sage); }
+        .time-slot.selected { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+        .time-slot.occupied { opacity: 0.3; cursor: not-allowed; pointer-events: none; background: rgba(200,200,200,0.3); text-decoration: line-through; }
+
+        .form-glass {
+            background: var(--glass-bg); backdrop-filter: blur(30px); border-radius: 24px;
+            border: 1px solid var(--glass-border); padding: 2.5rem;
+        }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label { display: block; color: var(--text); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.4rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.9rem 1.2rem; background: rgba(255,255,255,0.5);
+            border: 1px solid rgba(180,200,180,0.35); border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--text); transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--sage); background: #fff;
+            box-shadow: 0 0 0 4px rgba(106,176,76,0.1);
+        }
+        .form-group textarea { min-height: 110px; resize: vertical; }
+        .form-group input[type="file"] { padding: 0.7rem; border: 2px dashed rgba(180,200,180,0.4); background: rgba(255,255,255,0.35); cursor: pointer; }
+
+        .footer-flow {
+            background: rgba(245,247,243,0.6); backdrop-filter: blur(30px);
+            border-top: 1px solid rgba(180,200,180,0.18); padding: 4rem 2rem 2rem; position: relative; z-index: 5;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero-visual { display: none; }
+            .grid-3, .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .nav-links { display: none; }
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="nodes-canvas"></canvas>
+
+    <!-- Capas de fondo SVG -->
+    <div class="bg-layers-container">
+        <svg class="bg-layer layer-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <rect width="1440" height="1300" fill="#fafbf9" opacity="0.6"/>
+            <path d="M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z" fill="#f5f7f3" opacity="0.5">
+                <animate attributeName="d" dur="24s" repeatCount="indefinite" values="M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z;M0,270 Q300,350 600,280 T1200,330 T1440,290 L1440,1300 L0,1300 Z;M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z"/>
+            </path>
+        </svg>
+        <svg class="bg-layer layer-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <defs><radialGradient id="smokeGrad" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#dce3dc" stop-opacity="0.6"/><stop offset="100%" stop-color="#dce3dc" stop-opacity="0"/></radialGradient></defs>
+            <ellipse cx="700" cy="400" rx="500" ry="220" fill="url(#smokeGrad)">
+                <animate attributeName="cx" dur="20s" repeatCount="indefinite" values="700;850;700"/>
+                <animate attributeName="cy" dur="16s" repeatCount="indefinite" values="400;350;400"/>
+            </ellipse>
+        </svg>
+        <svg class="bg-layer layer-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <defs><filter id="blur3"><feGaussianBlur stdDeviation="40"/></filter><radialGradient id="sageGrad" cx="30%" cy="30%"><stop offset="0%" stop-color="#c5d5c5" stop-opacity="0.5"/><stop offset="100%" stop-color="#c5d5c5" stop-opacity="0"/></radialGradient></defs>
+            <circle cx="300" cy="350" r="250" fill="url(#sageGrad)" filter="url(#blur3)">
+                <animate attributeName="cx" dur="26s" repeatCount="indefinite" values="300;500;300"/>
+                <animate attributeName="cy" dur="22s" repeatCount="indefinite" values="350;500;350"/>
+            </circle>
+        </svg>
+        <svg class="bg-layer layer-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <defs><linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7aab85" stop-opacity="0"/><stop offset="50%" stop-color="#7aab85" stop-opacity="0.3"/><stop offset="100%" stop-color="#7aab85" stop-opacity="0"/></linearGradient></defs>
+            <path d="M-100,300 Q500,150 1000,320 T1500,280" fill="none" stroke="url(#lineGrad)" stroke-width="2">
+                <animate attributeName="d" dur="18s" repeatCount="indefinite" values="M-100,300 Q500,150 1000,320 T1500,280;M-100,270 Q500,380 1000,280 T1500,330;M-100,300 Q500,150 1000,320 T1500,280"/>
+            </path>
+            <path d="M-100,700 Q600,550 1100,720 T1500,660" fill="none" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.4">
+                <animate attributeName="d" dur="22s" repeatCount="indefinite" values="M-100,700 Q600,550 1100,720 T1500,660;M-100,660 Q600,750 1100,680 T1500,720;M-100,700 Q600,550 1100,720 T1500,660"/>
+            </path>
+        </svg>
+        <svg class="bg-layer layer-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <defs><pattern id="dots" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1.2" fill="#7aab85" opacity="0.2"/></pattern></defs>
+            <rect width="1440" height="1300" fill="url(#dots)"><animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.4;0.8;0.4"/></rect>
+        </svg>
+        <svg class="bg-layer layer-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
+            <defs><linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a0bfa0" stop-opacity="0.2"/><stop offset="100%" stop-color="#a0bfa0" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z" fill="url(#waveGrad)">
+                <animate attributeName="d" dur="16s" repeatCount="indefinite" values="M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z;M0,150 Q250,210 500,160 T1000,200 T1440,160 L1440,0 L0,0 Z;M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z"/>
+            </path>
+        </svg>
+    </div>
+
+    <!-- Hojas flotantes con forma -->
+    <div class="floating-leaf" id="fleaf1" style="top:10%;left:5%;width:55px;height:55px;">
+        <svg viewBox="0 0 55 55"><path d="M27.5 5 C40 15 50 28 50 38 C50 48 40 53 27.5 53 C15 53 5 48 5 38 C5 28 15 15 27.5 5Z" fill="rgba(106,176,76,0.3)" stroke="rgba(90,138,101,0.5)" stroke-width="1"/></svg>
+    </div>
+    <div class="floating-leaf" id="fleaf2" style="top:50%;right:6%;width:45px;height:45px;">
+        <svg viewBox="0 0 45 45"><path d="M22.5 4 C33 12 42 22 42 32 C42 40 33 44 22.5 44 C12 44 3 40 3 32 C3 22 12 12 22.5 4Z" fill="rgba(160,191,160,0.35)" stroke="rgba(122,171,133,0.5)" stroke-width="1"/></svg>
+    </div>
+    <div class="floating-leaf" id="fleaf3" style="top:75%;left:12%;width:50px;height:50px;">
+        <svg viewBox="0 0 50 50"><path d="M25 3 C37 12 48 24 48 34 C48 44 37 49 25 49 C13 49 2 44 2 34 C2 24 13 12 25 3Z" fill="rgba(90,138,101,0.25)" stroke="rgba(106,176,76,0.4)" stroke-width="1"/></svg>
+    </div>
+    <div class="floating-leaf" id="fleaf4" style="top:30%;right:15%;width:40px;height:40px;">
+        <svg viewBox="0 0 40 40"><path d="M20 2 C30 10 38 20 38 30 C38 37 30 41 20 41 C10 41 2 37 2 30 C2 20 10 10 20 2Z" fill="rgba(122,171,133,0.3)" stroke="rgba(90,138,101,0.45)" stroke-width="1"/></svg>
+    </div>
+
+    <nav class="nav-float" id="nav">
+        <div class="nav-inner">
+            <a href="#inicio"><img src="assets/logo-forest.png" alt="Logo Forest SRL" class="nav-logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#clientes">Clientes</a></li>
+                <li><a href="#trabaja">Trabajá</a></li>
+                <li><a href="#agendar">Agendá</a></li>
+            </ul>
+            <a href="#presupuesto" class="nav-cta">Presupuesto</a>
+        </div>
+    </nav>
+
+    <div class="main-wrap">
+        <section id="inicio" class="hero-canvas">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <p class="hero-eyebrow">Limpieza Profesional</p>
+                    <h1 class="hero-title">
+                        Limpieza que <span class="accent">se siente</span>,<br>calidad que se ve.
+                    </h1>
+                    <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años con certificaciones ISO que garantizan calidad.</p>
+                    <div class="btn-group">
+                        <a href="#presupuesto" class="btn btn-primary">Solicitar Presupuesto</a>
+                        <a href="#nosotros" class="btn btn-outline">Conocernos</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <svg class="hero-leaf-svg" viewBox="0 0 400 400" fill="none">
+                        <path d="M200 20 C280 80 360 160 360 260 C360 340 290 380 200 380 C110 380 40 340 40 260 C40 160 120 80 200 20Z" fill="url(#heroLeafGrad)" opacity="0.7">
+                            <animateTransform attributeName="transform" type="rotate" values="0 200 200;3 200 200;0 200 200;-2 200 200;0 200 200" dur="12s" repeatCount="indefinite"/>
+                        </path>
+                        <defs>
+                            <radialGradient id="heroLeafGrad" cx="30%" cy="30%">
+                                <stop offset="0%" stop-color="#6ab04c" stop-opacity="0.5"/>
+                                <stop offset="100%" stop-color="#5a8a65" stop-opacity="0.1"/>
+                            </radialGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estadísticas -->
+        <section class="section-flow">
+            <div class="section-inner">
+                <div class="grid-3">
+                    <div class="stat-card"><span class="stat-num" data-target="30">0+</span><span class="stat-lbl">Años de Experiencia</span></div>
+                    <div class="stat-card"><span class="stat-num" data-target="50">0+</span><span class="stat-lbl">Clientes Activos</span></div>
+                    <div class="stat-card"><span class="stat-num" data-target="1000">0+</span><span class="stat-lbl">Espacios Mantenidos</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Servicios -->
+        <section id="servicios" class="section-flow">
+            <div class="section-inner">
+                <p class="sec-label">Servicios</p>
+                <h2 class="sec-title">Limpieza que se siente</h2>
+                <p class="sec-sub">Estándares certificados ISO 9001, 14001 y 45001.</p>
+                <div class="grid-3">
+                    <div class="glass-card">
+                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg></div>
+                        <h3>Limpieza Institucional</h3>
+                        <p>Oficinas, edificios corporativos, bancos, escuelas y entidades públicas con programas a medida.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+                        <h3>Espacios Verdes</h3>
+                        <p>Corte de césped y mantenimiento general de parques, jardines y campos deportivos.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>
+                        <h3>Metodología Certificada</h3>
+                        <p>Trabajamos bajo normas ISO 9001, 14001 y 45001 con supervisión especializada.</p>
+                    </div>
+                </div>
+                <img src="assets/personas.png" alt="Equipo Forest SRL" class="full-width-img" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <!-- Certificaciones -->
+        <section class="section-flow" style="background:rgba(245,247,243,0.5);">
+            <div class="section-inner">
+                <p class="sec-label" style="text-align:center;">Respaldo Internacional</p>
+                <h2 class="sec-title" style="text-align:center;">Certificaciones y Asesoramiento</h2>
+                <img src="assets/bureau+normas.png" alt="ISO y Bureau Veritas" class="cert-img" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <!-- Clientes -->
+        <section id="clientes" class="section-flow">
+            <div class="section-inner">
+                <p class="sec-label" style="text-align:center;">Confianza</p>
+                <h2 class="sec-title" style="text-align:center;">Ellos nos eligen</h2>
+                <div class="clientes-marquee">
+                    <div class="clientes-track" id="clientes-track"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nosotros + Política -->
+        <section id="nosotros" class="section-flow">
+            <div class="section-inner">
+                <p class="sec-label">Esencia</p>
+                <h2 class="sec-title">Compromiso real</h2>
+                <div style="display:grid;gap:1.5rem;margin-bottom:3rem;">
+                    <div class="glass-card"><h3 style="color:var(--green-mid);">Misión</h3><p>Servicios integrales de limpieza y mantenimiento a medida, con eficiencia y respeto ambiental.</p></div>
+                    <div class="glass-card"><h3 style="color:var(--green-mid);">Visión</h3><p>Ser referentes en Argentina por adaptabilidad, procesos certificados y vínculo de confianza.</p></div>
+                </div>
+                <h2 style="font-size:2rem;font-weight:800;margin-bottom:1.5rem;">Valores</h2>
+                <div class="grid-2">
+                    <div class="valor-card"><h3>Calidad</h3><p>Cada espacio refleja nuestro estándar certificado.</p></div>
+                    <div class="valor-card"><h3>Compromiso</h3><p>Objetivos de cada cliente como propios.</p></div>
+                    <div class="valor-card"><h3>Integridad</h3><p>Transparencia en cada compromiso.</p></div>
+                    <div class="valor-card"><h3>Respeto</h3><p>Cuidamos personas, ambiente y confianza.</p></div>
+                </div>
+                <div class="politica-block">
+                    <h3><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg>Política Integrada de Gestión</h3>
+                    <p style="color:var(--text-soft);margin-bottom:1.5rem;">En Forest S.R.L. integramos calidad, medio ambiente y seguridad en cada operación.</p>
+                    <ul>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Calidad y Mejora Continua</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Crecimiento Sostenible</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Satisfacción del Cliente</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Gestión Ambiental</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Seguridad y Salud</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Formación Continua</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Presupuesto -->
+        <section id="presupuesto" class="section-flow">
+            <div class="section-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;">
+                <div class="glass-card" style="height:fit-content;">
+                    <h3 style="color:var(--green-mid);font-size:1.4rem;margin-bottom:1.5rem;">Contacto</h3>
+                    <p>📍 Bv. Los Granaderos 1743</p>
+                    <p>📞 +54 351 702-4934</p>
+                    <p>✉️ info@forestsrl.com.ar</p>
+                </div>
+                <form class="form-glass" action="enviar.php" method="POST">
+                    <input type="hidden" name="tipo" value="presupuesto">
+                    <h3 style="margin-bottom:1.5rem;text-align:center;">Solicitá tu Presupuesto</h3>
+                    <div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required></div>
+                    <div class="form-group"><label>Empresa</label><input type="text" name="empresa"></div>
+                    <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
+                    <div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required></div>
+                    <div class="form-group"><label>Servicio *</label><textarea name="mensaje" required></textarea></div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Enviar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Trabajá -->
+        <section id="trabaja" class="section-flow">
+            <div class="section-inner" style="max-width:700px;">
+                <p class="sec-label" style="text-align:center;">Sumate</p>
+                <h2 class="sec-title" style="text-align:center;">Trabajá con Nosotros</h2>
+                <form class="form-glass" action="enviar.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="tipo" value="cv">
+                    <div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required></div>
+                    <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
+                    <div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required></div>
+                    <div class="form-group"><label>Puesto</label><input type="text" name="puesto"></div>
+                    <div class="form-group"><label>CV (PDF) *</label><input type="file" name="cv" required></div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Enviar CV</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Agendá -->
+        <section id="agendar" class="section-flow no-blur">
+            <div class="section-inner">
+                <h2 class="sec-title" style="text-align:center;">Agendá una Reunión</h2>
+                <div class="calendar-container">
+                    <div class="calendar-header"><h4 id="month-year"></h4><div class="calendar-nav"><button id="prev-month">←</button><button id="next-month">→</button></div></div>
+                    <div class="calendar-grid" id="calendar-grid"></div>
+                    <div id="time-slots-container" style="display:none;"><h5>Horarios:</h5><div class="time-slots" id="time-slots"></div></div>
+                    <div id="booking-form" style="display:none;margin-top:2rem;">
+                        <div class="form-group"><label>Nombre *</label><input type="text" id="booking-name"></div>
+                        <div class="form-group"><label>Email *</label><input type="email" id="booking-email"></div>
+                        <div class="form-group"><label>Servicio a consultar</label><textarea id="booking-service"></textarea></div>
+                        <button class="btn btn-primary" style="width:100%;" onclick="confirmBooking()">Confirmar</button>
+                    </div>
+                    <div id="booking-confirmation" style="display:none;text-align:center;">
+                        <img src="assets/gracias.png" alt="Gracias" style="max-width:200px;" onerror="this.style.display='none'">
+                        <p><strong>✅ ¡Confirmado!</strong></p>
+                        <a href="https://meet.google.com/hum-dxpp-bbs" target="_blank" class="btn btn-primary">Unirse a Google Meet</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-flow">
+            <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;">
+                <div>
+                    <h4 style="color:var(--text);">Forest SRL</h4>
+                    <p style="color:var(--text-soft);">Servicio integral de limpieza y mantenimiento de espacios verdes.</p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text);">Contacto</h4>
+                    <p style="color:var(--text-soft);">📍 Bv. Los Granaderos 1743<br>📞 +54 351 702-4934</p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text);">Enlaces</h4>
+                    <p style="color:var(--text-soft);">
+                        <a href="#inicio" style="color:inherit;">Inicio</a><br>
+                        <a href="#nosotros" style="color:inherit;">Nosotros</a><br>
+                        <a href="#servicios" style="color:inherit;">Servicios</a><br>
+                        <a href="#clientes" style="color:inherit;">Clientes</a><br>
+                        <a href="#presupuesto" style="color:inherit;">Presupuesto</a><br>
+                        <a href="#trabaja" style="color:inherit;">Trabajá con Nosotros</a><br>
+                        <a href="#agendar" style="color:inherit;">Agendá una Reunión</a>
+                    </p>
+                </div>
+            </div>
+            <p style="text-align:center;color:var(--text-light);margin-top:3rem;font-size:0.85rem;">© 2024 Forest SRL.</p>
+        </footer>
+    </div>
+
+    <script>
+        emailjs.init('Y4gSaFN3dhO1ztNeJ');
+
+        const canvas = document.getElementById('nodes-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const COUNT = 80;
+        let mX = -1000, mY = -1000;
+        let scrollP = 0, targetScrollP = 0;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.documentElement.scrollHeight;
+        }
+        function create() {
+            particles = [];
+            for(let i=0;i<COUNT;i++) particles.push({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4,
+                r: Math.random()*2+1, pulse: Math.random()*Math.PI*2
+            });
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            targetScrollP = Math.max(0, window.pageYOffset/(document.documentElement.scrollHeight-window.innerHeight));
+            scrollP += (targetScrollP-scrollP)*0.08;
+            const thr = 80+scrollP*150;
+            particles.forEach(p => {
+                p.x+=p.vx; p.y+=p.vy;
+                if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0;
+                if(p.y<0) p.y=canvas.height; if(p.y>canvas.height) p.y=0;
+                ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                ctx.fillStyle = `rgba(106,176,76,${0.3+Math.sin(p.pulse+performance.now()*0.02)*0.2})`;
+                ctx.fill();
+            });
+            for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+                if(dist<thr) { ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
+                    ctx.strokeStyle = `rgba(106,176,76,${(1-dist/thr)*0.3})`; ctx.stroke(); }
+            }
+            requestAnimationFrame(draw);
+        }
+        resize(); create(); draw();
+        window.addEventListener('resize',()=>{resize();create();});
+
+        // GSAP
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.glass-card, .stat-card, .valor-card').forEach(el => {
+            gsap.from(el, {scrollTrigger:{trigger:el,start:'top 85%'},opacity:0,y:50,duration:0.8});
+        });
+        document.querySelectorAll('.stat-num').forEach(el => {
+            const t = parseInt(el.dataset.target);
+            ScrollTrigger.create({trigger:el,start:'top 80%',onEnter:()=>{
+                gsap.to(el,{innerText:t,duration:2.5,snap:{innerText:1},onUpdate:function(){el.textContent=Math.floor(this.targets()[0].innerText)+'+'}});
+            }});
+        });
+
+        // Hojas flotantes animadas
+        gsap.to('#fleaf1', {y: -20, x: 15, rotation: 8, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+        gsap.to('#fleaf2', {y: -25, x: -10, rotation: -6, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+        gsap.to('#fleaf3', {y: -18, x: 12, rotation: 10, duration: 5.5, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+        gsap.to('#fleaf4', {y: -22, x: -8, rotation: -5, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+
+        // Parallax de capas SVG
+        const layers = document.querySelectorAll('.bg-layer');
+        layers.forEach((layer, i) => {
+            gsap.to(layer, {
+                y: () => window.innerHeight * (0.03 + i * 0.03),
+                ease: 'none',
+                scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.5 }
+            });
+        });
+
+        // Clientes
+        const clientes = ['Agrogy SAS','BNA','Cemaic SAS','Crédito Argentino','Sanatorio Francés','Caja de Previsión de la Ing.','Escuelas Pias','Farmacia Red','Intermed SRL','On City','Mercado Norte','Ministerio de Cooperativas','Ministerio de Salud','Naldo Lombardi','Farmacia Gral. Paz','Sec. Gral. de la Gobernación','TGN','UEPC','Sv Farma','Wiltel Comunicaciones','Confina','Macro','Arca','Ministerio Público Fiscal','Sony Center','Fuerza Aérea Argentina','Nación Seguros'];
+        document.getElementById('clientes-track').innerHTML = [...clientes,...clientes].map(c=>`<span class="clientes-chip">${c}</span>`).join('');
+
+        // Booking
+        const FIREBASE = 'https://pagina-web-74184-default-rtdb.firebaseio.com';
+        let cDate = new Date(), selDate=null, selTime=null, booked={};
+        async function load() { try { const r = await fetch(`${FIREBASE}/booked.json`); booked = await r.json()||{}; } catch(e){} }
+        async function save(key) { booked[key]=1; await fetch(`${FIREBASE}/booked.json`,{method:'PATCH',body:JSON.stringify({[key]:1})}); }
+        function renderCal() {
+            const y=cDate.getFullYear(), m=cDate.getMonth();
+            document.getElementById('month-year').textContent = new Intl.DateTimeFormat('es-AR',{month:'long',year:'numeric'}).format(cDate);
+            const fd=new Date(y,m,1).getDay(), dim=new Date(y,m+1,0).getDate(), today=new Date(); today.setHours(0,0,0,0);
+            const grid=document.getElementById('calendar-grid'); grid.innerHTML='';
+            ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].forEach(h=>{ const d=document.createElement('div'); d.className='calendar-day-header'; d.textContent=h; grid.appendChild(d); });
+            for(let i=0;i<fd;i++){ const d=document.createElement('div'); d.className='calendar-day empty'; grid.appendChild(d); }
+            for(let d=1;d<=dim;d++){
+                const date=new Date(y,m,d); date.setHours(0,0,0,0); const dow=date.getDay();
+                const div=document.createElement('div'); div.className='calendar-day'; div.textContent=d;
+                if(date<today||dow===0||dow===6) div.classList.add('disabled');
+                else div.addEventListener('click',()=>{ selDate=date; selTime=null; document.querySelectorAll('.calendar-day.selected').forEach(e=>e.classList.remove('selected')); div.classList.add('selected'); renderSlots(); });
+                if(selDate&&date.toDateString()===selDate.toDateString()) div.classList.add('selected');
+                grid.appendChild(div);
+            }
+        }
+        function renderSlots() {
+            document.getElementById('time-slots-container').style.display='block';
+            document.getElementById('booking-form').style.display='none';
+            document.getElementById('booking-confirmation').style.display='none';
+            const s=document.getElementById('time-slots'); s.innerHTML='';
+            for(let h=9;h<17;h++){
+                const key=`${selDate.toDateString()}-${h}`, div=document.createElement('div');
+                div.className='time-slot'; div.textContent=`${h}:00`;
+                if(booked[key]) div.classList.add('occupied');
+                else div.addEventListener('click',()=>{ selTime=`${h}:00`; document.querySelectorAll('.time-slot.selected').forEach(e=>e.classList.remove('selected')); div.classList.add('selected'); document.getElementById('booking-form').style.display='block'; });
+                s.appendChild(div);
+            }
+        }
+        async function confirmBooking() {
+            const n=document.getElementById('booking-name').value, e=document.getElementById('booking-email').value;
+            if(!n||!e) return alert('Completá nombre y email');
+            const key=`${selDate.toDateString()}-${selTime.split(':')[0]}`; await save(key);
+            document.getElementById('booking-form').style.display='none';
+            document.getElementById('time-slots-container').style.display='none';
+            document.getElementById('booking-confirmation').style.display='block';
+            emailjs.send('service_8bi64ao','template_res0bjx',{
+                user_name:n, fecha:selDate.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'}),
+                hora:selTime, meet_link:'https://meet.google.com/hum-dxpp-bbs', user_email:e
+            });
+        }
+        document.getElementById('prev-month').onclick = ()=>{cDate.setMonth(cDate.getMonth()-1);renderCal();};
+        document.getElementById('next-month').onclick = ()=>{cDate.setMonth(cDate.getMonth()+1);renderCal();};
+        load().then(renderCal);
+    </script>
+</body>
+</html>
