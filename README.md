@@ -28,7 +28,7 @@ Sitio web institucional de **Forest SRL**, empresa de limpieza profesional y man
 
 ```
 web-forest/
-├── index (5).html                  # Página principal
+├── index.html                      # Página principal
 ├── enviar.php                      # Backend de formularios (presupuesto y CV)
 ├── PHPMailer/                      # Librería PHPMailer para envío SMTP
 │   ├── PHPMailer.php
@@ -177,9 +177,9 @@ Link fijo:  https://meet.google.com/hum-dxpp-bbs
 
 ## Despliegue
 
-Hosting PHP compartido (NutHost). Al subir al servidor renombrar `index (5).html` → `index.html`.
+Hosting PHP compartido (NutHost). Subir a `public_html`: `index.html`, `enviar.php`, carpetas `assets/` y `PHPMailer/`.
 
-> El servidor actual tiene una versión anterior del sitio. Esta versión nueva aún no ha sido desplegada.
+El archivo `index-vivid.html` es una variante de color alternativa — no es necesario subirlo a producción.
 
 ---
 
