@@ -59,8 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->AltBody = strip_tags($cuerpo);
         
         $mail->send();
-        
-        header('Location: index.html?enviado=1');
+
+        if ($tipo === 'presupuesto') {
+            $n = urlencode($nombre);
+            $e = urlencode($email);
+            header("Location: index.html?enviado=1&tipo=presupuesto&nombre={$n}&email={$e}");
+        } else {
+            header('Location: index.html?enviado=1&tipo=cv');
+        }
         exit;
         
     } catch (Exception $e) {

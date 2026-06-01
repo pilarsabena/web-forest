@@ -5,720 +5,1353 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Forest SRL - Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años. ISO 9001, 14001, 45001.">
     <title>Forest SRL | Limpieza Profesional</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+
     <style>
         :root {
-            --white-base: #fafbf9;
-            --white-warm: #f5f7f3;
-            --smoke-light: #eaefea;
-            --smoke: #dce3dc;
-            --sage-light: #c5d5c5;
-            --sage: #a0bfa0;
+            --white-base: #f7f9f5;
+            --white-warm: #f0f4ee;
+            --smoke-light: #e6ede6;
+            --smoke: #d4e0d4;
+            --sage-light: #c2d4c2;
+            --sage: #98b898;
             --green-soft: #6ab04c;
-            --green-mid: #5a8a65;
-            --green-dark: #3a5a42;
-            --text: #1f2a22;
-            --text-soft: #4a554c;
-            --text-light: #7a857c;
-            --glass-bg: rgba(255,255,255,0.45);
-            --glass-border: rgba(180,200,180,0.25);
-            --glow: rgba(106,176,76,0.5);
+            --green-mid: #4f7d5a;
+            --green-dark: #2d4a35;
+            --green-glow: #7ecb5a;
+            --text: #1a2620;
+            --text-soft: #445048;
+            --text-light: #7a8a7d;
+            --glass-bg: rgba(240, 244, 238, 0.45);
+            --glass-bg-strong: rgba(240, 244, 238, 0.72);
+            --glass-border: rgba(150, 185, 150, 0.22);
+            --glass-border-hover: rgba(106, 176, 76, 0.35);
+            --glow: rgba(106, 176, 76, 0.45);
+            --glow-soft: rgba(106, 176, 76, 0.15);
+            --shadow-card: 0 8px 40px rgba(30, 60, 35, 0.08), 0 2px 8px rgba(30, 60, 35, 0.04);
+            --shadow-hover: 0 20px 60px rgba(30, 60, 35, 0.12), 0 0 0 1px rgba(106, 176, 76, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; scroll-behavior: auto; }
-        
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 16px;
+            scroll-behavior: auto;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
             color: var(--text);
             background: var(--white-base);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            cursor: none;
         }
 
-        #nodes-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none; opacity: 0.8;
+        h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, label, li, div {
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .bg-layers-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1;
+        /* ═══════════════════════════════════════
+           CURSOR HOJA
+        ═══════════════════════════════════════ */
+        #cursor-leaf {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 26px;
+            height: 26px;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                filter 0.35s ease,
+                opacity 0.25s;
+            filter: drop-shadow(0 2px 5px rgba(79, 125, 90, 0.28));
+            will-change: transform, left, top;
+            opacity: 0.85;
+        }
+        #cursor-leaf svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #cursor-leaf.floating {
+            animation: cursorFloat 4s ease-in-out infinite;
+        }
+        @keyframes cursorFloat {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -5px; }
+        }
+        #cursor-leaf.hovering {
+            width: 40px;
+            height: 40px;
+            opacity: 1;
+            filter: drop-shadow(0 0 16px rgba(106, 176, 76, 0.6)) drop-shadow(0 4px 10px rgba(79, 125, 90, 0.35));
+            transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                filter 0.3s ease,
+                opacity 0.25s;
         }
 
-        .bg-layer { position: absolute; width: 100%; height: 130%; will-change: transform; }
-        .layer-1 { z-index: 1; opacity: 0.85; }
-        .layer-2 { z-index: 2; opacity: 0.4; }
-        .layer-3 { z-index: 3; opacity: 0.25; }
-        .layer-4 { z-index: 4; opacity: 0.15; }
-        .layer-5 { z-index: 5; opacity: 0.1; }
-        .layer-6 { z-index: 6; opacity: 0.12; }
-
-        .floating-leaf {
-            position: fixed; pointer-events: none; z-index: 25;
-            will-change: transform; opacity: 0.65;
+        /* ═══════════════════════════════════════
+           SCENE CANVAS
+        ═══════════════════════════════════════ */
+        #scene-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
         }
 
+        /* ═══════════════════════════════════════
+           WAVE CANVAS
+        ═══════════════════════════════════════ */
+        #wave-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none; opacity: 0.85;
+        }
+
+        /* ═══════════════════════════════════════
+           RAMA DECORATIVA
+        ═══════════════════════════════════════ */
+        .decorative-branch-container {
+            position: fixed; top: 0; right: 0; width: 300px; height: 100vh;
+            z-index: 14; pointer-events: none; transform-style: preserve-3d;
+            perspective: 800px; will-change: transform;
+        }
+        .decorative-branch-svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 8px 28px rgba(30, 60, 35, 0.15));
+        }
+        .branch-stem {
+            transition: none;
+            transform-origin: center bottom;
+        }
+        .branch-leaf {
+            transform-origin: var(--lx, 50%) var(--ly, 50%);
+            transition: filter 0.4s;
+        }
+        .branch-leaf.near-cursor {
+            filter: brightness(1.25) drop-shadow(0 0 10px rgba(106, 176, 76, 0.45));
+        }
+
+        /* ═══════════════════════════════════════
+           MAIN WRAP
+        ═══════════════════════════════════════ */
         .main-wrap { position: relative; z-index: 10; }
 
+        /* ═══════════════════════════════════════
+           NAV
+        ═══════════════════════════════════════ */
         .nav-float {
-            position: fixed; top: 1.8rem; left: 50%; transform: translateX(-50%);
-            z-index: 100; background: rgba(250,251,249,0.7); backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px); border-radius: 60px;
-            border: 1px solid rgba(180,200,180,0.3); padding: 0.5rem 1.5rem;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.03);
-            display: flex; align-items: center;
+            position: fixed; top: 1.6rem; left: 50%; transform: translateX(-50%);
+            z-index: 200; background: rgba(240, 244, 238, 0.72);
+            backdrop-filter: blur(40px) saturate(1.6);
+            -webkit-backdrop-filter: blur(40px) saturate(1.6);
+            border-radius: 60px; border: 1px solid rgba(150, 185, 150, 0.28);
+            padding: 0.35rem 1.2rem;
+            box-shadow: 0 4px 32px rgba(30, 60, 35, 0.07), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+            display: flex; align-items: center; transition: all 0.4s ease;
         }
-        .nav-inner { display: flex; align-items: center; gap: 2rem; }
-        .nav-logo-img { height: 40px; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-float.scrolled {
+            background: rgba(240, 244, 238, 0.88);
+            box-shadow: 0 8px 48px rgba(30, 60, 35, 0.12);
+        }
+        .nav-inner { display: flex; align-items: center; gap: 1.6rem; }
+        .nav-logo-wrap {
+            display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .nav-logo-img {
+            width: 32px; height: 32px; object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(79, 125, 90, 0.2));
+            transition: transform 0.3s;
+        }
+        .nav-logo-wrap:hover .nav-logo-img { transform: rotate(-5deg) scale(1.1); }
+        .nav-logo-text {
+            font-weight: 700; font-size: 1.3rem; color: var(--green-dark);
+            letter-spacing: -0.3px; text-decoration: none;
+        }
+        .nav-logo-text span { color: var(--green-soft); }
+        .nav-links { display: flex; gap: 0.2rem; list-style: none; align-items: center; }
         .nav-links a {
             color: var(--text-soft); text-decoration: none; font-weight: 500;
-            font-size: 0.85rem; letter-spacing: 0.2px; transition: all 0.3s;
-            padding: 0.3rem 0.8rem; border-radius: 20px;
+            font-size: 0.84rem; letter-spacing: 0.1px; transition: all 0.3s;
+            padding: 0.35rem 0.85rem; border-radius: 20px;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--green-dark); background: rgba(106,176,76,0.08); }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--green-dark); background: rgba(106, 176, 76, 0.1);
+        }
         .nav-cta {
             background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
-            color: #fff !important; padding: 0.7rem 1.8rem; border-radius: 50px;
-            font-weight: 700 !important; font-size: 0.85rem; letter-spacing: 0.5px;
-            transition: all 0.3s ease !important; box-shadow: 0 4px 15px rgba(106,176,76,0.3);
-            text-decoration: none;
+            color: #fff !important; padding: 0.6rem 1.6rem; border-radius: 50px;
+            font-weight: 600 !important; font-size: 0.84rem; letter-spacing: 0.3px;
+            transition: all 0.35s ease !important;
+            box-shadow: 0 3px 14px rgba(106, 176, 76, 0.28);
+            text-decoration: none; position: relative; overflow: hidden;
         }
-        .nav-cta:hover {
-            box-shadow: 0 8px 25px var(--glow); transform: translateY(-2px);
-            background: var(--green-mid); color: #fff !important;
+        .nav-cta::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
+        .nav-cta:hover::before { left: 100%; }
+        .nav-cta:hover { box-shadow: 0 6px 24px var(--glow); transform: translateY(-2px); }
 
+        /* ═══════════════════════════════════════
+           HERO
+        ═══════════════════════════════════════ */
         .hero-canvas {
             min-height: 100vh; display: flex; align-items: center;
-            padding: 8rem 2rem 5rem; position: relative; z-index: 5;
+            padding: 9rem 2rem 6rem; position: relative; z-index: 12;
         }
         .hero-inner {
-            max-width: 1300px; margin: 0 auto; width: 100%;
+            max-width: 1200px; margin: 0 auto; width: 100%;
             display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
         }
-        .hero-content { max-width: 650px; }
+        .hero-content { max-width: 620px; }
         .hero-eyebrow {
-            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 6px;
-            color: var(--green-mid); margin-bottom: 1.5rem; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 7px;
+            color: var(--green-mid); margin-bottom: 1.8rem; font-weight: 700;
+            padding: 0.4rem 1rem; background: rgba(106, 176, 76, 0.08);
+            border-radius: 30px; border: 1px solid rgba(106, 176, 76, 0.15);
+        }
+        .hero-eyebrow::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--green-soft); animation: pulse-dot 3s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.6; }
         }
         .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900;
-            color: var(--text); line-height: 1.2; letter-spacing: -1.5px; margin-bottom: 1.5rem;
+            font-weight: 900; font-size: clamp(2.6rem, 5vw, 4rem);
+            color: var(--text); line-height: 1.2; letter-spacing: -1.5px;
+            margin-bottom: 1.8rem;
         }
-        .hero-title .accent { color: var(--green-soft); }
+        .hero-title .accent { color: var(--green-soft); font-style: italic; }
+        .hero-title .accent-line {
+            display: inline-block; position: relative;
+        }
+        .hero-title .accent-line::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+            height: 3px; background: linear-gradient(90deg, var(--green-soft), transparent);
+            border-radius: 2px;
+        }
         .hero-desc {
-            font-size: 1.2rem; color: var(--text-soft); max-width: 500px;
-            line-height: 1.7; margin-bottom: 2.5rem;
+            font-size: 1.1rem; color: var(--text-soft); max-width: 480px;
+            line-height: 1.8; margin-bottom: 2.8rem; font-weight: 300;
         }
-        .hero-visual {
+        .hero-logo-visual {
             display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .hero-logo-img {
+            width: 280px; height: auto; object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(30, 60, 35, 0.2));
+            animation: heroLogoFloat 6s ease-in-out infinite;
+            transition: transform 0.4s ease;
+        }
+        .hero-logo-visual:hover .hero-logo-img {
+            transform: scale(1.06);
+            filter: drop-shadow(0 25px 50px rgba(106, 176, 76, 0.35));
+        }
+        @keyframes heroLogoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
-        .hero-leaf-svg {
-            width: 100%; max-width: 400px; animation: floatLeaf 8s ease-in-out infinite;
+        /* ═══════════════════════════════════════
+           IMAGE MARQUEE
+        ═══════════════════════════════════════ */
+        .image-marquee-section {
+            overflow: hidden; padding: 2.5rem 0; position: relative; z-index: 12;
+            background: transparent;
         }
-        @keyframes floatLeaf {
-            0%,100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-12px) rotate(2deg); }
-            50% { transform: translateY(-4px) rotate(-1deg); }
-            75% { transform: translateY(-18px) rotate(1deg); }
+        .image-marquee-track {
+            display: flex; animation: imgMarquee 70s linear infinite;
+            width: max-content; align-items: center; gap: 2.5rem;
+        }
+        .image-marquee-item {
+            flex-shrink: 0; height: 90px; border-radius: 18px;
+            overflow: hidden; background: var(--glass-bg);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card);
+            padding: 0.8rem 2.2rem; display: flex; align-items: center;
+            justify-content: center; transition: all 0.35s;
+        }
+        .image-marquee-item:hover {
+            transform: translateY(-5px); box-shadow: var(--shadow-hover);
+            border-color: var(--glass-border-hover);
+        }
+        .image-marquee-item img {
+            height: 100%; width: auto; object-fit: contain;
+            max-width: 220px; border-radius: 8px;
+        }
+        @keyframes imgMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
+        /* ═══════════════════════════════════════
+           BUTTONS
+        ═══════════════════════════════════════ */
         .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
         .btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 1rem 2.2rem; border-radius: 60px; font-weight: 600;
-            font-size: 0.95rem; text-decoration: none; letter-spacing: 0.3px;
-            transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1.2);
-            position: relative; overflow: hidden; border: none; cursor: pointer; font-family: inherit;
+            padding: 0.95rem 2.2rem; border-radius: 60px; font-weight: 600;
+            font-size: 0.9rem; text-decoration: none; letter-spacing: 0.2px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative; overflow: hidden; border: none; cursor: none;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
-            color: #fff; box-shadow: 0 4px 15px rgba(106,176,76,0.25);
+            color: #fff; box-shadow: 0 4px 20px rgba(106, 176, 76, 0.22);
         }
-        .btn-primary::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
-            opacity: 0; transition: opacity 0.4s;
+        .btn-primary::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0;
+            background: rgba(255, 255, 255, 0.2); border-radius: 50%;
+            transform: translate(-50%, -50%); transition: width 0.6s ease, height 0.6s ease, opacity 0.6s;
+            opacity: 0;
         }
-        .btn-primary:hover::before { opacity: 1; }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px var(--glow); }
+        .btn-primary:hover::after { width: 300px; height: 300px; opacity: 0; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 36px var(--glow); }
         .btn-outline {
-            background: transparent; border: 1.5px solid var(--sage); color: var(--green-mid);
+            background: rgba(240, 244, 238, 0.6); backdrop-filter: blur(15px);
+            border: 1.5px solid var(--sage); color: var(--green-mid);
         }
         .btn-outline:hover {
-            background: rgba(160,191,160,0.1); transform: translateY(-3px);
-            border-color: var(--green-soft);
+            background: rgba(106, 176, 76, 0.08); transform: translateY(-3px);
+            border-color: var(--green-soft); box-shadow: 0 8px 24px rgba(106, 176, 76, 0.1);
         }
 
-        .section-flow {
-            position: relative; padding: 7rem 2rem; z-index: 5;
-            transition: filter 0.8s ease, opacity 0.8s ease;
-        }
-        .section-flow.blur-out { filter: blur(15px); opacity: 0.3; }
-        .section-flow.no-blur { filter: none !important; opacity: 1 !important; }
-
+        /* ═══════════════════════════════════════
+           SECTIONS
+        ═══════════════════════════════════════ */
+        .section-flow { position: relative; padding: 7rem 2rem; z-index: 12; }
         .section-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 5; }
-        .sec-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 6px; color: var(--green-mid); margin-bottom: 1rem; font-weight: 700; }
-        .sec-title { font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 800; color: var(--text); margin-bottom: 1rem; letter-spacing: -1px; }
-        .sec-sub { font-size: 1.15rem; color: var(--text-soft); max-width: 550px; margin-bottom: 3rem; line-height: 1.7; }
-
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+        .sec-label {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 7px;
+            color: var(--green-mid); margin-bottom: 1rem; font-weight: 700;
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .sec-label::before {
+            content: ''; width: 24px; height: 1.5px; background: var(--green-soft); flex-shrink: 0;
+        }
+        .sec-title {
+            font-weight: 700; font-size: clamp(2rem, 4vw, 3.2rem);
+            color: var(--text); margin-bottom: 1.2rem; letter-spacing: -0.8px; line-height: 1.2;
+        }
+        .sec-sub {
+            font-size: 1.05rem; color: var(--text-soft); max-width: 520px;
+            margin-bottom: 3rem; line-height: 1.8; font-weight: 300;
+        }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 
+        /* ═══════════════════════════════════════
+           GLASS CARDS
+        ═══════════════════════════════════════ */
         .glass-card {
-            background: var(--glass-bg); backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px); border-radius: 24px;
-            border: 1px solid var(--glass-border); padding: 2.5rem 2rem;
-            transition: all 0.5s cubic-bezier(0.25,0.8,0.25,1.2);
-            position: relative; text-align: center;
+            background: var(--glass-bg); backdrop-filter: blur(32px) saturate(1.4);
+            -webkit-backdrop-filter: blur(32px) saturate(1.4);
+            border-radius: 24px; border: 1px solid var(--glass-border);
+            padding: 2.5rem 2rem; transition: border-color 0.4s, box-shadow 0.4s;
+            position: relative; text-align: center; overflow: hidden;
+            box-shadow: var(--shadow-card); transform-style: preserve-3d; will-change: transform;
         }
-        .glass-card:hover {
-            transform: translateY(-12px);
-            border-color: var(--sage); box-shadow: 0 0 30px rgba(106,176,76,0.15);
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
         }
-        .glass-card h3 { font-size: 1.25rem; color: var(--text); margin-bottom: 0.8rem; }
-        .glass-card p { color: var(--text-soft); line-height: 1.7; font-size: 0.95rem; }
+        .glass-card .card-shine {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
+            pointer-events: none; opacity: 0; transition: opacity 0.3s; border-radius: 24px;
+        }
+        .glass-card:hover { border-color: var(--glass-border-hover); box-shadow: var(--shadow-hover); }
+        .glass-card:hover .card-shine { opacity: 1; }
+        .glass-card h3 { font-weight: 700; font-size: 1.2rem; color: var(--text); margin-bottom: 0.8rem; }
+        .glass-card p { color: var(--text-soft); line-height: 1.75; font-size: 0.93rem; font-weight: 300; }
         .card-icon-wrap {
-            width: 70px; height: 70px; margin: 0 auto 1.5rem;
-            background: rgba(106,176,76,0.15); border-radius: 20px;
+            width: 68px; height: 68px; margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(106, 176, 76, 0.12), rgba(79, 125, 90, 0.06));
+            border-radius: 20px; border: 1px solid rgba(106, 176, 76, 0.12);
             display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(106, 176, 76, 0.08);
         }
 
+        /* STAT CARDS */
         .stat-card {
-            text-align: center; padding: 2.5rem; background: var(--glass-bg);
-            backdrop-filter: blur(25px); border-radius: 24px; border: 1px solid var(--glass-border);
+            text-align: center; padding: 2.5rem 2rem; background: var(--glass-bg);
+            backdrop-filter: blur(28px) saturate(1.4); -webkit-backdrop-filter: blur(28px) saturate(1.4);
+            border-radius: 24px; border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card); position: relative; overflow: hidden;
+            transform-style: preserve-3d; will-change: transform;
         }
-        .stat-num { font-size: 3.5rem; font-weight: 900; color: var(--green-mid); display: block; letter-spacing: -1px; }
-        .stat-lbl { color: var(--text-soft); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; font-weight: 600; margin-top: 0.4rem; }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        }
+        .stat-card .card-shine {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
+            pointer-events: none; opacity: 0; transition: opacity 0.3s; border-radius: 24px;
+        }
+        .stat-card:hover { border-color: var(--glass-border-hover); box-shadow: var(--shadow-hover); }
+        .stat-card:hover .card-shine { opacity: 1; }
+        .stat-num {
+            font-weight: 900; font-size: 3.8rem; color: var(--green-mid);
+            display: block; letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-lbl {
+            color: var(--text-soft); text-transform: uppercase; letter-spacing: 3.5px;
+            font-size: 0.72rem; font-weight: 600; margin-top: 0.5rem;
+        }
 
+        /* VALOR CARDS */
         .valor-card {
-            background: var(--glass-bg); backdrop-filter: blur(25px); border-radius: 24px;
-            border: 1px solid var(--glass-border); border-left: 4px solid var(--sage); padding: 2.2rem;
-            transition: all 0.4s;
+            background: var(--glass-bg); backdrop-filter: blur(26px) saturate(1.3);
+            -webkit-backdrop-filter: blur(26px) saturate(1.3);
+            border-radius: 20px; border: 1px solid var(--glass-border);
+            border-left: 3px solid var(--green-soft); padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-card);
         }
-        .valor-card:hover { transform: translateX(8px); background: rgba(255,255,255,0.6); }
-        .valor-card h3 { color: var(--text); font-size: 1.15rem; margin-bottom: 0.6rem; }
-        .valor-card p { color: var(--text-soft); font-size: 0.95rem; }
+        .valor-card:hover {
+            transform: translateX(6px); background: rgba(240, 244, 238, 0.72);
+            border-left-color: var(--green-mid); box-shadow: var(--shadow-hover);
+        }
+        .valor-card h3 { font-weight: 700; color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .valor-card p { color: var(--text-soft); font-size: 0.9rem; font-weight: 300; line-height: 1.7; }
 
+        /* POLITICA BLOCK */
         .politica-block {
-            background: var(--glass-bg); backdrop-filter: blur(30px); border-radius: 24px;
-            border: 1px solid var(--glass-border); padding: 3rem; margin-top: 3rem;
+            background: var(--glass-bg); backdrop-filter: blur(32px) saturate(1.3);
+            -webkit-backdrop-filter: blur(32px) saturate(1.3);
+            border-radius: 24px; border: 1px solid var(--glass-border);
+            padding: 3rem; margin-top: 3rem; box-shadow: var(--shadow-card);
+            position: relative; overflow: hidden;
         }
-        .politica-block h3 { color: var(--green-mid); font-size: 1.4rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        .politica-block::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        }
+        .politica-block h3 {
+            font-weight: 700; color: var(--green-mid); font-size: 1.35rem;
+            margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;
+        }
         .politica-block ul { list-style: none; }
         .politica-item {
-            display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0;
-            border-bottom: 1px solid rgba(180,200,180,0.12); color: var(--text-soft); transition: all 0.3s;
+            display: flex; align-items: flex-start; gap: 1rem; padding: 0.9rem 0;
+            border-bottom: 1px solid rgba(150, 185, 150, 0.1); color: var(--text-soft);
+            transition: all 0.3s; font-size: 0.93rem; cursor: none;
         }
-        .politica-item:hover { color: var(--text); padding-left: 0.5rem; }
-        .politica-leaf { width: 24px; height: 24px; flex-shrink: 0; margin-top: 2px; }
+        .politica-item:hover { color: var(--text); padding-left: 0.6rem; }
+        .politica-item:last-child { border-bottom: none; }
+        .politica-leaf {
+            width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; opacity: 0.7;
+        }
         .politica-leaf svg { width: 100%; height: 100%; }
 
-        .full-width-img {
-            width: 100%; max-height: 500px; object-fit: cover; border-radius: 20px;
-            margin: 3rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        /* MARQUEE CLIENTES */
+        .clientes-marquee { overflow: hidden; padding: 2rem 0; position: relative; }
+        .clientes-marquee::before, .clientes-marquee::after {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
         }
-
-        .cert-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-
-        .clientes-marquee { overflow: hidden; padding: 2rem 0; }
-        .clientes-track { display: flex; animation: marquee 50s linear infinite; width: max-content; }
+        .clientes-marquee::before { left: 0; background: linear-gradient(90deg, var(--white-base), transparent); }
+        .clientes-marquee::after { right: 0; background: linear-gradient(-90deg, var(--white-base), transparent); }
+        .clientes-track { display: flex; animation: marquee 55s linear infinite; width: max-content; }
         .clientes-chip {
-            padding: 1rem 2.2rem; background: var(--glass-bg); backdrop-filter: blur(15px);
-            border-radius: 50px; border: 1px solid var(--glass-border); margin: 0 0.7rem;
-            color: var(--text); font-weight: 500; white-space: nowrap; font-size: 0.9rem; transition: all 0.3s;
+            padding: 0.9rem 2rem; background: var(--glass-bg); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); border-radius: 50px;
+            border: 1px solid var(--glass-border); margin: 0 0.6rem;
+            color: var(--text); font-weight: 500; white-space: nowrap;
+            font-size: 0.88rem; transition: all 0.3s; box-shadow: var(--shadow-card);
         }
-        .clientes-chip:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.05); }
+        .clientes-chip:hover {
+            transform: translateY(-4px); border-color: var(--glass-border-hover);
+            box-shadow: 0 8px 24px rgba(106, 176, 76, 0.12);
+        }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+        /* CALENDAR */
         .calendar-container {
-            background: var(--glass-bg); backdrop-filter: blur(30px);
+            background: var(--glass-bg-strong); backdrop-filter: blur(40px) saturate(1.5);
+            -webkit-backdrop-filter: blur(40px) saturate(1.5);
             border-radius: 28px; border: 1px solid var(--glass-border);
-            padding: 2.5rem; max-width: 700px; margin: 0 auto;
+            padding: 2.8rem; max-width: 680px; margin: 0 auto;
+            box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            position: relative; overflow: hidden;
         }
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+        }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.8rem; }
+        .calendar-header h4 { font-weight: 700; font-size: 1.2rem; }
         .calendar-nav { display: flex; gap: 0.5rem; }
         .calendar-nav button {
-            background: rgba(255,255,255,0.6); border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 0.5rem 1rem; cursor: pointer;
-            font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.7); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 0.5rem 1.1rem; cursor: none;
+            font-weight: 600; color: var(--text); transition: all 0.3s;
         }
-        .calendar-nav button:hover { background: rgba(106,176,76,0.2); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1.5rem; }
-        .calendar-day-header { text-align: center; font-weight: 700; font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; padding: 0.5rem; }
+        .calendar-nav button:hover { background: rgba(106, 176, 76, 0.15); border-color: var(--sage); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.45rem; margin-bottom: 1.5rem; }
+        .calendar-day-header {
+            text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--text-light);
+            text-transform: uppercase; padding: 0.45rem; letter-spacing: 1px;
+        }
         .calendar-day {
-            text-align: center; padding: 0.7rem; border-radius: 14px; cursor: pointer;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.3s; border: 1px solid transparent; color: var(--text);
+            text-align: center; padding: 0.65rem; border-radius: 12px; cursor: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.3s;
+            border: 1px solid transparent; color: var(--text);
         }
-        .calendar-day:hover { background: rgba(106,176,76,0.2); border-color: var(--sage); }
+        .calendar-day:hover { background: rgba(106, 176, 76, 0.15); border-color: var(--sage-light); }
         .calendar-day.selected { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
-        .calendar-day.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .calendar-day.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
         .calendar-day.empty { cursor: default; }
-        .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 1rem; }
+        .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1rem; }
         .time-slot {
-            text-align: center; padding: 0.8rem; border-radius: 14px; cursor: pointer;
-            font-weight: 500; font-size: 0.85rem; border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.4); transition: all 0.3s; color: var(--text);
+            text-align: center; padding: 0.75rem; border-radius: 12px; cursor: none;
+            font-weight: 500; font-size: 0.83rem; border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.45); transition: all 0.3s; color: var(--text);
         }
-        .time-slot:hover { background: rgba(106,176,76,0.25); border-color: var(--sage); }
-        .time-slot.selected { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
-        .time-slot.occupied { opacity: 0.3; cursor: not-allowed; pointer-events: none; background: rgba(200,200,200,0.3); text-decoration: line-through; }
+        .time-slot:hover { background: rgba(106, 176, 76, 0.18); border-color: var(--sage); }
+        .time-slot.selected { background: var(--green-mid); color: #fff; }
+        .time-slot.occupied { opacity: 0.28; cursor: not-allowed; pointer-events: none; text-decoration: line-through; }
 
+        /* OVERLAY / POPUP / MODAL */
+        .overlay-backdrop {
+            position: fixed; inset: 0; z-index: 950;
+            background: rgba(26, 38, 32, 0.62);
+            backdrop-filter: blur(10px) saturate(1.3);
+            -webkit-backdrop-filter: blur(10px) saturate(1.3);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1.5rem; opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+        .overlay-backdrop.visible { opacity: 1; pointer-events: all; }
+        .popup-card, .modal-card {
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(40px) saturate(1.6);
+            -webkit-backdrop-filter: blur(40px) saturate(1.6);
+            border-radius: 28px; border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-hover), 0 0 0 1px rgba(255,255,255,0.5) inset;
+            position: relative;
+            transform: translateY(28px) scale(0.96);
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+        }
+        .overlay-backdrop.visible .popup-card,
+        .overlay-backdrop.visible .modal-card { transform: translateY(0) scale(1); }
+        .popup-card { padding: 3rem 2.5rem; max-width: 460px; width: 100%; text-align: center; }
+        .modal-card { padding: 2.5rem; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal-close-btn {
+            position: absolute; top: 1.2rem; right: 1.2rem;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(106,176,76,0.1); border: 1px solid rgba(106,176,76,0.2);
+            display: flex; align-items: center; justify-content: center;
+            cursor: none; transition: all 0.3s; color: var(--text-soft);
+            font-size: 1rem; font-weight: 700; line-height: 1;
+        }
+        .modal-close-btn:hover { background: rgba(106,176,76,0.22); color: var(--green-dark); transform: scale(1.1); }
+        .popup-icon-wrap {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(106,176,76,0.12); border: 2px solid rgba(106,176,76,0.25);
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 1.8rem;
+        }
+        .popup-divider {
+            width: 48px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--sage), transparent);
+            margin: 1.8rem auto;
+        }
+        .popup-actions { display: flex; gap: 0.8rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+        .btn-ghost {
+            padding: 0.72rem 1.8rem; border-radius: 50px; font-weight: 600; font-size: 0.88rem;
+            border: 1.5px solid var(--glass-border); color: var(--text-soft);
+            background: transparent; cursor: none; transition: all 0.3s; letter-spacing: 0.2px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-ghost:hover { border-color: var(--sage); color: var(--text); background: rgba(106,176,76,0.07); }
+
+        /* FORM */
         .form-glass {
-            background: var(--glass-bg); backdrop-filter: blur(30px); border-radius: 24px;
-            border: 1px solid var(--glass-border); padding: 2.5rem;
+            background: var(--glass-bg-strong); backdrop-filter: blur(36px) saturate(1.4);
+            -webkit-backdrop-filter: blur(36px) saturate(1.4);
+            border-radius: 24px; border: 1px solid var(--glass-border);
+            padding: 2.8rem; box-shadow: var(--shadow-card); position: relative; overflow: hidden;
+        }
+        .form-glass::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
         }
         .form-group { margin-bottom: 1.3rem; }
-        .form-group label { display: block; color: var(--text); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.4rem; }
+        .form-group label {
+            display: block; color: var(--text); font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.45rem;
+        }
         .form-group input, .form-group textarea {
-            width: 100%; padding: 0.9rem 1.2rem; background: rgba(255,255,255,0.5);
-            border: 1px solid rgba(180,200,180,0.35); border-radius: 14px;
-            font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--text); transition: all 0.3s;
+            width: 100%; padding: 0.9rem 1.2rem; background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(150, 185, 150, 0.3); border-radius: 14px;
+            font-size: 0.95rem; color: var(--text); transition: all 0.3s;
         }
         .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--sage); background: #fff;
-            box-shadow: 0 0 0 4px rgba(106,176,76,0.1);
+            outline: none; border-color: var(--green-soft); background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 0 4px rgba(106, 176, 76, 0.1);
         }
         .form-group textarea { min-height: 110px; resize: vertical; }
-        .form-group input[type="file"] { padding: 0.7rem; border: 2px dashed rgba(180,200,180,0.4); background: rgba(255,255,255,0.35); cursor: pointer; }
-
-        .footer-flow {
-            background: rgba(245,247,243,0.6); backdrop-filter: blur(30px);
-            border-top: 1px solid rgba(180,200,180,0.18); padding: 4rem 2rem 2rem; position: relative; z-index: 5;
+        .form-group input[type="file"] {
+            padding: 0.75rem; border: 2px dashed rgba(150, 185, 150, 0.35);
+            background: rgba(255, 255, 255, 0.3); cursor: none;
         }
 
+        /* FOOTER */
+        .footer-flow {
+            background: rgba(235, 242, 235, 0.7); backdrop-filter: blur(30px) saturate(1.3);
+            -webkit-backdrop-filter: blur(30px) saturate(1.3);
+            border-top: 1px solid rgba(150, 185, 150, 0.18);
+            padding: 5rem 2rem 2.5rem; position: relative; z-index: 12;
+        }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+        .footer-brand h4 { font-weight: 700; font-size: 1.4rem; color: var(--text); margin-bottom: 0.8rem; }
+        .footer-brand p { color: var(--text-soft); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+        .footer-col h4 { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 1rem; }
+        .footer-col p, .footer-col a {
+            color: var(--text-soft); font-size: 0.88rem; line-height: 2; font-weight: 300;
+            text-decoration: none; display: block; transition: color 0.2s;
+        }
+        .footer-col a:hover { color: var(--green-mid); }
+        .footer-bottom {
+            text-align: center; color: var(--text-light); margin-top: 3.5rem;
+            font-size: 0.82rem; border-top: 1px solid rgba(150, 185, 150, 0.1); padding-top: 2rem;
+        }
+
+        /* CERTIFICATIONS */
+        .cert-section { background: linear-gradient(135deg, rgba(230, 237, 230, 0.6), rgba(245, 249, 243, 0.4)); }
+        .section-tint-dark { background: linear-gradient(180deg, rgba(220, 230, 220, 0.3), transparent); }
+
+        /* SCROLL REVEAL */
+        .reveal { opacity: 0; transform: translateY(36px); }
+        .reveal.revealed {
+            opacity: 1; transform: translateY(0);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* ISO BADGES */
+        .iso-badges { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .iso-badge {
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 110px; height: 110px; border-radius: 50%;
+            background: var(--glass-bg-strong); backdrop-filter: blur(20px);
+            border: 2px solid rgba(106, 176, 76, 0.2);
+            box-shadow: var(--shadow-card), 0 0 30px rgba(106, 176, 76, 0.08);
+            transition: all 0.4s;
+        }
+        .iso-badge:hover { transform: translateY(-6px) scale(1.05); border-color: var(--green-soft); box-shadow: 0 16px 40px rgba(106, 176, 76, 0.2); }
+        .iso-badge .iso-num { font-weight: 900; font-size: 1rem; color: var(--green-mid); }
+        .iso-badge .iso-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); text-align: center; margin-top: 2px; }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
         @media (max-width: 1024px) {
             .hero-inner { grid-template-columns: 1fr; text-align: center; }
-            .hero-visual { display: none; }
+            .hero-logo-visual { margin-top: 2rem; }
+            .hero-logo-img { width: 200px; }
+            .decorative-branch-container { width: 180px; opacity: 0.5; }
             .grid-3, .grid-2 { grid-template-columns: 1fr 1fr; }
+            .hero-content { max-width: 100%; }
+            .sec-label { justify-content: center; }
+            .sec-sub { margin: 0 auto 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .image-marquee-item { height: 65px; padding: 0.5rem 1.5rem; }
         }
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
+            .hero-logo-img { width: 150px; }
             .nav-links { display: none; }
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .nav-float { padding: 0.4rem 1rem; }
+            #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .decorative-branch-container { width: 120px; opacity: 0.35; }
+            .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
+            .nav-logo-img { width: 26px; height: 26px; }
+            .nav-logo-text { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <canvas id="nodes-canvas"></canvas>
-
-    <!-- Capas de fondo SVG -->
-    <div class="bg-layers-container">
-        <svg class="bg-layer layer-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <rect width="1440" height="1300" fill="#fafbf9" opacity="0.6"/>
-            <path d="M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z" fill="#f5f7f3" opacity="0.5">
-                <animate attributeName="d" dur="24s" repeatCount="indefinite" values="M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z;M0,270 Q300,350 600,280 T1200,330 T1440,290 L1440,1300 L0,1300 Z;M0,300 Q300,150 600,320 T1200,280 T1440,340 L1440,1300 L0,1300 Z"/>
-            </path>
-        </svg>
-        <svg class="bg-layer layer-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <defs><radialGradient id="smokeGrad" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#dce3dc" stop-opacity="0.6"/><stop offset="100%" stop-color="#dce3dc" stop-opacity="0"/></radialGradient></defs>
-            <ellipse cx="700" cy="400" rx="500" ry="220" fill="url(#smokeGrad)">
-                <animate attributeName="cx" dur="20s" repeatCount="indefinite" values="700;850;700"/>
-                <animate attributeName="cy" dur="16s" repeatCount="indefinite" values="400;350;400"/>
-            </ellipse>
-        </svg>
-        <svg class="bg-layer layer-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <defs><filter id="blur3"><feGaussianBlur stdDeviation="40"/></filter><radialGradient id="sageGrad" cx="30%" cy="30%"><stop offset="0%" stop-color="#c5d5c5" stop-opacity="0.5"/><stop offset="100%" stop-color="#c5d5c5" stop-opacity="0"/></radialGradient></defs>
-            <circle cx="300" cy="350" r="250" fill="url(#sageGrad)" filter="url(#blur3)">
-                <animate attributeName="cx" dur="26s" repeatCount="indefinite" values="300;500;300"/>
-                <animate attributeName="cy" dur="22s" repeatCount="indefinite" values="350;500;350"/>
-            </circle>
-        </svg>
-        <svg class="bg-layer layer-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <defs><linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7aab85" stop-opacity="0"/><stop offset="50%" stop-color="#7aab85" stop-opacity="0.3"/><stop offset="100%" stop-color="#7aab85" stop-opacity="0"/></linearGradient></defs>
-            <path d="M-100,300 Q500,150 1000,320 T1500,280" fill="none" stroke="url(#lineGrad)" stroke-width="2">
-                <animate attributeName="d" dur="18s" repeatCount="indefinite" values="M-100,300 Q500,150 1000,320 T1500,280;M-100,270 Q500,380 1000,280 T1500,330;M-100,300 Q500,150 1000,320 T1500,280"/>
-            </path>
-            <path d="M-100,700 Q600,550 1100,720 T1500,660" fill="none" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.4">
-                <animate attributeName="d" dur="22s" repeatCount="indefinite" values="M-100,700 Q600,550 1100,720 T1500,660;M-100,660 Q600,750 1100,680 T1500,720;M-100,700 Q600,550 1100,720 T1500,660"/>
-            </path>
-        </svg>
-        <svg class="bg-layer layer-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <defs><pattern id="dots" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1.2" fill="#7aab85" opacity="0.2"/></pattern></defs>
-            <rect width="1440" height="1300" fill="url(#dots)"><animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.4;0.8;0.4"/></rect>
-        </svg>
-        <svg class="bg-layer layer-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1300" preserveAspectRatio="none">
-            <defs><linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a0bfa0" stop-opacity="0.2"/><stop offset="100%" stop-color="#a0bfa0" stop-opacity="0"/></linearGradient></defs>
-            <path d="M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z" fill="url(#waveGrad)">
-                <animate attributeName="d" dur="16s" repeatCount="indefinite" values="M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z;M0,150 Q250,210 500,160 T1000,200 T1440,160 L1440,0 L0,0 Z;M0,180 Q250,100 500,190 T1000,160 T1440,180 L1440,0 L0,0 Z"/>
-            </path>
+    <!-- CURSOR HOJA -->
+    <div id="cursor-leaf" class="floating">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
         </svg>
     </div>
 
-    <!-- Hojas flotantes con forma -->
-    <div class="floating-leaf" id="fleaf1" style="top:10%;left:5%;width:55px;height:55px;">
-        <svg viewBox="0 0 55 55"><path d="M27.5 5 C40 15 50 28 50 38 C50 48 40 53 27.5 53 C15 53 5 48 5 38 C5 28 15 15 27.5 5Z" fill="rgba(106,176,76,0.3)" stroke="rgba(90,138,101,0.5)" stroke-width="1"/></svg>
-    </div>
-    <div class="floating-leaf" id="fleaf2" style="top:50%;right:6%;width:45px;height:45px;">
-        <svg viewBox="0 0 45 45"><path d="M22.5 4 C33 12 42 22 42 32 C42 40 33 44 22.5 44 C12 44 3 40 3 32 C3 22 12 12 22.5 4Z" fill="rgba(160,191,160,0.35)" stroke="rgba(122,171,133,0.5)" stroke-width="1"/></svg>
-    </div>
-    <div class="floating-leaf" id="fleaf3" style="top:75%;left:12%;width:50px;height:50px;">
-        <svg viewBox="0 0 50 50"><path d="M25 3 C37 12 48 24 48 34 C48 44 37 49 25 49 C13 49 2 44 2 34 C2 24 13 12 25 3Z" fill="rgba(90,138,101,0.25)" stroke="rgba(106,176,76,0.4)" stroke-width="1"/></svg>
-    </div>
-    <div class="floating-leaf" id="fleaf4" style="top:30%;right:15%;width:40px;height:40px;">
-        <svg viewBox="0 0 40 40"><path d="M20 2 C30 10 38 20 38 30 C38 37 30 41 20 41 C10 41 2 37 2 30 C2 20 10 10 20 2Z" fill="rgba(122,171,133,0.3)" stroke="rgba(90,138,101,0.45)" stroke-width="1"/></svg>
+    <!-- WAVE CANVAS -->
+    <canvas id="wave-canvas"></canvas>
+
+    <!-- SCENE CANVAS -->
+    <canvas id="scene-canvas"></canvas>
+
+    <!-- RAMA DECORATIVA -->
+    <div class="decorative-branch-container" id="decorative-branch" aria-hidden="true">
+        <svg class="decorative-branch-svg" viewBox="0 0 320 1050" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet">
+            <defs>
+                <filter id="branchSoftGlow">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <linearGradient id="stemGrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#7a8a7d" stop-opacity="0.5"/>
+                    <stop offset="50%" stop-color="#9DB39A" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#AFC3AB" stop-opacity="0.9"/>
+                </linearGradient>
+            </defs>
+            <g filter="url(#branchSoftGlow)">
+                <g class="branch-stem" id="branch-stem">
+                    <path d="M160 1050 C155 880 148 720 142 550 C138 400 135 280 130 160 C128 100 125 60 122 20"
+                    stroke="url(#stemGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <path d="M155 900 C175 860 190 820 205 780" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M150 760 C125 720 108 680 90 640" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M145 620 C170 580 185 540 200 500" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <path d="M140 480 C115 445 100 410 82 375" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <path d="M138 350 C160 315 175 280 190 245" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <path d="M133 220 C110 190 98 160 85 130" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <path d="M128 100 C145 75 155 50 162 25" stroke="#9DB39A" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                </g>
+                <g class="branch-leaf" id="leaf-b1" style="--lx:208px;--ly:775px;"><ellipse cx="212" cy="772" rx="17" ry="8" fill="#AFC3AB" transform="rotate(-22 212 772)" stroke="#9DB39A" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b2" style="--lx:88px;--ly:635px;"><ellipse cx="82" cy="632" rx="16" ry="7" fill="#B8CBB5" transform="rotate(38 82 632)" stroke="#9DB39A" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b3" style="--lx:203px;--ly:495px;"><ellipse cx="208" cy="492" rx="18" ry="8.5" fill="#BFD0BC" transform="rotate(-28 208 492)" stroke="#9DB39A" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b4" style="--lx:78px;--ly:370px;"><ellipse cx="74" cy="367" rx="15" ry="7" fill="#AFC3AB" transform="rotate(42 74 367)" stroke="#9DB39A" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b5" style="--lx:193px;--ly:240px;"><ellipse cx="198" cy="237" rx="16" ry="7.5" fill="#C8DBC5" transform="rotate(-20 198 237)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b6" style="--lx:80px;--ly:125px;"><ellipse cx="76" cy="122" rx="14" ry="6.5" fill="#B8CBB5" transform="rotate(35 76 122)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b7" style="--lx:165px;--ly:20px;"><ellipse cx="170" cy="18" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-15 170 18)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b8" style="--lx:175px;--ly:880px;"><ellipse cx="180" cy="877" rx="15" ry="7" fill="#C8DBC5" transform="rotate(-25 180 877)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b9" style="--lx:110px;--ly:550px;"><ellipse cx="105" cy="547" rx="14" ry="6" fill="#BFD0BC" transform="rotate(30 105 547)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b10" style="--lx:160px;--ly:680px;"><ellipse cx="165" cy="677" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-18 165 677)" stroke="#9DB39A" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b11" style="--lx:100px;--ly:290px;"><ellipse cx="95" cy="287" rx="12" ry="5.5" fill="#C8DBC5" transform="rotate(40 95 287)" stroke="#9DB39A" stroke-width="0.6"/></g>
+                <g class="branch-leaf" id="leaf-b12" style="--lx:190px;--ly:150px;"><ellipse cx="195" cy="147" rx="12" ry="5.5" fill="#B8CBB5" transform="rotate(-22 195 147)" stroke="#9DB39A" stroke-width="0.6"/></g>
+            </g>
+        </svg>
     </div>
 
+    <!-- NAV -->
     <nav class="nav-float" id="nav">
         <div class="nav-inner">
-            <a href="#inicio"><img src="assets/logo-forest.png" alt="Logo Forest SRL" class="nav-logo-img"></a>
+            <a href="#inicio" class="nav-logo-wrap">
+                <img src="assets/logo.png" alt="Forest SRL Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Forest<span>.</span></span>
+            </a>
             <ul class="nav-links">
-                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#servicios">Servicios</a></li>
                 <li><a href="#clientes">Clientes</a></li>
                 <li><a href="#trabaja">Trabajá</a></li>
-                <li><a href="#agendar">Agendá</a></li>
             </ul>
             <a href="#presupuesto" class="nav-cta">Presupuesto</a>
         </div>
     </nav>
 
     <div class="main-wrap">
+        <!-- HERO -->
         <section id="inicio" class="hero-canvas">
             <div class="hero-inner">
                 <div class="hero-content">
-                    <p class="hero-eyebrow">Limpieza Profesional</p>
+                    <p class="hero-eyebrow">Limpieza profesional y mantenimiento de espacios verdes</p>
                     <h1 class="hero-title">
-                        Limpieza que <span class="accent">se siente</span>,<br>calidad que se ve.
+                        Limpieza que <span class="accent">se siente</span>,<br>
+                        calidad que <span class="accent-line">se ve.</span>
                     </h1>
-                    <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años con certificaciones ISO que garantizan calidad.</p>
+                    <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años de experiencia con certificaciones ISO que garantizan calidad real y cuidado ambiental.</p>
                     <div class="btn-group">
                         <a href="#presupuesto" class="btn btn-primary">Solicitar Presupuesto</a>
                         <a href="#nosotros" class="btn btn-outline">Conocernos</a>
                     </div>
                 </div>
-                <div class="hero-visual">
-                    <svg class="hero-leaf-svg" viewBox="0 0 400 400" fill="none">
-                        <path d="M200 20 C280 80 360 160 360 260 C360 340 290 380 200 380 C110 380 40 340 40 260 C40 160 120 80 200 20Z" fill="url(#heroLeafGrad)" opacity="0.7">
-                            <animateTransform attributeName="transform" type="rotate" values="0 200 200;3 200 200;0 200 200;-2 200 200;0 200 200" dur="12s" repeatCount="indefinite"/>
-                        </path>
-                        <defs>
-                            <radialGradient id="heroLeafGrad" cx="30%" cy="30%">
-                                <stop offset="0%" stop-color="#6ab04c" stop-opacity="0.5"/>
-                                <stop offset="100%" stop-color="#5a8a65" stop-opacity="0.1"/>
-                            </radialGradient>
-                        </defs>
-                    </svg>
+                <div class="hero-logo-visual">
+                    <img src="assets/logo-forest.png" alt="Forest SRL" class="hero-logo-img" onerror="this.style.display='none'">
                 </div>
             </div>
         </section>
 
-        <!-- Estadísticas -->
+        <!-- ESTADÍSTICAS -->
         <section class="section-flow">
             <div class="section-inner">
                 <div class="grid-3">
-                    <div class="stat-card"><span class="stat-num" data-target="30">0+</span><span class="stat-lbl">Años de Experiencia</span></div>
-                    <div class="stat-card"><span class="stat-num" data-target="50">0+</span><span class="stat-lbl">Clientes Activos</span></div>
-                    <div class="stat-card"><span class="stat-num" data-target="1000">0+</span><span class="stat-lbl">Espacios Mantenidos</span></div>
+                    <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="30">0+</span><span class="stat-lbl">Años de Experiencia</span></div>
+                    <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="50">0+</span><span class="stat-lbl">Clientes Activos</span></div>
+                    <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="1000">0+</span><span class="stat-lbl">Espacios Mantenidos</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- Servicios -->
+        <!-- CARRUSEL DE IMÁGENES -->
+        <section class="image-marquee-section">
+            <div class="image-marquee-track" id="image-marquee-track">
+                <div class="image-marquee-item"><img src="assets/9001.png" alt="ISO 9001"></div>
+                <div class="image-marquee-item"><img src="assets/14001.png" alt="ISO 14001"></div>
+                <div class="image-marquee-item"><img src="assets/45001.png" alt="ISO 45001"></div>
+                <div class="image-marquee-item"><img src="assets/logo.png" alt="Forest SRL"></div>
+                <div class="image-marquee-item"><img src="assets/personas.png" alt="Equipo Forest"></div>
+                <div class="image-marquee-item"><img src="assets/forest.jpg" alt="Forest"></div>
+                <div class="image-marquee-item"><img src="assets/forest1.png" alt="Forest"></div>
+                <div class="image-marquee-item"><img src="assets/9001.png" alt="ISO 9001"></div>
+                <div class="image-marquee-item"><img src="assets/14001.png" alt="ISO 14001"></div>
+                <div class="image-marquee-item"><img src="assets/45001.png" alt="ISO 45001"></div>
+                <div class="image-marquee-item"><img src="assets/logo.png" alt="Forest SRL"></div>
+                <div class="image-marquee-item"><img src="assets/personas.png" alt="Equipo Forest"></div>
+                <div class="image-marquee-item"><img src="assets/forest.jpg" alt="Forest"></div>
+                <div class="image-marquee-item"><img src="assets/forest1.png" alt="Forest"></div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
         <section id="servicios" class="section-flow">
             <div class="section-inner">
-                <p class="sec-label">Servicios</p>
-                <h2 class="sec-title">Limpieza que se siente</h2>
-                <p class="sec-sub">Estándares certificados ISO 9001, 14001 y 45001.</p>
+                <p class="sec-label reveal">Servicios</p>
+                <h2 class="sec-title reveal">Limpieza que <em>transforma</em></h2>
+                <p class="sec-sub reveal">Estándares certificados ISO 9001:2015, ISO 14001:2015 e ISO 45001:2018 que garantizan resultados reales en cada espacio.</p>
                 <div class="grid-3">
-                    <div class="glass-card">
-                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg></div>
-                        <h3>Limpieza Institucional</h3>
-                        <p>Oficinas, edificios corporativos, bancos, escuelas y entidades públicas con programas a medida.</p>
-                    </div>
-                    <div class="glass-card">
-                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
-                        <h3>Espacios Verdes</h3>
-                        <p>Corte de césped y mantenimiento general de parques, jardines y campos deportivos.</p>
-                    </div>
-                    <div class="glass-card">
-                        <div class="card-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>
-                        <h3>Metodología Certificada</h3>
-                        <p>Trabajamos bajo normas ISO 9001, 14001 y 45001 con supervisión especializada.</p>
-                    </div>
+                    <div class="glass-card reveal"><div class="card-shine"></div><div class="card-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Limpieza Institucional</h3><p>Oficinas, edificios corporativos, bancos, escuelas, entidades privadas y organismos públicos con programas diseñados a medida.</p></div>
+                    <div class="glass-card reveal"><div class="card-shine"></div><div class="card-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></div><h3>Espacios Verdes</h3><p>Corte de césped y mantenimiento integral de parques, jardines y campos deportivos con técnicas sostenibles.</p></div>
+                    <div class="glass-card reveal"><div class="card-shine"></div><div class="card-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><h3>Metodología Certificada</h3><p>Trabajamos bajo normas ISO 9001:2015, ISO 14001:2015 e ISO 45001:2018 con supervisión especializada y mejora continua documentada.</p></div>
                 </div>
-                <img src="assets/personas.png" alt="Equipo Forest SRL" class="full-width-img" onerror="this.style.display='none'">
             </div>
         </section>
 
-        <!-- Certificaciones -->
-        <section class="section-flow" style="background:rgba(245,247,243,0.5);">
-            <div class="section-inner">
-                <p class="sec-label" style="text-align:center;">Respaldo Internacional</p>
-                <h2 class="sec-title" style="text-align:center;">Certificaciones y Asesoramiento</h2>
-                <img src="assets/bureau+normas.png" alt="ISO y Bureau Veritas" class="cert-img" onerror="this.style.display='none'">
+        <!-- CERTIFICACIONES -->
+        <section class="section-flow cert-section">
+            <div class="section-inner" style="text-align:center;">
+                <p class="sec-label reveal" style="justify-content:center;">Respaldo Internacional</p>
+                <h2 class="sec-title reveal">Certificaciones & Asesoramiento</h2>
+                <p class="sec-sub reveal" style="margin:0 auto 2rem;">Triple certificación ISO que respalda cada proceso, cada resultado, cada espacio que cuidamos.</p>
+                <div class="iso-badges reveal">
+                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="iso-num">9001</span><span class="iso-label">Calidad 2015</span></div>
+                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg><span class="iso-num">14001</span><span class="iso-label">Ambiente 2015</span></div>
+                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="iso-num">45001</span><span class="iso-label">Seguridad 2018</span></div>
+                </div>
             </div>
         </section>
 
-        <!-- Clientes -->
+        <!-- CLIENTES -->
         <section id="clientes" class="section-flow">
             <div class="section-inner">
-                <p class="sec-label" style="text-align:center;">Confianza</p>
-                <h2 class="sec-title" style="text-align:center;">Ellos nos eligen</h2>
-                <div class="clientes-marquee">
-                    <div class="clientes-track" id="clientes-track"></div>
-                </div>
+                <p class="sec-label reveal" style="justify-content:center;">Confianza</p>
+                <h2 class="sec-title reveal" style="text-align:center;">Ellos nos eligen</h2>
+                <p class="sec-sub reveal" style="text-align:center;margin:0 auto 2rem;">Instituciones, empresas y organismos que confían en nuestro trabajo día a día.</p>
+                <div class="clientes-marquee"><div class="clientes-track" id="clientes-track"></div></div>
             </div>
         </section>
 
-        <!-- Nosotros + Política -->
+        <!-- NOSOTROS + POLÍTICA -->
         <section id="nosotros" class="section-flow">
             <div class="section-inner">
-                <p class="sec-label">Esencia</p>
-                <h2 class="sec-title">Compromiso real</h2>
-                <div style="display:grid;gap:1.5rem;margin-bottom:3rem;">
-                    <div class="glass-card"><h3 style="color:var(--green-mid);">Misión</h3><p>Servicios integrales de limpieza y mantenimiento a medida, con eficiencia y respeto ambiental.</p></div>
-                    <div class="glass-card"><h3 style="color:var(--green-mid);">Visión</h3><p>Ser referentes en Argentina por adaptabilidad, procesos certificados y vínculo de confianza.</p></div>
+                <p class="sec-label reveal">Esencia</p>
+                <h2 class="sec-title reveal">Compromiso <em>real</em></h2>
+                <div style="display:grid;gap:1.4rem;margin-bottom:3rem;">
+                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);">Misión</h3><p>Servicios integrales de limpieza y mantenimiento a medida, con eficiencia y respeto ambiental genuinos.</p></div>
+                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);">Visión</h3><p>Ser referentes en Argentina por adaptabilidad, procesos certificados y vínculos de confianza duraderos.</p></div>
                 </div>
-                <h2 style="font-size:2rem;font-weight:800;margin-bottom:1.5rem;">Valores</h2>
-                <div class="grid-2">
-                    <div class="valor-card"><h3>Calidad</h3><p>Cada espacio refleja nuestro estándar certificado.</p></div>
-                    <div class="valor-card"><h3>Compromiso</h3><p>Objetivos de cada cliente como propios.</p></div>
-                    <div class="valor-card"><h3>Integridad</h3><p>Transparencia en cada compromiso.</p></div>
-                    <div class="valor-card"><h3>Respeto</h3><p>Cuidamos personas, ambiente y confianza.</p></div>
+                <h2 class="sec-title reveal" style="font-size:2rem;">Valores</h2>
+                <div class="grid-2" style="margin-bottom:0.5rem;">
+                    <div class="valor-card reveal"><h3>Calidad</h3><p>Cada espacio refleja nuestro estándar certificado sin excepciones.</p></div>
+                    <div class="valor-card reveal"><h3>Compromiso</h3><p>Los objetivos de cada cliente son los nuestros propios.</p></div>
+                    <div class="valor-card reveal"><h3>Integridad</h3><p>Transparencia absoluta en cada compromiso asumido.</p></div>
+                    <div class="valor-card reveal"><h3>Respeto</h3><p>Cuidamos personas, ambiente y la confianza depositada en nosotros.</p></div>
                 </div>
-                <div class="politica-block">
-                    <h3><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg>Política Integrada de Gestión</h3>
-                    <p style="color:var(--text-soft);margin-bottom:1.5rem;">En Forest S.R.L. integramos calidad, medio ambiente y seguridad en cada operación.</p>
+                <div class="politica-block reveal">
+                    <h3><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Política Integrada de Gestión</h3>
+                    <p style="color:var(--text-soft);margin-bottom:1.5rem;font-weight:300;">En Forest S.R.L. integramos calidad, medio ambiente y seguridad en cada operación, proyecto y persona.</p>
                     <ul>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Calidad y Mejora Continua</strong></li>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Crecimiento Sostenible</strong></li>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Satisfacción del Cliente</strong></li>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Gestión Ambiental</strong></li>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Seguridad y Salud</strong></li>
-                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></span><strong>Formación Continua</strong></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Calidad y Mejora Continua</strong><br><span style="font-size:0.85rem;font-weight:300;">Procesos auditados y optimizados permanentemente.</span></div></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Crecimiento Sostenible</strong><br><span style="font-size:0.85rem;font-weight:300;">Expansión responsable que no compromete el entorno.</span></div></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Satisfacción del Cliente</strong><br><span style="font-size:0.85rem;font-weight:300;">Medida real, no solo declarada.</span></div></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Gestión Ambiental</strong><br><span style="font-size:0.85rem;font-weight:300;">Reducción de impacto en cada intervención.</span></div></li>
+                        <li class="politica-item"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Seguridad y Salud</strong><br><span style="font-size:0.85rem;font-weight:300;">Cero accidentes: compromiso no negociable.</span></div></li>
+                        <li class="politica-item" style="border-bottom:none;"><span class="politica-leaf"><svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg></span><div><strong>Formación Continua</strong><br><span style="font-size:0.85rem;font-weight:300;">Nuestro equipo, nuestra mayor fortaleza.</span></div></li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Presupuesto -->
+        <!-- PRESUPUESTO -->
         <section id="presupuesto" class="section-flow">
-            <div class="section-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;">
-                <div class="glass-card" style="height:fit-content;">
-                    <h3 style="color:var(--green-mid);font-size:1.4rem;margin-bottom:1.5rem;">Contacto</h3>
-                    <p>📍 Bv. Los Granaderos 1743</p>
-                    <p>📞 +54 351 702-4934</p>
-                    <p>✉️ info@forestsrl.com.ar</p>
-                </div>
-                <form class="form-glass" action="enviar.php" method="POST">
-                    <input type="hidden" name="tipo" value="presupuesto">
-                    <h3 style="margin-bottom:1.5rem;text-align:center;">Solicitá tu Presupuesto</h3>
-                    <div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required></div>
-                    <div class="form-group"><label>Empresa</label><input type="text" name="empresa"></div>
-                    <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
-                    <div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required></div>
-                    <div class="form-group"><label>Servicio *</label><textarea name="mensaje" required></textarea></div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;">Enviar</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Trabajá -->
-        <section id="trabaja" class="section-flow">
-            <div class="section-inner" style="max-width:700px;">
-                <p class="sec-label" style="text-align:center;">Sumate</p>
-                <h2 class="sec-title" style="text-align:center;">Trabajá con Nosotros</h2>
-                <form class="form-glass" action="enviar.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="tipo" value="cv">
-                    <div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required></div>
-                    <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
-                    <div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required></div>
-                    <div class="form-group"><label>Puesto</label><input type="text" name="puesto"></div>
-                    <div class="form-group"><label>CV (PDF) *</label><input type="file" name="cv" required></div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;">Enviar CV</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Agendá -->
-        <section id="agendar" class="section-flow no-blur">
             <div class="section-inner">
-                <h2 class="sec-title" style="text-align:center;">Agendá una Reunión</h2>
-                <div class="calendar-container">
+                <p class="sec-label reveal">Contacto</p>
+                <h2 class="sec-title reveal">Hablemos de tu proyecto</h2>
+                <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:2.5rem;align-items:start;margin-top:2rem;">
+                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+543517024934" style="color:var(--text-soft);">+54 351 702-4934</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div></div></div>
+                    <form class="form-glass reveal" action="enviar.php" method="POST"><input type="hidden" name="tipo" value="presupuesto"><h3 style="font-weight:700;margin-bottom:1.8rem;font-size:1.3rem;">Solicitá tu Presupuesto</h3><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Empresa</label><input type="text" name="empresa" placeholder="Nombre de la empresa (opcional)"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 351 ..."></div><div class="form-group"><label>Servicio requerido *</label><textarea name="mensaje" required placeholder="Describí brevemente el servicio que necesitás..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar Solicitud</button></form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRABAJÁ -->
+        <section id="trabaja" class="section-flow">
+            <div class="section-inner" style="max-width:680px;">
+                <p class="sec-label reveal" style="justify-content:center;">Sumate</p>
+                <h2 class="sec-title reveal" style="text-align:center;">Trabajá con Nosotros</h2>
+                <p class="sec-sub reveal" style="text-align:center;margin:0 auto 2.5rem;">Somos un equipo comprometido con el trabajo bien hecho. Si compartís esos valores, queremos conocerte.</p>
+                <form class="form-glass reveal" action="enviar.php" method="POST" enctype="multipart/form-data"><input type="hidden" name="tipo" value="cv"><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 351 ..."></div><div class="form-group"><label>Puesto de interés</label><input type="text" name="puesto" placeholder="¿En qué área te gustaría sumarte?"></div><div class="form-group"><label>CV (PDF) *</label><input type="file" name="cv" required accept=".pdf"></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar mi CV</button></form>
+            </div>
+        </section>
+
+        <!-- POPUP: solicitud enviada + pregunta reunión -->
+        <div id="popup-enviado" class="overlay-backdrop" role="dialog" aria-modal="true">
+            <div class="popup-card">
+                <div class="popup-icon-wrap">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <p style="font-weight:800;font-size:1.5rem;color:var(--text);margin-bottom:0.6rem;">¡Solicitud enviada!</p>
+                <p style="color:var(--text-soft);font-size:0.93rem;line-height:1.75;">Gracias por contactarnos. Nos pondremos en contacto a la brevedad con tu presupuesto.</p>
+                <div class="popup-divider"></div>
+                <p style="font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:0.5rem;">¿Querés agendar una reunión con nosotros?</p>
+                <p style="color:var(--text-light);font-size:0.85rem;line-height:1.6;">Elegí un día y horario. Nos conectamos por Google Meet para charlar en detalle.</p>
+                <div class="popup-actions">
+                    <button id="btn-si-agendar" class="btn btn-primary" style="cursor:none;">Sí, quiero agendar</button>
+                    <button id="btn-no-agendar" class="btn-ghost">No, gracias</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: calendario de reunión (solo accesible post-presupuesto) -->
+        <div id="modal-agendar" class="overlay-backdrop" role="dialog" aria-modal="true">
+            <div class="modal-card">
+                <button class="modal-close-btn" id="modal-close-btn" aria-label="Cerrar">✕</button>
+                <p class="sec-label" style="justify-content:center;margin-bottom:0.8rem;">Reunión</p>
+                <h2 style="font-weight:800;font-size:1.6rem;margin-bottom:0.5rem;text-align:center;">Agendá tu Reunión</h2>
+                <p style="color:var(--text-soft);font-size:0.9rem;text-align:center;margin-bottom:2rem;">Elegí el día y horario que mejor te convenga. Nos conectamos por Google Meet.</p>
+                <div class="calendar-container" style="max-width:100%;box-shadow:none;border:none;padding:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;">
                     <div class="calendar-header"><h4 id="month-year"></h4><div class="calendar-nav"><button id="prev-month">←</button><button id="next-month">→</button></div></div>
                     <div class="calendar-grid" id="calendar-grid"></div>
-                    <div id="time-slots-container" style="display:none;"><h5>Horarios:</h5><div class="time-slots" id="time-slots"></div></div>
-                    <div id="booking-form" style="display:none;margin-top:2rem;">
-                        <div class="form-group"><label>Nombre *</label><input type="text" id="booking-name"></div>
-                        <div class="form-group"><label>Email *</label><input type="email" id="booking-email"></div>
-                        <div class="form-group"><label>Servicio a consultar</label><textarea id="booking-service"></textarea></div>
-                        <button class="btn btn-primary" style="width:100%;" onclick="confirmBooking()">Confirmar</button>
-                    </div>
-                    <div id="booking-confirmation" style="display:none;text-align:center;">
-                        <img src="assets/gracias.png" alt="Gracias" style="max-width:200px;" onerror="this.style.display='none'">
-                        <p><strong>✅ ¡Confirmado!</strong></p>
-                        <a href="https://meet.google.com/hum-dxpp-bbs" target="_blank" class="btn btn-primary">Unirse a Google Meet</a>
-                    </div>
+                    <div id="time-slots-container" style="display:none;"><h5 style="margin-bottom:0.5rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Horarios disponibles</h5><div class="time-slots" id="time-slots"></div></div>
+                    <div id="booking-form" style="display:none;margin-top:2rem;"><div class="form-group"><label>Nombre *</label><input type="text" id="booking-name" placeholder="Tu nombre"></div><div class="form-group"><label>Email *</label><input type="email" id="booking-email" placeholder="tu@email.com"></div><div class="form-group"><label>Servicio a consultar</label><textarea id="booking-service" placeholder="¿Sobre qué te gustaría conversar?"></textarea></div><button class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;" onclick="confirmBooking()">Confirmar Reunión</button></div>
+                    <div id="booking-confirmation" style="display:none;text-align:center;padding:2rem 0;"><div style="width:64px;height:64px;border-radius:50%;background:rgba(106,176,76,0.12);border:2px solid rgba(106,176,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p style="font-weight:700;font-size:1.3rem;color:var(--text);margin-bottom:0.5rem;">¡Reunión confirmada!</p><p style="color:var(--text-soft);font-size:0.9rem;margin-bottom:2rem;">Recibirás un email con los detalles y el enlace de la videollamada.</p><a href="https://meet.google.com/hum-dxpp-bbs" target="_blank" class="btn btn-primary" style="cursor:none;">Unirse a Google Meet</a></div>
                 </div>
             </div>
-        </section>
+        </div>
 
+        <!-- FOOTER -->
         <footer class="footer-flow">
-            <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;">
-                <div>
-                    <h4 style="color:var(--text);">Forest SRL</h4>
-                    <p style="color:var(--text-soft);">Servicio integral de limpieza y mantenimiento de espacios verdes.</p>
-                </div>
-                <div>
-                    <h4 style="color:var(--text);">Contacto</h4>
-                    <p style="color:var(--text-soft);">📍 Bv. Los Granaderos 1743<br>📞 +54 351 702-4934</p>
-                </div>
-                <div>
-                    <h4 style="color:var(--text);">Enlaces</h4>
-                    <p style="color:var(--text-soft);">
-                        <a href="#inicio" style="color:inherit;">Inicio</a><br>
-                        <a href="#nosotros" style="color:inherit;">Nosotros</a><br>
-                        <a href="#servicios" style="color:inherit;">Servicios</a><br>
-                        <a href="#clientes" style="color:inherit;">Clientes</a><br>
-                        <a href="#presupuesto" style="color:inherit;">Presupuesto</a><br>
-                        <a href="#trabaja" style="color:inherit;">Trabajá con Nosotros</a><br>
-                        <a href="#agendar" style="color:inherit;">Agendá una Reunión</a>
-                    </p>
-                </div>
+            <div class="footer-grid">
+                <div class="footer-brand"><img src="assets/logo.png" alt="Forest SRL" style="width:64px;height:64px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 2px 8px rgba(106,176,76,0.25));"><h4>Forest SRL</h4><p style="margin-bottom:1rem;">Servicio integral de limpieza y mantenimiento de espacios verdes desde hace más de 30 años.</p><p style="font-size:0.8rem;color:var(--text-light);">ISO 9001 · ISO 14001 · ISO 45001</p></div>
+                <div class="footer-col"><h4>Contacto</h4><p>📍 Bv. Los Granaderos 1743, Córdoba</p><p>📞 +54 351 702-4934</p><p>✉️ info@forestsrl.com.ar</p></div>
+                <div class="footer-col"><h4>Navegación</h4><a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#clientes">Clientes</a><a href="#presupuesto">Presupuesto</a><a href="#trabaja">Trabajá con Nosotros</a></div>
             </div>
-            <p style="text-align:center;color:var(--text-light);margin-top:3rem;font-size:0.85rem;">© 2024 Forest SRL.</p>
+            <div class="footer-bottom">© 2024 Forest SRL · Todos los derechos reservados · Córdoba, Argentina</div>
         </footer>
     </div>
 
     <script>
-        emailjs.init('Y4gSaFN3dhO1ztNeJ');
+        // ═══════════════════════════════════════
+        //  CURSOR HOJA — Casi instantáneo
+        //  lerp 0.38 → respuesta inmediata con mínimo suavizado orgánico
+        // ═══════════════════════════════════════
+        (function() {
+            const leaf = document.getElementById('cursor-leaf');
+            let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+            let lx = cx, ly = cy;
 
-        const canvas = document.getElementById('nodes-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const COUNT = 80;
-        let mX = -1000, mY = -1000;
-        let scrollP = 0, targetScrollP = 0;
+            document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = document.documentElement.scrollHeight;
-        }
-        function create() {
-            particles = [];
-            for(let i=0;i<COUNT;i++) particles.push({
-                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4,
-                r: Math.random()*2+1, pulse: Math.random()*Math.PI*2
-            });
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            targetScrollP = Math.max(0, window.pageYOffset/(document.documentElement.scrollHeight-window.innerHeight));
-            scrollP += (targetScrollP-scrollP)*0.08;
-            const thr = 80+scrollP*150;
-            particles.forEach(p => {
-                p.x+=p.vx; p.y+=p.vy;
-                if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0;
-                if(p.y<0) p.y=canvas.height; if(p.y>canvas.height) p.y=0;
-                ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-                ctx.fillStyle = `rgba(106,176,76,${0.3+Math.sin(p.pulse+performance.now()*0.02)*0.2})`;
-                ctx.fill();
-            });
-            for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
-                const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
-                if(dist<thr) { ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
-                    ctx.strokeStyle = `rgba(106,176,76,${(1-dist/thr)*0.3})`; ctx.stroke(); }
+            function animLeaf() {
+                lx += (cx - lx) * 0.38;
+                ly += (cy - ly) * 0.38;
+                leaf.style.left = lx + 'px';
+                leaf.style.top = ly + 'px';
+                leaf.style.transform = 'translate(-50%, -50%)';
+                requestAnimationFrame(animLeaf);
             }
-            requestAnimationFrame(draw);
-        }
-        resize(); create(); draw();
-        window.addEventListener('resize',()=>{resize();create();});
+            animLeaf();
 
-        // GSAP
+            const hoverTargets = document.querySelectorAll(
+                'a, button, .glass-card, .stat-card, .valor-card, .calendar-day, .time-slot, .clientes-chip, .btn, input, textarea, .politica-item, .image-marquee-item, .hero-logo-img'
+            );
+            hoverTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => leaf.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => leaf.classList.remove('hovering'));
+            });
+        })();
+
+        // ═══════════════════════════════════════
+        //  WAVE CANVAS — Capas independientes
+        // ═══════════════════════════════════════
+        (function() {
+            const canvas = document.getElementById('wave-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            let mouseX = 0.5, mouseY = 0.5;
+            let targetMX = 0.5, targetMY = 0.5;
+            let scrollY = 0;
+
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+            document.addEventListener('mousemove', e => { targetMX = e.clientX / W; targetMY = e.clientY / H; });
+            window.addEventListener('scroll', () => { scrollY = window.pageYOffset; }, { passive: true });
+
+            const layers = [
+                { yBase: 0.28, amp: 0.06, freq: 0.9, speed: 0.00008, phase: 0, mouseInf: 0.3, color: [225, 238, 222], alpha: 0.40, depth: 0 },
+                { yBase: 0.40, amp: 0.07, freq: 1.1, speed: 0.00012, phase: 1.8, mouseInf: 0.5, color: [210, 226, 208], alpha: 0.35, depth: 1 },
+                { yBase: 0.53, amp: 0.08, freq: 1.4, speed: 0.00016, phase: 3.2, mouseInf: 0.7, color: [190, 212, 188], alpha: 0.28, depth: 2 },
+                { yBase: 0.65, amp: 0.06, freq: 0.7, speed: 0.00006, phase: 0.6, mouseInf: 0.4, color: [170, 195, 170], alpha: 0.22, depth: 3 },
+                { yBase: 0.76, amp: 0.07, freq: 1.2, speed: 0.00010, phase: 4.5, mouseInf: 0.55, color: [150, 178, 150], alpha: 0.17, depth: 4 },
+            ];
+
+            const threads = Array.from({ length: 5 }, (_, i) => ({
+                yBase: 0.18 + i * 0.16, amp: 0.018, freq: 0.7 + Math.random() * 0.8,
+                speed: 0.00004 + Math.random() * 0.00008, phase: Math.random() * Math.PI * 2,
+                mouseInf: 0.3 + Math.random() * 0.5,
+            }));
+
+            function getWaveY(layer, x, time) {
+                const nx = x / W;
+                const baseOsc = Math.sin(nx * layer.freq * Math.PI * 2 + layer.phase + time * layer.speed * 12000);
+                const baseY = layer.yBase * H + baseOsc * layer.amp * H;
+                const mShift = (mouseX - 0.5) * layer.mouseInf * 0.06 * H;
+                const sShift = Math.sin(nx * 1.8 + scrollY * 0.0004) * 0.02 * H * (layer.depth + 1) * 0.3;
+                return baseY + mShift + sShift;
+            }
+
+            function draw() {
+                const time = performance.now() / 1000;
+                mouseX += (targetMX - mouseX) * 0.04;
+                mouseY += (targetMY - mouseY) * 0.04;
+                ctx.clearRect(0, 0, W, H);
+                [...layers].sort((a, b) => b.depth - a.depth).forEach(layer => {
+                    ctx.beginPath();
+                    ctx.moveTo(0, getWaveY(layer, 0, time));
+                    for (let x = 1; x <= W; x += 3) ctx.lineTo(x, getWaveY(layer, x, time));
+                    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+                    const [r, g, b] = layer.color;
+                    ctx.fillStyle = `rgba(${r},${g},${b},${layer.alpha})`;
+                    ctx.fill();
+                });
+                threads.forEach(th => {
+                    ctx.beginPath();
+                    ctx.moveTo(0, getWaveY({ yBase: th.yBase, amp: th.amp, freq: th.freq, speed: th.speed, phase: th.phase, mouseInf: th.mouseInf, depth: 2 }, 0, time));
+                    for (let x = 1; x <= W; x += 4) ctx.lineTo(x, getWaveY({ yBase: th.yBase, amp: th.amp, freq: th.freq, speed: th.speed, phase: th.phase, mouseInf: th.mouseInf, depth: 2 }, x, time));
+                    const grad = ctx.createLinearGradient(0, 0, W, 0);
+                    const gp = mouseX, gw = 0.13;
+                    grad.addColorStop(0, 'rgba(106,176,76,0)');
+                    grad.addColorStop(Math.max(0, gp - gw), 'rgba(106,176,76,0)');
+                    grad.addColorStop(Math.max(0, gp - gw * 0.5), 'rgba(106,176,76,0.03)');
+                    grad.addColorStop(gp, 'rgba(106,176,76,0.10)');
+                    grad.addColorStop(Math.min(1, gp + gw * 0.5), 'rgba(106,176,76,0.03)');
+                    grad.addColorStop(Math.min(1, gp + gw), 'rgba(106,176,76,0)');
+                    grad.addColorStop(1, 'rgba(106,176,76,0)');
+                    ctx.strokeStyle = grad; ctx.lineWidth = 0.7; ctx.stroke();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ═══════════════════════════════════════
+        //  SCENE CANVAS — Partículas + rocío
+        // ═══════════════════════════════════════
+        (function() {
+            const canvas = document.getElementById('scene-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', () => { resize(); initDew(); });
+            let mX = W/2, mY = H/2;
+            document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+            const nodes = Array.from({ length: 35 }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.06, vy: (Math.random()-0.5)*0.06, r: Math.random()*1.4+0.5 }));
+            let dews = [];
+            function initDew() { dews = Array.from({ length: 12 }, () => ({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*3+2, vx: (Math.random()-0.5)*0.03, vy: (Math.random()-0.5)*0.02, baseR: 0 })); dews.forEach(d => d.baseR = d.r); }
+            initDew();
+            function animScene() {
+                ctx.clearRect(0, 0, W, H);
+                nodes.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < -20) p.x = W+20; if (p.x > W+20) p.x = -20; if (p.y < -20) p.y = H+20; if (p.y > H+20) p.y = -20; const dm = Math.hypot(mX-p.x, mY-p.y); if (dm < 140) { const force = (1-dm/140)*0.02; p.x += (p.x-mX)*force; p.y += (p.y-mY)*force; } ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(106,176,76,0.11)'; ctx.fill(); });
+                const thr = 65; for (let i = 0; i < nodes.length; i++) { for (let j = i+1; j < nodes.length; j++) { const dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y, d = Math.sqrt(dx*dx+dy*dy); if (d < thr) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(106,176,76,${(1-d/thr)*0.06})`; ctx.lineWidth = 0.4; ctx.stroke(); } } }
+                dews.forEach(d => { d.x += d.vx; d.y += d.vy; if (d.x < -20) d.x = W+20; if (d.x > W+20) d.x = -20; if (d.y < -20) d.y = H+20; if (d.y > H+20) d.y = -20; const dist = Math.hypot(mX-d.x, mY-d.y); const repulse = dist < 90 ? Math.max(0, 1-dist/90) : 0; const ang = Math.atan2(d.y-mY, d.x-mX); const rx = d.x + Math.cos(ang)*repulse*16; const ry = d.y + Math.sin(ang)*repulse*16; const sr = d.baseR*(1+repulse*0.5); const ro = ctx.createRadialGradient(rx, ry, 0, rx, ry, sr*3); ro.addColorStop(0, `rgba(106,176,76,${0.03+repulse*0.06})`); ro.addColorStop(1, 'rgba(106,176,76,0)'); ctx.beginPath(); ctx.arc(rx, ry, sr*3, 0, Math.PI*2); ctx.fillStyle = ro; ctx.fill(); const rg = ctx.createRadialGradient(rx-sr*0.3, ry-sr*0.3, sr*0.1, rx, ry, sr); rg.addColorStop(0, 'rgba(230,248,225,0.7)'); rg.addColorStop(0.4, 'rgba(180,225,175,0.4)'); rg.addColorStop(1, 'rgba(106,176,76,0.1)'); ctx.beginPath(); ctx.arc(rx, ry, sr, 0, Math.PI*2); ctx.fillStyle = rg; ctx.fill(); });
+                requestAnimationFrame(animScene);
+            }
+            animScene();
+        })();
+
+        // ═══════════════════════════════════════
+        //  RAMA DECORATIVA — Viento orgánico con ráfagas
+        // ═══════════════════════════════════════
+        (function() {
+            const branchContainer = document.getElementById('decorative-branch');
+            const leaves = document.querySelectorAll('.branch-leaf');
+            const stem = document.getElementById('branch-stem');
+            let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+            let tmx = mx, tmy = my;
+            document.addEventListener('mousemove', e => { tmx = e.clientX; tmy = e.clientY; });
+
+            // 5 frecuencias inconmensurables = movimiento completamente aperiódico
+            function windNoise(t, phase) {
+                return  Math.sin(t * 0.17 + phase)          * 0.32
+                      + Math.sin(t * 0.43 + phase * 1.4)    * 0.26
+                      + Math.sin(t * 0.71 + phase * 0.8)    * 0.20
+                      + Math.sin(t * 1.29 + phase * 1.9)    * 0.13
+                      + Math.sin(t * 2.33 + phase * 0.6)    * 0.09;
+            }
+
+            // Sistema de ráfagas: dos ráfagas independientes con ataque rápido y caída lenta
+            let gustA = 0, gustB = 0, gustATarget = 0, gustBTarget = 0;
+            let nextGustA = 2 + Math.random() * 3;
+            let nextGustB = 4 + Math.random() * 3;
+
+            function updateGusts(t) {
+                if (t > nextGustA) {
+                    gustATarget = 1.4 + Math.random() * 2.0;
+                    nextGustA   = t + 5 + Math.random() * 8;
+                }
+                gustA += (gustATarget - gustA) * (gustA < gustATarget ? 0.10 : 0.014);
+                if (gustA > gustATarget - 0.01 && gustATarget > 0) gustATarget = 0;
+
+                if (t > nextGustB) {
+                    gustBTarget = 0.5 + Math.random() * 0.9;
+                    nextGustB   = t + 2.5 + Math.random() * 4;
+                }
+                gustB += (gustBTarget - gustB) * (gustB < gustBTarget ? 0.18 : 0.022);
+                if (gustB > gustBTarget - 0.01 && gustBTarget > 0) gustBTarget = 0;
+            }
+
+            const leafParams = [];
+            leaves.forEach((leaf, i) => {
+                const posY = i / Math.max(leaves.length - 1, 1);
+                leafParams.push({
+                    el:           leaf,
+                    windSens:     0.7 + Math.random() * 1.3,
+                    windAmp:      5.5 + Math.random() * 9.5,
+                    windPhase:    Math.random() * Math.PI * 2,
+                    deepSpeed:    0.07 + Math.random() * 0.16,
+                    deepPhase:    Math.random() * Math.PI * 2,
+                    deepAmp:      3.5 + Math.random() * 6.0,
+                    trembleAmp:   i % 3 === 0 ? 1.8 + Math.random() * 2.8 : 0.4 + Math.random() * 1.0,
+                    trembleSpeed: 2.2 + Math.random() * 5.0,
+                    tremblePhase: Math.random() * Math.PI * 2,
+                    gustSens:     0.4 + Math.random() * 1.6,
+                    weight:       0.2 + posY * 0.6,
+                    baseRot:      (Math.random() - 0.5) * 7,
+                    currentRot:   0,
+                    targetRot:    0,
+                });
+            });
+
+            function animBranch() {
+                mx += (tmx - mx) * 0.032;
+                my += (tmy - my) * 0.032;
+                const t = performance.now() / 1000;
+                updateGusts(t);
+                const totalGust = gustA + gustB;
+
+                if (stem) {
+                    const mainSway  = windNoise(t, 0.00) * 7.5 * (1 + totalGust * 0.45);
+                    const curvature = windNoise(t, 1.40) * 3.2 * (1 + totalGust * 0.30);
+                    const micro     = windNoise(t, 2.90) * 1.3;
+                    stem.style.transformOrigin = 'center bottom';
+                    stem.style.transform =
+                        `translateX(${mainSway + curvature}px)` +
+                        ` skewX(${curvature * 0.55}deg)` +
+                        ` rotate(${(mainSway + micro) * 0.42}deg)`;
+                }
+
+                leafParams.forEach(lp => {
+                    const wind1   = windNoise(t, lp.windPhase) * lp.windAmp * lp.windSens;
+                    const wind2   = Math.sin(t * lp.deepSpeed + lp.deepPhase) * lp.deepAmp;
+                    const tremble = Math.sin(t * lp.trembleSpeed + lp.tremblePhase) * lp.trembleAmp;
+                    const gust    = totalGust * lp.gustSens * 9.5;
+
+                    lp.targetRot = lp.baseRot + wind1 + wind2 + tremble + gust;
+
+                    // Durante ráfaga las hojas livianas reaccionan más rápido
+                    const lerpBase = 0.016 + (1 - lp.weight) * 0.11;
+                    const lerpGust = totalGust > 0.2 ? totalGust * 0.07 : 0;
+                    lp.currentRot += (lp.targetRot - lp.currentRot) * Math.min(lerpBase + lerpGust, 0.28);
+
+                    lp.el.style.transform = `rotate(${lp.currentRot}deg)`;
+
+                    const rect = lp.el.getBoundingClientRect();
+                    if (!rect.width) return;
+                    const dist = Math.hypot(mx - (rect.left + rect.width / 2),
+                                           my - (rect.top  + rect.height / 2));
+                    if (dist < 180) lp.el.classList.add('near-cursor');
+                    else            lp.el.classList.remove('near-cursor');
+                });
+
+                if (branchContainer) {
+                    const bx = (mx / window.innerWidth  - 0.5) * 7;
+                    const by = (my / window.innerHeight - 0.5) * 4;
+                    branchContainer.style.transform = `translateX(${bx}px) translateY(${by}px)`;
+                }
+
+                requestAnimationFrame(animBranch);
+            }
+            animBranch();
+        })();
+
+        // ═══════════════════════════════════════
+        //  3D TILT CARDS
+        // ═══════════════════════════════════════
+        (function() {
+            document.querySelectorAll('.glass-card, .stat-card').forEach(card => {
+                const shine = card.querySelector('.card-shine');
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+                    const cx = rect.width/2, cy = rect.height/2;
+                    card.style.transform = `perspective(700px) rotateX(${(y-cy)/cy*-10}deg) rotateY(${(x-cx)/cx*10}deg) translateZ(8px) scale(1.02)`;
+                    if (shine) { card.style.setProperty('--mx', (x/rect.width)*100+'%'); card.style.setProperty('--my', (y/rect.height)*100+'%'); }
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)'; card.style.transition = 'transform 0.5s cubic-bezier(0.25,0.8,0.25,1)'; });
+                card.addEventListener('mouseenter', () => { card.style.transition = 'transform 0.1s ease, border-color 0.4s, box-shadow 0.4s'; });
+            });
+        })();
+
+        // ═══════════════════════════════════════
+        //  GSAP SCROLL ANIMATIONS
+        // ═══════════════════════════════════════
         gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.glass-card, .stat-card, .valor-card').forEach(el => {
-            gsap.from(el, {scrollTrigger:{trigger:el,start:'top 85%'},opacity:0,y:50,duration:0.8});
+        gsap.utils.toArray('.reveal').forEach((el, i) => {
+            gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' }, delay: (i%3)*0.1 });
+            el.classList.add('revealed');
         });
         document.querySelectorAll('.stat-num').forEach(el => {
             const t = parseInt(el.dataset.target);
-            ScrollTrigger.create({trigger:el,start:'top 80%',onEnter:()=>{
-                gsap.to(el,{innerText:t,duration:2.5,snap:{innerText:1},onUpdate:function(){el.textContent=Math.floor(this.targets()[0].innerText)+'+'}});
-            }});
+            ScrollTrigger.create({ trigger: el, start: 'top 82%', onEnter: () => { gsap.to(el, { innerText: t, duration: 2.2, snap: { innerText: 1 }, ease: 'power2.out', onUpdate: function() { el.textContent = Math.floor(this.targets()[0].innerText) + '+'; } }); } });
         });
+        gsap.from('.hero-eyebrow', { opacity: 0, y: 20, duration: 0.9, delay: 0.2, ease: 'power3.out' });
+        gsap.from('.hero-title', { opacity: 0, y: 30, duration: 1.1, delay: 0.4, ease: 'power3.out' });
+        gsap.from('.hero-desc', { opacity: 0, y: 20, duration: 0.9, delay: 0.65, ease: 'power3.out' });
+        gsap.from('.btn-group', { opacity: 0, y: 20, duration: 0.8, delay: 0.85, ease: 'power3.out' });
+        gsap.from('.hero-logo-img', { opacity: 0, scale: 0.8, duration: 1.2, delay: 0.5, ease: 'power3.out' });
+        window.addEventListener('scroll', () => { const nav = document.getElementById('nav'); nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
 
-        // Hojas flotantes animadas
-        gsap.to('#fleaf1', {y: -20, x: 15, rotation: 8, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut'});
-        gsap.to('#fleaf2', {y: -25, x: -10, rotation: -6, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut'});
-        gsap.to('#fleaf3', {y: -18, x: 12, rotation: 10, duration: 5.5, repeat: -1, yoyo: true, ease: 'sine.inOut'});
-        gsap.to('#fleaf4', {y: -22, x: -8, rotation: -5, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+        // ═══════════════════════════════════════
+        //  NAV ACTIVE LINK ON SCROLL
+        // ═══════════════════════════════════════
+        (function() {
+            const sections = document.querySelectorAll('section[id], footer[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            function setActive(id) {
+                navLinks.forEach(a => {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+                });
+            }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) setActive(entry.target.id);
+                });
+            }, { threshold: 0.35, rootMargin: '-10% 0px -55% 0px' });
+            sections.forEach(s => observer.observe(s));
+        })();
 
-        // Parallax de capas SVG
-        const layers = document.querySelectorAll('.bg-layer');
-        layers.forEach((layer, i) => {
-            gsap.to(layer, {
-                y: () => window.innerHeight * (0.03 + i * 0.03),
-                ease: 'none',
-                scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.5 }
-            });
-        });
+        // ═══════════════════════════════════════
+        //  CLIENTS MARQUEE & BOOKING
+        // ═══════════════════════════════════════
+        const clientes = ['Ministerio de Salud - Pcia. de Córdoba','UEPC','Agrogy SAS','Intermed Ortopedia','Naldo Lombardi','Wiltel Comunicaciones','Cemaic SAS','Escuelas Pías','Ministerio de Cooperativas y Mutuales','Caja de Previsión de Ing., Arq., Agrimensura, Agronomía y Prof. de la Const. Pcia. Cba.','Sanatorio Francés','Establecimiento La Micaela','Mercado Norte de la Ciudad de Córdoba','T.G.N. - Transportadora Gas del Norte','On City','Crédito Argentino - CFN','Farmacias SV','Farmacias General Paz','Farmacias RED','Gobierno de la Provincia de Córdoba','Poder Judicial de la Provincia de Córdoba','Banco de la Nación Argentina'];
+        document.getElementById('clientes-track').innerHTML = [...clientes,...clientes].map(c => `<span class="clientes-chip">${c}</span>`).join('');
 
-        // Clientes
-        const clientes = ['Agrogy SAS','BNA','Cemaic SAS','Crédito Argentino','Sanatorio Francés','Caja de Previsión de la Ing.','Escuelas Pias','Farmacia Red','Intermed SRL','On City','Mercado Norte','Ministerio de Cooperativas','Ministerio de Salud','Naldo Lombardi','Farmacia Gral. Paz','Sec. Gral. de la Gobernación','TGN','UEPC','Sv Farma','Wiltel Comunicaciones','Confina','Macro','Arca','Ministerio Público Fiscal','Sony Center','Fuerza Aérea Argentina','Nación Seguros'];
-        document.getElementById('clientes-track').innerHTML = [...clientes,...clientes].map(c=>`<span class="clientes-chip">${c}</span>`).join('');
-
-        // Booking
         const FIREBASE = 'https://pagina-web-74184-default-rtdb.firebaseio.com';
-        let cDate = new Date(), selDate=null, selTime=null, booked={};
-        async function load() { try { const r = await fetch(`${FIREBASE}/booked.json`); booked = await r.json()||{}; } catch(e){} }
-        async function save(key) { booked[key]=1; await fetch(`${FIREBASE}/booked.json`,{method:'PATCH',body:JSON.stringify({[key]:1})}); }
+        let cDate = new Date(), selDate = null, selTime = null, booked = {};
+        async function loadBooked() { try { const r = await fetch(`${FIREBASE}/booked.json`); booked = await r.json() || {}; } catch(e) {} }
+        async function saveBooked(key) { booked[key] = 1; await fetch(`${FIREBASE}/booked.json`, { method: 'PATCH', body: JSON.stringify({ [key]: 1 }) }); }
         function renderCal() {
-            const y=cDate.getFullYear(), m=cDate.getMonth();
-            document.getElementById('month-year').textContent = new Intl.DateTimeFormat('es-AR',{month:'long',year:'numeric'}).format(cDate);
-            const fd=new Date(y,m,1).getDay(), dim=new Date(y,m+1,0).getDate(), today=new Date(); today.setHours(0,0,0,0);
-            const grid=document.getElementById('calendar-grid'); grid.innerHTML='';
-            ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].forEach(h=>{ const d=document.createElement('div'); d.className='calendar-day-header'; d.textContent=h; grid.appendChild(d); });
-            for(let i=0;i<fd;i++){ const d=document.createElement('div'); d.className='calendar-day empty'; grid.appendChild(d); }
-            for(let d=1;d<=dim;d++){
-                const date=new Date(y,m,d); date.setHours(0,0,0,0); const dow=date.getDay();
-                const div=document.createElement('div'); div.className='calendar-day'; div.textContent=d;
-                if(date<today||dow===0||dow===6) div.classList.add('disabled');
-                else div.addEventListener('click',()=>{ selDate=date; selTime=null; document.querySelectorAll('.calendar-day.selected').forEach(e=>e.classList.remove('selected')); div.classList.add('selected'); renderSlots(); });
-                if(selDate&&date.toDateString()===selDate.toDateString()) div.classList.add('selected');
-                grid.appendChild(div);
-            }
+            const y = cDate.getFullYear(), m = cDate.getMonth();
+            document.getElementById('month-year').textContent = new Intl.DateTimeFormat('es-AR', { month: 'long', year: 'numeric' }).format(cDate);
+            const fd = new Date(y, m, 1).getDay(), dim = new Date(y, m+1, 0).getDate();
+            const today = new Date(); today.setHours(0,0,0,0);
+            const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
+            ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].forEach(h => { const d = document.createElement('div'); d.className = 'calendar-day-header'; d.textContent = h; grid.appendChild(d); });
+            for (let i = 0; i < fd; i++) { const d = document.createElement('div'); d.className = 'calendar-day empty'; grid.appendChild(d); }
+            for (let dd = 1; dd <= dim; dd++) { const date = new Date(y, m, dd); date.setHours(0,0,0,0); const dow = date.getDay(), div = document.createElement('div'); div.className = 'calendar-day'; div.textContent = dd; if (date < today || dow === 0 || dow === 6) div.classList.add('disabled'); else div.addEventListener('click', () => { selDate = date; selTime = null; document.querySelectorAll('.calendar-day.selected').forEach(e => e.classList.remove('selected')); div.classList.add('selected'); renderSlots(); }); if (selDate && date.toDateString() === selDate.toDateString()) div.classList.add('selected'); grid.appendChild(div); }
         }
-        function renderSlots() {
-            document.getElementById('time-slots-container').style.display='block';
-            document.getElementById('booking-form').style.display='none';
-            document.getElementById('booking-confirmation').style.display='none';
-            const s=document.getElementById('time-slots'); s.innerHTML='';
-            for(let h=9;h<17;h++){
-                const key=`${selDate.toDateString()}-${h}`, div=document.createElement('div');
-                div.className='time-slot'; div.textContent=`${h}:00`;
-                if(booked[key]) div.classList.add('occupied');
-                else div.addEventListener('click',()=>{ selTime=`${h}:00`; document.querySelectorAll('.time-slot.selected').forEach(e=>e.classList.remove('selected')); div.classList.add('selected'); document.getElementById('booking-form').style.display='block'; });
-                s.appendChild(div);
-            }
-        }
+        function renderSlots() { document.getElementById('time-slots-container').style.display = 'block'; document.getElementById('booking-form').style.display = 'none'; document.getElementById('booking-confirmation').style.display = 'none'; const s = document.getElementById('time-slots'); s.innerHTML = ''; for (let h = 9; h < 17; h++) { const key = `${selDate.toDateString()}-${h}`, div = document.createElement('div'); div.className = 'time-slot'; div.textContent = `${h}:00`; if (booked[key]) div.classList.add('occupied'); else div.addEventListener('click', () => { selTime = `${h}:00`; document.querySelectorAll('.time-slot.selected').forEach(e => e.classList.remove('selected')); div.classList.add('selected'); document.getElementById('booking-form').style.display = 'block'; }); s.appendChild(div); } }
         async function confirmBooking() {
-            const n=document.getElementById('booking-name').value, e=document.getElementById('booking-email').value;
-            if(!n||!e) return alert('Completá nombre y email');
-            const key=`${selDate.toDateString()}-${selTime.split(':')[0]}`; await save(key);
-            document.getElementById('booking-form').style.display='none';
-            document.getElementById('time-slots-container').style.display='none';
-            document.getElementById('booking-confirmation').style.display='block';
-            emailjs.send('service_8bi64ao','template_res0bjx',{
-                user_name:n, fecha:selDate.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'}),
-                hora:selTime, meet_link:'https://meet.google.com/hum-dxpp-bbs', user_email:e
-            });
+            const n = document.getElementById('booking-name').value;
+            const e = document.getElementById('booking-email').value;
+            const s = document.getElementById('booking-service').value || '(no especificado)';
+            if (!n || !e) return alert('Completá nombre y email');
+            const key = `${selDate.toDateString()}-${selTime.split(':')[0]}`;
+            await saveBooked(key);
+            document.getElementById('booking-form').style.display = 'none';
+            document.getElementById('time-slots-container').style.display = 'none';
+            document.getElementById('booking-confirmation').style.display = 'block';
+            const params = {
+                user_name: n,
+                user_email: e,
+                fecha: selDate.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' }),
+                hora: selTime,
+                meet_link: 'https://meet.google.com/hum-dxpp-bbs',
+                booking_service: s
+            };
+            try {
+                // Mail al cliente
+                emailjs.send('service_8bi64ao', 'template_res0bjx', { ...params, to_email: e });
+                // Mail a Forest SRL
+                emailjs.send('service_8bi64ao', 'template_forest_notif', { ...params, to_email: 'formularios@forestsrl.com.ar' });
+            } catch(err) {}
         }
-        document.getElementById('prev-month').onclick = ()=>{cDate.setMonth(cDate.getMonth()-1);renderCal();};
-        document.getElementById('next-month').onclick = ()=>{cDate.setMonth(cDate.getMonth()+1);renderCal();};
-        load().then(renderCal);
+        document.getElementById('prev-month').onclick = () => { cDate.setMonth(cDate.getMonth()-1); renderCal(); };
+        document.getElementById('next-month').onclick = () => { cDate.setMonth(cDate.getMonth()+1); renderCal(); };
+        loadBooked().then(renderCal);
+        try { emailjs.init('Y4gSaFN3dhO1ztNeJ'); } catch(e) {}
+
+        // ═══════════════════════════════════════
+        //  POPUP POST-PRESUPUESTO & MODAL AGENDAR
+        // ═══════════════════════════════════════
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('enviado') === '1' && params.get('tipo') === 'presupuesto') {
+                const nombre = params.get('nombre') || '';
+                const email  = params.get('email')  || '';
+                if (nombre) { const el = document.getElementById('booking-name');  if (el) el.value = nombre; }
+                if (email)  { const el = document.getElementById('booking-email'); if (el) el.value = email; }
+                history.replaceState({}, '', window.location.pathname);
+                requestAnimationFrame(() => document.getElementById('popup-enviado').classList.add('visible'));
+            }
+
+            function showModal() {
+                document.getElementById('popup-enviado').classList.remove('visible');
+                setTimeout(() => document.getElementById('modal-agendar').classList.add('visible'), 320);
+            }
+            function closePopup() {
+                document.getElementById('popup-enviado').classList.remove('visible');
+            }
+            function closeModal() {
+                document.getElementById('modal-agendar').classList.remove('visible');
+            }
+
+            document.getElementById('btn-si-agendar').addEventListener('click', showModal);
+            document.getElementById('btn-no-agendar').addEventListener('click', closePopup);
+            document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+
+            document.getElementById('popup-enviado').addEventListener('click', function(e) {
+                if (e.target === this) closePopup();
+            });
+            document.getElementById('modal-agendar').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+        })();
     </script>
 </body>
 </html>
