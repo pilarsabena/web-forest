@@ -19,27 +19,29 @@
 
     <style>
         :root {
-            --white-base: #f7f9f5;
-            --white-warm: #f0f4ee;
-            --smoke-light: #e6ede6;
-            --smoke: #d4e0d4;
-            --sage-light: #c2d4c2;
-            --sage: #98b898;
-            --green-soft: #6ab04c;
-            --green-mid: #4f7d5a;
-            --green-dark: #2d4a35;
-            --green-glow: #7ecb5a;
-            --text: #1a2620;
-            --text-soft: #445048;
-            --text-light: #7a8a7d;
-            --glass-bg: rgba(240, 244, 238, 0.45);
-            --glass-bg-strong: rgba(240, 244, 238, 0.72);
-            --glass-border: rgba(150, 185, 150, 0.22);
-            --glass-border-hover: rgba(106, 176, 76, 0.35);
-            --glow: rgba(106, 176, 76, 0.45);
-            --glow-soft: rgba(106, 176, 76, 0.15);
-            --shadow-card: 0 8px 40px rgba(30, 60, 35, 0.08), 0 2px 8px rgba(30, 60, 35, 0.04);
-            --shadow-hover: 0 20px 60px rgba(30, 60, 35, 0.12), 0 0 0 1px rgba(106, 176, 76, 0.15);
+            --white-base: #f4f8e8;
+            --white-warm: #eaf2d8;
+            --smoke-light: #d6eabc;
+            --smoke: #bcd9a0;
+            --sage-light: #9ec87a;
+            --sage: #72aa50;
+            --green-soft: #4eb82a;
+            --green-mid: #357545;
+            --green-dark: #1a3828;
+            --green-glow: #96e030;
+            --yellow-soft: #d8ee44;
+            --yellow-warm: #c4d820;
+            --text: #182418;
+            --text-soft: #364a30;
+            --text-light: #608050;
+            --glass-bg: rgba(234, 242, 216, 0.45);
+            --glass-bg-strong: rgba(234, 242, 216, 0.72);
+            --glass-border: rgba(130, 185, 90, 0.28);
+            --glass-border-hover: rgba(78, 184, 42, 0.42);
+            --glow: rgba(78, 184, 42, 0.55);
+            --glow-soft: rgba(78, 184, 42, 0.18);
+            --shadow-card: 0 8px 40px rgba(20, 55, 20, 0.10), 0 2px 8px rgba(20, 55, 20, 0.05);
+            --shadow-hover: 0 20px 60px rgba(20, 55, 20, 0.16), 0 0 0 1px rgba(78, 184, 42, 0.18);
         }
 
         *,
@@ -196,7 +198,7 @@
             color: var(--green-dark); background: rgba(106, 176, 76, 0.1);
         }
         .nav-links a.active {
-            color: var(--green-dark); background: rgba(106, 176, 76, 0.16);
+            color: var(--green-dark); background: rgba(78, 184, 42, 0.16);
             font-weight: 600; box-shadow: inset 0 -2px 0 var(--green-soft);
         }
         .nav-cta {
@@ -727,35 +729,35 @@
                     <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
                 <linearGradient id="stemGrad" x1="0" y1="1" x2="0" y2="0">
-                    <stop offset="0%" stop-color="#7a8a7d" stop-opacity="0.5"/>
-                    <stop offset="50%" stop-color="#9DB39A" stop-opacity="0.75"/>
-                    <stop offset="100%" stop-color="#AFC3AB" stop-opacity="0.9"/>
+                    <stop offset="0%" stop-color="#567845" stop-opacity="0.55"/>
+                    <stop offset="50%" stop-color="#72AA50" stop-opacity="0.82"/>
+                    <stop offset="100%" stop-color="#90C860" stop-opacity="0.96"/>
                 </linearGradient>
             </defs>
             <g filter="url(#branchSoftGlow)">
                 <g class="branch-stem" id="branch-stem">
                     <path d="M160 1050 C155 880 148 720 142 550 C138 400 135 280 130 160 C128 100 125 60 122 20"
                     stroke="url(#stemGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-                    <path d="M155 900 C175 860 190 820 205 780" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M150 760 C125 720 108 680 90 640" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M145 620 C170 580 185 540 200 500" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                    <path d="M140 480 C115 445 100 410 82 375" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                    <path d="M138 350 C160 315 175 280 190 245" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                    <path d="M133 220 C110 190 98 160 85 130" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                    <path d="M128 100 C145 75 155 50 162 25" stroke="#9DB39A" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                    <path d="M155 900 C175 860 190 820 205 780" stroke="#72AA50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M150 760 C125 720 108 680 90 640" stroke="#72AA50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M145 620 C170 580 185 540 200 500" stroke="#72AA50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <path d="M140 480 C115 445 100 410 82 375" stroke="#72AA50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <path d="M138 350 C160 315 175 280 190 245" stroke="#72AA50" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <path d="M133 220 C110 190 98 160 85 130" stroke="#72AA50" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <path d="M128 100 C145 75 155 50 162 25" stroke="#72AA50" stroke-width="1.4" fill="none" stroke-linecap="round"/>
                 </g>
-                <g class="branch-leaf" id="leaf-b1" style="--lx:208px;--ly:775px;"><ellipse cx="212" cy="772" rx="17" ry="8" fill="#AFC3AB" transform="rotate(-22 212 772)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b2" style="--lx:88px;--ly:635px;"><ellipse cx="82" cy="632" rx="16" ry="7" fill="#B8CBB5" transform="rotate(38 82 632)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b3" style="--lx:203px;--ly:495px;"><ellipse cx="208" cy="492" rx="18" ry="8.5" fill="#BFD0BC" transform="rotate(-28 208 492)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b4" style="--lx:78px;--ly:370px;"><ellipse cx="74" cy="367" rx="15" ry="7" fill="#AFC3AB" transform="rotate(42 74 367)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b5" style="--lx:193px;--ly:240px;"><ellipse cx="198" cy="237" rx="16" ry="7.5" fill="#C8DBC5" transform="rotate(-20 198 237)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b6" style="--lx:80px;--ly:125px;"><ellipse cx="76" cy="122" rx="14" ry="6.5" fill="#B8CBB5" transform="rotate(35 76 122)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b7" style="--lx:165px;--ly:20px;"><ellipse cx="170" cy="18" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-15 170 18)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b8" style="--lx:175px;--ly:880px;"><ellipse cx="180" cy="877" rx="15" ry="7" fill="#C8DBC5" transform="rotate(-25 180 877)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b9" style="--lx:110px;--ly:550px;"><ellipse cx="105" cy="547" rx="14" ry="6" fill="#BFD0BC" transform="rotate(30 105 547)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b10" style="--lx:160px;--ly:680px;"><ellipse cx="165" cy="677" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-18 165 677)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b11" style="--lx:100px;--ly:290px;"><ellipse cx="95" cy="287" rx="12" ry="5.5" fill="#C8DBC5" transform="rotate(40 95 287)" stroke="#9DB39A" stroke-width="0.6"/></g>
-                <g class="branch-leaf" id="leaf-b12" style="--lx:190px;--ly:150px;"><ellipse cx="195" cy="147" rx="12" ry="5.5" fill="#B8CBB5" transform="rotate(-22 195 147)" stroke="#9DB39A" stroke-width="0.6"/></g>
+                <g class="branch-leaf" id="leaf-b1" style="--lx:208px;--ly:775px;"><ellipse cx="212" cy="772" rx="17" ry="8" fill="#8CC868" transform="rotate(-22 212 772)" stroke="#72AA50" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b2" style="--lx:88px;--ly:635px;"><ellipse cx="82" cy="632" rx="16" ry="7" fill="#78B850" transform="rotate(38 82 632)" stroke="#72AA50" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b3" style="--lx:203px;--ly:495px;"><ellipse cx="208" cy="492" rx="18" ry="8.5" fill="#98D068" transform="rotate(-28 208 492)" stroke="#72AA50" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b4" style="--lx:78px;--ly:370px;"><ellipse cx="74" cy="367" rx="15" ry="7" fill="#80B848" transform="rotate(42 74 367)" stroke="#72AA50" stroke-width="0.8"/></g>
+                <g class="branch-leaf" id="leaf-b5" style="--lx:193px;--ly:240px;"><ellipse cx="198" cy="237" rx="16" ry="7.5" fill="#A8D870" transform="rotate(-20 198 237)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b6" style="--lx:80px;--ly:125px;"><ellipse cx="76" cy="122" rx="14" ry="6.5" fill="#90C868" transform="rotate(35 76 122)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b7" style="--lx:165px;--ly:20px;"><ellipse cx="170" cy="18" rx="13" ry="6" fill="#78C048" transform="rotate(-15 170 18)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b8" style="--lx:175px;--ly:880px;"><ellipse cx="180" cy="877" rx="15" ry="7" fill="#A0CC68" transform="rotate(-25 180 877)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b9" style="--lx:110px;--ly:550px;"><ellipse cx="105" cy="547" rx="14" ry="6" fill="#88C058" transform="rotate(30 105 547)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b10" style="--lx:160px;--ly:680px;"><ellipse cx="165" cy="677" rx="13" ry="6" fill="#6AAE48" transform="rotate(-18 165 677)" stroke="#72AA50" stroke-width="0.7"/></g>
+                <g class="branch-leaf" id="leaf-b11" style="--lx:100px;--ly:290px;"><ellipse cx="95" cy="287" rx="12" ry="5.5" fill="#A8D060" transform="rotate(40 95 287)" stroke="#72AA50" stroke-width="0.6"/></g>
+                <g class="branch-leaf" id="leaf-b12" style="--lx:190px;--ly:150px;"><ellipse cx="195" cy="147" rx="12" ry="5.5" fill="#90BC58" transform="rotate(-22 195 147)" stroke="#72AA50" stroke-width="0.6"/></g>
             </g>
         </svg>
     </div>
@@ -785,8 +787,8 @@
                 <div class="hero-content">
                     <p class="hero-eyebrow">Limpieza profesional y mantenimiento de espacios verdes</p>
                     <h1 class="hero-title">
-                        Limpieza que <span class="accent">se siente</span>,<br>
-                        calidad que <span class="accent-line">se ve.</span>
+                        <span style="display:block;">Limpieza que <span class="accent">se siente</span>,</span>
+                        <span style="display:block;">calidad que <span class="accent-line">se ve.</span></span>
                     </h1>
                     <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años de experiencia con certificaciones ISO que garantizan calidad real y cuidado ambiental.</p>
                     <div class="btn-group">
@@ -1017,11 +1019,11 @@
             window.addEventListener('scroll', () => { scrollY = window.pageYOffset; }, { passive: true });
 
             const layers = [
-                { yBase: 0.28, amp: 0.06, freq: 0.9, speed: 0.00008, phase: 0, mouseInf: 0.3, color: [225, 238, 222], alpha: 0.40, depth: 0 },
-                { yBase: 0.40, amp: 0.07, freq: 1.1, speed: 0.00012, phase: 1.8, mouseInf: 0.5, color: [210, 226, 208], alpha: 0.35, depth: 1 },
-                { yBase: 0.53, amp: 0.08, freq: 1.4, speed: 0.00016, phase: 3.2, mouseInf: 0.7, color: [190, 212, 188], alpha: 0.28, depth: 2 },
-                { yBase: 0.65, amp: 0.06, freq: 0.7, speed: 0.00006, phase: 0.6, mouseInf: 0.4, color: [170, 195, 170], alpha: 0.22, depth: 3 },
-                { yBase: 0.76, amp: 0.07, freq: 1.2, speed: 0.00010, phase: 4.5, mouseInf: 0.55, color: [150, 178, 150], alpha: 0.17, depth: 4 },
+                { yBase: 0.25, amp: 0.08, freq: 0.9, speed: 0.00008, phase: 0,   mouseInf: 0.3,  color: [218, 240, 155], alpha: 0.55, depth: 0 },
+                { yBase: 0.38, amp: 0.09, freq: 1.1, speed: 0.00013, phase: 1.8, mouseInf: 0.5,  color: [148, 210, 100], alpha: 0.48, depth: 1 },
+                { yBase: 0.51, amp: 0.10, freq: 1.4, speed: 0.00017, phase: 3.2, mouseInf: 0.7,  color: [ 72, 158,  88], alpha: 0.42, depth: 2 },
+                { yBase: 0.64, amp: 0.08, freq: 0.7, speed: 0.00007, phase: 0.6, mouseInf: 0.4,  color: [ 42, 108,  58], alpha: 0.34, depth: 3 },
+                { yBase: 0.76, amp: 0.09, freq: 1.2, speed: 0.00011, phase: 4.5, mouseInf: 0.55, color: [ 22,  70,  35], alpha: 0.26, depth: 4 },
             ];
 
             const threads = Array.from({ length: 5 }, (_, i) => ({
@@ -1084,22 +1086,22 @@
             resize(); window.addEventListener('resize', () => { resize(); initDew(); });
             let mX = W/2, mY = H/2;
             document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
-            const nodes = Array.from({ length: 35 }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.06, vy: (Math.random()-0.5)*0.06, r: Math.random()*1.4+0.5 }));
+            const nodes = Array.from({ length: 35 }, (_, i) => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.06, vy: (Math.random()-0.5)*0.06, r: Math.random()*1.4+0.5, yellow: i % 4 === 0 }));
             let dews = [];
-            function initDew() { dews = Array.from({ length: 12 }, () => ({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*3+2, vx: (Math.random()-0.5)*0.03, vy: (Math.random()-0.5)*0.02, baseR: 0 })); dews.forEach(d => d.baseR = d.r); }
+            function initDew() { dews = Array.from({ length: 12 }, (_, i) => ({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*3+2, vx: (Math.random()-0.5)*0.03, vy: (Math.random()-0.5)*0.02, baseR: 0, yellow: i % 3 === 0 })); dews.forEach(d => d.baseR = d.r); }
             initDew();
             function animScene() {
                 ctx.clearRect(0, 0, W, H);
-                nodes.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < -20) p.x = W+20; if (p.x > W+20) p.x = -20; if (p.y < -20) p.y = H+20; if (p.y > H+20) p.y = -20; const dm = Math.hypot(mX-p.x, mY-p.y); if (dm < 140) { const force = (1-dm/140)*0.02; p.x += (p.x-mX)*force; p.y += (p.y-mY)*force; } ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(106,176,76,0.11)'; ctx.fill(); });
-                const thr = 65; for (let i = 0; i < nodes.length; i++) { for (let j = i+1; j < nodes.length; j++) { const dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y, d = Math.sqrt(dx*dx+dy*dy); if (d < thr) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(106,176,76,${(1-d/thr)*0.06})`; ctx.lineWidth = 0.4; ctx.stroke(); } } }
-                dews.forEach(d => { d.x += d.vx; d.y += d.vy; if (d.x < -20) d.x = W+20; if (d.x > W+20) d.x = -20; if (d.y < -20) d.y = H+20; if (d.y > H+20) d.y = -20; const dist = Math.hypot(mX-d.x, mY-d.y); const repulse = dist < 90 ? Math.max(0, 1-dist/90) : 0; const ang = Math.atan2(d.y-mY, d.x-mX); const rx = d.x + Math.cos(ang)*repulse*16; const ry = d.y + Math.sin(ang)*repulse*16; const sr = d.baseR*(1+repulse*0.5); const ro = ctx.createRadialGradient(rx, ry, 0, rx, ry, sr*3); ro.addColorStop(0, `rgba(106,176,76,${0.03+repulse*0.06})`); ro.addColorStop(1, 'rgba(106,176,76,0)'); ctx.beginPath(); ctx.arc(rx, ry, sr*3, 0, Math.PI*2); ctx.fillStyle = ro; ctx.fill(); const rg = ctx.createRadialGradient(rx-sr*0.3, ry-sr*0.3, sr*0.1, rx, ry, sr); rg.addColorStop(0, 'rgba(230,248,225,0.7)'); rg.addColorStop(0.4, 'rgba(180,225,175,0.4)'); rg.addColorStop(1, 'rgba(106,176,76,0.1)'); ctx.beginPath(); ctx.arc(rx, ry, sr, 0, Math.PI*2); ctx.fillStyle = rg; ctx.fill(); });
+                nodes.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < -20) p.x = W+20; if (p.x > W+20) p.x = -20; if (p.y < -20) p.y = H+20; if (p.y > H+20) p.y = -20; const dm = Math.hypot(mX-p.x, mY-p.y); if (dm < 140) { const force = (1-dm/140)*0.02; p.x += (p.x-mX)*force; p.y += (p.y-mY)*force; } ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = p.yellow ? 'rgba(190,220,40,0.18)' : 'rgba(60,175,70,0.16)'; ctx.fill(); });
+                const thr = 65; for (let i = 0; i < nodes.length; i++) { for (let j = i+1; j < nodes.length; j++) { const dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y, d = Math.sqrt(dx*dx+dy*dy); if (d < thr) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(80,190,60,${(1-d/thr)*0.10})`; ctx.lineWidth = 0.5; ctx.stroke(); } } }
+                dews.forEach(d => { d.x += d.vx; d.y += d.vy; if (d.x < -20) d.x = W+20; if (d.x > W+20) d.x = -20; if (d.y < -20) d.y = H+20; if (d.y > H+20) d.y = -20; const dist = Math.hypot(mX-d.x, mY-d.y); const repulse = dist < 90 ? Math.max(0, 1-dist/90) : 0; const ang = Math.atan2(d.y-mY, d.x-mX); const rx = d.x + Math.cos(ang)*repulse*16; const ry = d.y + Math.sin(ang)*repulse*16; const sr = d.baseR*(1+repulse*0.5); const ro = ctx.createRadialGradient(rx, ry, 0, rx, ry, sr*3); ro.addColorStop(0, `rgba(80,190,50,${0.05+repulse*0.08})`); ro.addColorStop(1, 'rgba(80,190,50,0)'); ctx.beginPath(); ctx.arc(rx, ry, sr*3, 0, Math.PI*2); ctx.fillStyle = ro; ctx.fill(); const rg = ctx.createRadialGradient(rx-sr*0.3, ry-sr*0.3, sr*0.1, rx, ry, sr); rg.addColorStop(0, d.yellow ? 'rgba(245,255,180,0.85)' : 'rgba(225,255,210,0.80)'); rg.addColorStop(0.4, d.yellow ? 'rgba(200,230,80,0.45)' : 'rgba(150,225,130,0.45)'); rg.addColorStop(1, 'rgba(60,175,50,0.08)'); ctx.beginPath(); ctx.arc(rx, ry, sr, 0, Math.PI*2); ctx.fillStyle = rg; ctx.fill(); });
                 requestAnimationFrame(animScene);
             }
             animScene();
         })();
 
         // ═══════════════════════════════════════
-        //  RAMA DECORATIVA — Estructura unificada, brisa suave
+        //  RAMA DECORATIVA — Viento orgánico con ráfagas
         // ═══════════════════════════════════════
         (function() {
             const branchContainer = document.getElementById('decorative-branch');
