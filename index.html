@@ -61,52 +61,10 @@
             background: var(--white-base);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            cursor: none;
         }
 
         h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, label, li, div {
             font-family: 'DM Sans', sans-serif;
-        }
-
-        /* ═══════════════════════════════════════
-           CURSOR HOJA
-        ═══════════════════════════════════════ */
-        #cursor-leaf {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            width: 26px;
-            height: 26px;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2),
-                height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2),
-                filter 0.35s ease,
-                opacity 0.25s;
-            filter: drop-shadow(0 2px 5px rgba(79, 125, 90, 0.28));
-            will-change: transform, left, top;
-            opacity: 0.85;
-        }
-        #cursor-leaf svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        #cursor-leaf.floating {
-            animation: cursorFloat 4s ease-in-out infinite;
-        }
-        @keyframes cursorFloat {
-            0%, 100% { translate: 0 0; }
-            50% { translate: 0 -5px; }
-        }
-        #cursor-leaf.hovering {
-            width: 40px;
-            height: 40px;
-            opacity: 1;
-            filter: drop-shadow(0 0 16px rgba(106, 176, 76, 0.6)) drop-shadow(0 4px 10px rgba(79, 125, 90, 0.35));
-            transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1.2),
-                height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1.2),
-                filter 0.3s ease,
-                opacity 0.25s;
         }
 
         /* ═══════════════════════════════════════
@@ -125,29 +83,6 @@
             z-index: 2; pointer-events: none; opacity: 0.85;
         }
 
-        /* ═══════════════════════════════════════
-           RAMA DECORATIVA
-        ═══════════════════════════════════════ */
-        .decorative-branch-container {
-            position: fixed; top: 0; right: 0; width: 300px; height: 100vh;
-            z-index: 14; pointer-events: none; transform-style: preserve-3d;
-            perspective: 800px; will-change: transform;
-        }
-        .decorative-branch-svg {
-            width: 100%; height: 100%;
-            filter: drop-shadow(0 8px 28px rgba(30, 60, 35, 0.15));
-        }
-        .branch-stem {
-            transition: none;
-            transform-origin: center bottom;
-        }
-        .branch-leaf {
-            transform-origin: var(--lx, 50%) var(--ly, 50%);
-            transition: filter 0.4s;
-        }
-        .branch-leaf.near-cursor {
-            filter: brightness(1.25) drop-shadow(0 0 10px rgba(106, 176, 76, 0.45));
-        }
 
         /* ═══════════════════════════════════════
            MAIN WRAP
@@ -265,20 +200,52 @@
             display: flex; align-items: center; justify-content: center;
             position: relative;
         }
-        .hero-logo-img {
-            width: 280px; height: auto; object-fit: contain;
-            filter: drop-shadow(0 20px 40px rgba(30, 60, 35, 0.2));
-            animation: heroLogoFloat 6s ease-in-out infinite;
-            transition: transform 0.4s ease;
+        /* HERO SLIDESHOW */
+        .hero-slideshow {
+            position: relative; width: 100%; max-width: 500px;
+            aspect-ratio: 1 / 1; border-radius: 24px; overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 24px 64px rgba(30, 60, 35, 0.18), 0 0 0 1px rgba(106, 176, 76, 0.10);
         }
-        .hero-logo-visual:hover .hero-logo-img {
-            transform: scale(1.06);
-            filter: drop-shadow(0 25px 50px rgba(106, 176, 76, 0.35));
+        .hero-slide {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 0.9s ease;
         }
-        @keyframes heroLogoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
         }
+        .hero-slide-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+            background: linear-gradient(transparent, rgba(20, 40, 25, 0.45));
+            pointer-events: none;
+        }
+        .hero-slide-dots {
+            position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 0.45rem; z-index: 2;
+        }
+        .hero-slide-dots .dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transition: background 0.35s, transform 0.35s;
+            cursor: pointer;
+        }
+        .hero-slide-dots .dot.active {
+            background: #fff; transform: scale(1.35);
+        }
+        /* ISO BADGE */
+        .iso-nav-badge {
+            position: fixed; top: 1.2rem; right: 1.4rem; z-index: 201;
+            padding: 0.4rem 0.6rem;
+            background: rgba(240, 240, 237, 0.88);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 10px;
+            border: 1px solid rgba(90, 144, 112, 0.3);
+            box-shadow: 0 4px 20px rgba(30, 40, 34, 0.12), 0 1px 4px rgba(30, 40, 34, 0.06);
+            pointer-events: none;
+        }
+        .iso-nav-badge img { display: block; width: 180px; height: auto; }
+        @media (max-width: 768px) { .iso-nav-badge { top: 0.8rem; right: 0.8rem; padding: 0.3rem 0.45rem; } .iso-nav-badge img { width: 130px; } }
 
         /* ═══════════════════════════════════════
            IMAGE MARQUEE
@@ -322,7 +289,7 @@
             padding: 0.95rem 2.2rem; border-radius: 60px; font-weight: 600;
             font-size: 0.9rem; text-decoration: none; letter-spacing: 0.2px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            position: relative; overflow: hidden; border: none; cursor: none;
+            position: relative; overflow: hidden; border: none; cursor: pointer;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
@@ -467,7 +434,7 @@
         .politica-item {
             display: flex; align-items: flex-start; gap: 1rem; padding: 0.9rem 0;
             border-bottom: 1px solid rgba(150, 185, 150, 0.1); color: var(--text-soft);
-            transition: all 0.3s; font-size: 0.93rem; cursor: none;
+            transition: all 0.3s; font-size: 0.93rem; cursor: pointer;
         }
         .politica-item:hover { color: var(--text); padding-left: 0.6rem; }
         .politica-item:last-child { border-bottom: none; }
@@ -485,11 +452,14 @@
         .clientes-marquee::after { right: 0; background: linear-gradient(-90deg, var(--white-base), transparent); }
         .clientes-track { display: flex; animation: marquee 55s linear infinite; width: max-content; }
         .clientes-chip {
-            padding: 0.9rem 2rem; background: var(--glass-bg); backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); border-radius: 50px;
+            padding: 0.6rem 1.6rem; background: var(--glass-bg); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); border-radius: 16px;
             border: 1px solid var(--glass-border); margin: 0 0.6rem;
-            color: var(--text); font-weight: 500; white-space: nowrap;
-            font-size: 0.88rem; transition: all 0.3s; box-shadow: var(--shadow-card);
+            display: flex; align-items: center; justify-content: center;
+            height: 64px; flex-shrink: 0; transition: all 0.3s; box-shadow: var(--shadow-card);
+        }
+        .clientes-chip img {
+            height: 40px; width: auto; max-width: 160px; object-fit: contain; display: block;
         }
         .clientes-chip:hover {
             transform: translateY(-4px); border-color: var(--glass-border-hover);
@@ -515,7 +485,7 @@
         .calendar-nav { display: flex; gap: 0.5rem; }
         .calendar-nav button {
             background: rgba(255, 255, 255, 0.7); border: 1px solid var(--glass-border);
-            border-radius: 14px; padding: 0.5rem 1.1rem; cursor: none;
+            border-radius: 14px; padding: 0.5rem 1.1rem; cursor: pointer;
             font-weight: 600; color: var(--text); transition: all 0.3s;
         }
         .calendar-nav button:hover { background: rgba(106, 176, 76, 0.15); border-color: var(--sage); }
@@ -525,7 +495,7 @@
             text-transform: uppercase; padding: 0.45rem; letter-spacing: 1px;
         }
         .calendar-day {
-            text-align: center; padding: 0.65rem; border-radius: 12px; cursor: none;
+            text-align: center; padding: 0.65rem; border-radius: 12px; cursor: pointer;
             font-weight: 500; font-size: 0.88rem; transition: all 0.3s;
             border: 1px solid transparent; color: var(--text);
         }
@@ -535,7 +505,7 @@
         .calendar-day.empty { cursor: default; }
         .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1rem; }
         .time-slot {
-            text-align: center; padding: 0.75rem; border-radius: 12px; cursor: none;
+            text-align: center; padding: 0.75rem; border-radius: 12px; cursor: pointer;
             font-weight: 500; font-size: 0.83rem; border: 1px solid var(--glass-border);
             background: rgba(255, 255, 255, 0.45); transition: all 0.3s; color: var(--text);
         }
@@ -574,7 +544,7 @@
             width: 36px; height: 36px; border-radius: 50%;
             background: rgba(106,176,76,0.1); border: 1px solid rgba(106,176,76,0.2);
             display: flex; align-items: center; justify-content: center;
-            cursor: none; transition: all 0.3s; color: var(--text-soft);
+            cursor: pointer; transition: all 0.3s; color: var(--text-soft);
             font-size: 1rem; font-weight: 700; line-height: 1;
         }
         .modal-close-btn:hover { background: rgba(106,176,76,0.22); color: var(--green-dark); transform: scale(1.1); }
@@ -592,7 +562,7 @@
         .btn-ghost {
             padding: 0.72rem 1.8rem; border-radius: 50px; font-weight: 600; font-size: 0.88rem;
             border: 1.5px solid var(--glass-border); color: var(--text-soft);
-            background: transparent; cursor: none; transition: all 0.3s; letter-spacing: 0.2px;
+            background: transparent; cursor: pointer; transition: all 0.3s; letter-spacing: 0.2px;
             font-family: 'DM Sans', sans-serif;
         }
         .btn-ghost:hover { border-color: var(--sage); color: var(--text); background: rgba(106,176,76,0.07); }
@@ -625,7 +595,7 @@
         .form-group textarea { min-height: 110px; resize: vertical; }
         .form-group input[type="file"] {
             padding: 0.75rem; border: 2px dashed rgba(150, 185, 150, 0.35);
-            background: rgba(255, 255, 255, 0.3); cursor: none;
+            background: rgba(255, 255, 255, 0.3); cursor: pointer;
         }
 
         /* FOOTER */
@@ -680,8 +650,7 @@
         @media (max-width: 1024px) {
             .hero-inner { grid-template-columns: 1fr; text-align: center; }
             .hero-logo-visual { margin-top: 2rem; }
-            .hero-logo-img { width: 200px; }
-            .decorative-branch-container { width: 180px; opacity: 0.5; }
+            .hero-slideshow { max-width: 380px; margin: 0 auto; }
             .grid-3, .grid-2 { grid-template-columns: 1fr 1fr; }
             .hero-content { max-width: 100%; }
             .sec-label { justify-content: center; }
@@ -691,13 +660,12 @@
         }
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
-            .hero-logo-img { width: 150px; }
+            .hero-slideshow { max-width: 280px; }
             .nav-links { display: none; }
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
             .nav-float { padding: 0.4rem 1rem; }
             #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
             .footer-grid { grid-template-columns: 1fr; }
-            .decorative-branch-container { width: 120px; opacity: 0.35; }
             .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
             .nav-logo-img { width: 26px; height: 26px; }
             .nav-logo-text { font-size: 1.1rem; }
@@ -705,11 +673,9 @@
     </style>
 </head>
 <body>
-    <!-- CURSOR HOJA -->
-    <div id="cursor-leaf" class="floating">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#5a8a65" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
-        </svg>
+    <!-- ISO BADGE -->
+    <div class="iso-nav-badge">
+        <img src="assets/iso.png" alt="Certificaciones ISO 9001 14001 45001">
     </div>
 
     <!-- WAVE CANVAS -->
@@ -717,48 +683,6 @@
 
     <!-- SCENE CANVAS -->
     <canvas id="scene-canvas"></canvas>
-
-    <!-- RAMA DECORATIVA -->
-    <div class="decorative-branch-container" id="decorative-branch" aria-hidden="true">
-        <svg class="decorative-branch-svg" viewBox="0 0 320 1050" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet">
-            <defs>
-                <filter id="branchSoftGlow">
-                    <feGaussianBlur stdDeviation="3" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-                <linearGradient id="stemGrad" x1="0" y1="1" x2="0" y2="0">
-                    <stop offset="0%" stop-color="#7a8a7d" stop-opacity="0.5"/>
-                    <stop offset="50%" stop-color="#9DB39A" stop-opacity="0.75"/>
-                    <stop offset="100%" stop-color="#AFC3AB" stop-opacity="0.9"/>
-                </linearGradient>
-            </defs>
-            <g filter="url(#branchSoftGlow)">
-                <g class="branch-stem" id="branch-stem">
-                    <path d="M160 1050 C155 880 148 720 142 550 C138 400 135 280 130 160 C128 100 125 60 122 20"
-                    stroke="url(#stemGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-                    <path d="M155 900 C175 860 190 820 205 780" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M150 760 C125 720 108 680 90 640" stroke="#9DB39A" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M145 620 C170 580 185 540 200 500" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                    <path d="M140 480 C115 445 100 410 82 375" stroke="#9DB39A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                    <path d="M138 350 C160 315 175 280 190 245" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                    <path d="M133 220 C110 190 98 160 85 130" stroke="#9DB39A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                    <path d="M128 100 C145 75 155 50 162 25" stroke="#9DB39A" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-                </g>
-                <g class="branch-leaf" id="leaf-b1" style="--lx:208px;--ly:775px;"><ellipse cx="212" cy="772" rx="17" ry="8" fill="#AFC3AB" transform="rotate(-22 212 772)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b2" style="--lx:88px;--ly:635px;"><ellipse cx="82" cy="632" rx="16" ry="7" fill="#B8CBB5" transform="rotate(38 82 632)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b3" style="--lx:203px;--ly:495px;"><ellipse cx="208" cy="492" rx="18" ry="8.5" fill="#BFD0BC" transform="rotate(-28 208 492)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b4" style="--lx:78px;--ly:370px;"><ellipse cx="74" cy="367" rx="15" ry="7" fill="#AFC3AB" transform="rotate(42 74 367)" stroke="#9DB39A" stroke-width="0.8"/></g>
-                <g class="branch-leaf" id="leaf-b5" style="--lx:193px;--ly:240px;"><ellipse cx="198" cy="237" rx="16" ry="7.5" fill="#C8DBC5" transform="rotate(-20 198 237)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b6" style="--lx:80px;--ly:125px;"><ellipse cx="76" cy="122" rx="14" ry="6.5" fill="#B8CBB5" transform="rotate(35 76 122)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b7" style="--lx:165px;--ly:20px;"><ellipse cx="170" cy="18" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-15 170 18)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b8" style="--lx:175px;--ly:880px;"><ellipse cx="180" cy="877" rx="15" ry="7" fill="#C8DBC5" transform="rotate(-25 180 877)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b9" style="--lx:110px;--ly:550px;"><ellipse cx="105" cy="547" rx="14" ry="6" fill="#BFD0BC" transform="rotate(30 105 547)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b10" style="--lx:160px;--ly:680px;"><ellipse cx="165" cy="677" rx="13" ry="6" fill="#AFC3AB" transform="rotate(-18 165 677)" stroke="#9DB39A" stroke-width="0.7"/></g>
-                <g class="branch-leaf" id="leaf-b11" style="--lx:100px;--ly:290px;"><ellipse cx="95" cy="287" rx="12" ry="5.5" fill="#C8DBC5" transform="rotate(40 95 287)" stroke="#9DB39A" stroke-width="0.6"/></g>
-                <g class="branch-leaf" id="leaf-b12" style="--lx:190px;--ly:150px;"><ellipse cx="195" cy="147" rx="12" ry="5.5" fill="#B8CBB5" transform="rotate(-22 195 147)" stroke="#9DB39A" stroke-width="0.6"/></g>
-            </g>
-        </svg>
-    </div>
 
     <!-- NAV -->
     <nav class="nav-float" id="nav">
@@ -795,7 +719,16 @@
                     </div>
                 </div>
                 <div class="hero-logo-visual">
-                    <img src="assets/logo.png" alt="Forest SRL" class="hero-logo-img">
+                    <div class="hero-slideshow" id="hero-slideshow">
+                        <div class="hero-slide active"><img src="assets/nosotros/1.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/nosotros/2.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/nosotros/3.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/nosotros/4.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/nosotros/5.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/nosotros/6.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-dots" id="hero-dots"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -960,7 +893,7 @@
         <!-- FOOTER -->
         <footer class="footer-flow">
             <div class="footer-grid">
-                <div class="footer-brand"><img src="assets/logo.png" alt="Forest SRL" style="width:64px;height:64px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 2px 8px rgba(106,176,76,0.25));"><h4>Forest SRL</h4><p style="margin-bottom:1rem;">Servicio integral de limpieza y mantenimiento de espacios verdes desde hace más de 30 años.</p><p style="font-size:0.8rem;color:var(--text-light);">ISO 9001 · ISO 14001 · ISO 45001</p></div>
+                <div class="footer-brand"><img src="assets/logo.png" alt="Forest SRL" style="width:64px;height:64px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 2px 8px rgba(106,176,76,0.25));"><h4>Forest SRL</h4><p style="margin-bottom:1rem;">Servicio integral de limpieza y mantenimiento de espacios verdes desde hace más de 30 años.</p><p style="font-size:0.8rem;color:var(--text-light);">ISO 9001:2015 · ISO 14001:2015 · ISO 45001:2018</p></div>
                 <div class="footer-col"><h4>Contacto</h4><p>📍 Bv. Los Granaderos 1743, Córdoba</p><p>📞 +54 351 702-4934</p><p>✉️ info@forestsrl.com.ar</p></div>
                 <div class="footer-col"><h4>Navegación</h4><a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#clientes">Clientes</a><a href="#presupuesto">Presupuesto</a><a href="#trabaja">Trabajá con Nosotros</a></div>
             </div>
@@ -969,35 +902,6 @@
     </div>
 
     <script>
-        // ═══════════════════════════════════════
-        //  CURSOR HOJA — Casi instantáneo
-        //  lerp 0.38 → respuesta inmediata con mínimo suavizado orgánico
-        // ═══════════════════════════════════════
-        (function() {
-            const leaf = document.getElementById('cursor-leaf');
-            let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-            let lx = cx, ly = cy;
-
-            document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
-
-            function animLeaf() {
-                lx += (cx - lx) * 0.38;
-                ly += (cy - ly) * 0.38;
-                leaf.style.left = lx + 'px';
-                leaf.style.top = ly + 'px';
-                leaf.style.transform = 'translate(-50%, -50%)';
-                requestAnimationFrame(animLeaf);
-            }
-            animLeaf();
-
-            const hoverTargets = document.querySelectorAll(
-                'a, button, .glass-card, .stat-card, .valor-card, .calendar-day, .time-slot, .clientes-chip, .btn, input, textarea, .politica-item, .image-marquee-item, .hero-logo-img'
-            );
-            hoverTargets.forEach(el => {
-                el.addEventListener('mouseenter', () => leaf.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => leaf.classList.remove('hovering'));
-            });
-        })();
 
         // ═══════════════════════════════════════
         //  WAVE CANVAS — Capas independientes
@@ -1098,89 +1002,6 @@
             animScene();
         })();
 
-        // ═══════════════════════════════════════
-        //  RAMA DECORATIVA — Estructura unificada, brisa suave
-        // ═══════════════════════════════════════
-        (function() {
-            const branchContainer = document.getElementById('decorative-branch');
-            const leaves = document.querySelectorAll('.branch-leaf');
-            const stem = document.getElementById('branch-stem');
-            let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-            let tmx = mx, tmy = my;
-            document.addEventListener('mousemove', e => { tmx = e.clientX; tmy = e.clientY; });
-
-            function windNoise(t, phase) {
-                return  Math.sin(t * 0.31 + phase)         * 0.50
-                      + Math.sin(t * 0.57 + phase * 1.3)  * 0.30
-                      + Math.sin(t * 0.89 + phase * 0.7)  * 0.20;
-            }
-
-            const leafParams = [];
-            leaves.forEach((leaf, i) => {
-                leafParams.push({
-                    el:           leaf,
-                    windSens:     0.6  + Math.random() * 0.9,
-                    windAmp:      2.2  + Math.random() * 4.5,
-                    windPhase:    Math.random() * Math.PI * 2,
-                    deepSpeed:    0.12 + Math.random() * 0.22,
-                    deepPhase:    Math.random() * Math.PI * 2,
-                    deepAmp:      1.0  + Math.random() * 2.5,
-                    trembleAmp:   i % 3 === 0 ? 0.8 + Math.random() * 1.2 : 0.15 + Math.random() * 0.4,
-                    trembleSpeed: 1.8  + Math.random() * 3.2,
-                    tremblePhase: Math.random() * Math.PI * 2,
-                    weight:       0.3  + (i / Math.max(leaves.length - 1, 1)) * 0.5,
-                    baseRot:      (Math.random() - 0.5) * 4,
-                    currentRot:   0,
-                    targetRot:    0,
-                });
-            });
-
-            function animBranch() {
-                mx += (tmx - mx) * 0.035;
-                my += (tmy - my) * 0.035;
-                const t = performance.now() / 1000;
-
-                if (stem) {
-                    const mainSway  = windNoise(t, 0.00) * 3.8;
-                    const curvature = windNoise(t, 1.40) * 1.6;
-                    const micro     = windNoise(t, 2.90) * 0.7;
-                    stem.style.transformOrigin = 'center bottom';
-                    stem.style.transform =
-                        `translateX(${mainSway + curvature}px)` +
-                        ` skewX(${curvature * 0.4}deg)` +
-                        ` rotate(${(mainSway + micro) * 0.35}deg)`;
-                }
-
-                leafParams.forEach(lp => {
-                    const wind1   = windNoise(t, lp.windPhase) * lp.windAmp * lp.windSens;
-                    const wind2   = Math.sin(t * lp.deepSpeed + lp.deepPhase) * lp.deepAmp;
-                    const tremble = Math.sin(t * lp.trembleSpeed + lp.tremblePhase) * lp.trembleAmp;
-
-                    lp.targetRot = lp.baseRot + wind1 + wind2 + tremble;
-
-                    const lerp     = 0.055 + (1 - lp.weight) * 0.075;
-                    lp.currentRot += (lp.targetRot - lp.currentRot) * lerp;
-
-                    lp.el.style.transform = `rotate(${lp.currentRot}deg)`;
-
-                    const rect = lp.el.getBoundingClientRect();
-                    if (!rect.width) return;
-                    const dist = Math.hypot(mx - (rect.left + rect.width / 2),
-                                           my - (rect.top  + rect.height / 2));
-                    if (dist < 180) lp.el.classList.add('near-cursor');
-                    else            lp.el.classList.remove('near-cursor');
-                });
-
-                if (branchContainer) {
-                    const bx = (mx / window.innerWidth  - 0.5) * 5;
-                    const by = (my / window.innerHeight - 0.5) * 3;
-                    branchContainer.style.transform = `translateX(${bx}px) translateY(${by}px)`;
-                }
-
-                requestAnimationFrame(animBranch);
-            }
-            animBranch();
-        })();
 
         // ═══════════════════════════════════════
         //  3D TILT CARDS
@@ -1198,6 +1019,38 @@
                 card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)'; card.style.transition = 'transform 0.5s cubic-bezier(0.25,0.8,0.25,1)'; });
                 card.addEventListener('mouseenter', () => { card.style.transition = 'transform 0.1s ease, border-color 0.4s, box-shadow 0.4s'; });
             });
+        })();
+
+        // ═══════════════════════════════════════
+        //  HERO SLIDESHOW
+        // ═══════════════════════════════════════
+        (function() {
+            const slides = Array.from(document.querySelectorAll('.hero-slide'));
+            const dotsContainer = document.getElementById('hero-dots');
+            if (!slides.length) return;
+
+            slides.forEach((_, i) => {
+                const d = document.createElement('span');
+                d.className = 'dot' + (i === 0 ? ' active' : '');
+                d.addEventListener('click', () => goTo(i));
+                dotsContainer.appendChild(d);
+            });
+
+            const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+            let current = 0, timer;
+
+            function goTo(n) {
+                slides[current].classList.remove('active');
+                dots[current].classList.remove('active');
+                current = n;
+                slides[current].classList.add('active');
+                dots[current].classList.add('active');
+                clearInterval(timer);
+                timer = setInterval(next, 3000);
+            }
+
+            function next() { goTo((current + 1) % slides.length); }
+            timer = setInterval(next, 3000);
         })();
 
         // ═══════════════════════════════════════
@@ -1246,8 +1099,29 @@
         // ═══════════════════════════════════════
         //  CLIENTS MARQUEE & BOOKING
         // ═══════════════════════════════════════
-        const clientes = ['Ministerio de Salud - Pcia. de Córdoba','UEPC','Agrogy SAS','Intermed Ortopedia','Naldo Lombardi','Wiltel Comunicaciones','Cemaic SAS','Escuelas Pías','Ministerio de Cooperativas y Mutuales','Caja de Previsión de Ing., Arq., Agrimensura, Agronomía y Prof. de la Const. Pcia. Cba.','Sanatorio Francés','Establecimiento La Micaela','Mercado Norte de la Ciudad de Córdoba','T.G.N. - Transportadora Gas del Norte','On City','Crédito Argentino - CFN','Farmacias SV','Farmacias General Paz','Farmacias RED','Gobierno de la Provincia de Córdoba','Poder Judicial de la Provincia de Córdoba','Banco de la Nación Argentina'];
-        document.getElementById('clientes-track').innerHTML = [...clientes,...clientes].map(c => `<span class="clientes-chip">${c}</span>`).join('');
+        const clientes = [
+            { src: 'assets/clientes/ministeriosalud.png', alt: 'Ministerio de Salud - Pcia. de Córdoba' },
+            { src: 'assets/clientes/uepc.png', alt: 'UEPC' },
+            { src: 'assets/clientes/intermed.png', alt: 'Intermed Ortopedia' },
+            { src: 'assets/clientes/naldo.png', alt: 'Naldo Lombardi' },
+            { src: 'assets/clientes/wiltel.png', alt: 'Wiltel Comunicaciones' },
+            { src: 'assets/clientes/cemaic.png', alt: 'Cemaic SAS' },
+            { src: 'assets/clientes/pias.png', alt: 'Escuelas Pías' },
+            { src: 'assets/clientes/ministeriocoop.png', alt: 'Ministerio de Cooperativas y Mutuales' },
+            { src: 'assets/clientes/caja.png', alt: 'Caja de Previsión' },
+            { src: 'assets/clientes/sanatorio.png', alt: 'Sanatorio Francés' },
+            { src: 'assets/clientes/mercado.png', alt: 'Mercado Norte de Córdoba' },
+            { src: 'assets/clientes/tgn.png', alt: 'Transportadora Gas del Norte' },
+            { src: 'assets/clientes/OnCity.png', alt: 'On City' },
+            { src: 'assets/clientes/cfn.png', alt: 'Crédito Argentino - CFN' },
+            { src: 'assets/clientes/svfarma.png', alt: 'Farmacias SV' },
+            { src: 'assets/clientes/gralpaz.png', alt: 'Farmacias General Paz' },
+            { src: 'assets/clientes/red.png', alt: 'Farmacias RED' },
+            { src: 'assets/clientes/gobierno.png', alt: 'Gobierno de la Provincia de Córdoba' },
+            { src: 'assets/clientes/poderjudicial.png', alt: 'Poder Judicial de la Provincia de Córdoba' },
+            { src: 'assets/clientes/bna.png', alt: 'Banco de la Nación Argentina' },
+        ];
+        document.getElementById('clientes-track').innerHTML = [...clientes,...clientes].map(c => `<div class="clientes-chip"><img src="${c.src}" alt="${c.alt}"></div>`).join('');
 
         const FIREBASE = 'https://pagina-web-74184-default-rtdb.firebaseio.com';
         let cDate = new Date(), selDate = null, selTime = null, booked = {};
