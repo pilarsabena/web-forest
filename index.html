@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Forest SRL - Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años. ISO 9001, 14001, 45001.">
+    <meta name="description" content="Forest SRL - Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 40 años. ISO 9001, 14001, 45001.">
     <title>Forest SRL | Limpieza Profesional</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700&family=Nunito:wght@900&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
     </script>
@@ -111,14 +111,14 @@
             display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
         }
         .nav-logo-img {
-            width: 32px; height: 32px; object-fit: contain;
+            width: 44px; height: 44px; object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(79, 125, 90, 0.2));
             transition: transform 0.3s;
         }
         .nav-logo-wrap:hover .nav-logo-img { transform: rotate(-5deg) scale(1.1); }
         .nav-logo-text {
-            font-weight: 700; font-size: 1.3rem; color: var(--green-dark);
-            letter-spacing: -0.3px; text-decoration: none;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--green-dark);
+            letter-spacing: -0.5px; text-decoration: none;
         }
         .nav-logo-text span { color: var(--green-soft); }
         .nav-links { display: flex; gap: 0.2rem; list-style: none; align-items: center; }
@@ -150,6 +150,41 @@
         }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { box-shadow: 0 6px 24px var(--glow); transform: translateY(-2px); }
+
+        /* HAMBURGER */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 6px; margin-left: 0.3rem;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px; background: var(--green-dark);
+            border-radius: 2px; transition: transform 0.3s, opacity 0.3s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* MOBILE OVERLAY */
+        .nav-mobile-overlay {
+            position: fixed; inset: 0; z-index: 198;
+            background: rgba(240, 244, 238, 0.97); backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+            opacity: 0; pointer-events: none; visibility: hidden;
+            transition: opacity 0.25s, visibility 0.25s;
+        }
+        .nav-mobile-overlay.open { opacity: 1; pointer-events: auto; visibility: visible; }
+        .nav-mobile-overlay a {
+            font-size: 1.5rem; font-weight: 600; color: var(--green-dark);
+            text-decoration: none; padding: 0.6rem 2.5rem; border-radius: 50px;
+            transition: background 0.2s; width: 220px; text-align: center;
+        }
+        .nav-mobile-overlay a:hover, .nav-mobile-overlay a:active { background: rgba(106, 176, 76, 0.12); }
+        .nav-mobile-overlay .nav-mobile-cta {
+            background: linear-gradient(135deg, var(--green-soft), var(--green-mid));
+            color: #fff !important; padding: 0.75rem 2.5rem; border-radius: 50px;
+            box-shadow: 0 4px 16px rgba(106, 176, 76, 0.3); margin-top: 0.5rem; font-weight: 700;
+        }
 
         /* ═══════════════════════════════════════
            HERO
@@ -215,6 +250,8 @@
         .hero-slide img {
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
+        .hero-slide img[src*="vidirios"] { object-fit: contain; }
+        .hero-slide img[src*="tribIII"] { object-fit: contain; }
         .hero-slide-overlay {
             position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
             background: linear-gradient(transparent, rgba(20, 40, 25, 0.45));
@@ -251,20 +288,20 @@
            IMAGE MARQUEE
         ═══════════════════════════════════════ */
         .image-marquee-section {
-            overflow: hidden; padding: 2.5rem 0; position: relative; z-index: 12;
+            overflow: hidden; padding: 5rem 0; position: relative; z-index: 12;
             background: transparent;
         }
         .image-marquee-track {
             display: flex; animation: imgMarquee 70s linear infinite;
-            width: max-content; align-items: center; gap: 2.5rem;
+            width: max-content; align-items: center; gap: 5rem;
         }
         .image-marquee-item {
-            flex-shrink: 0; height: 90px; border-radius: 18px;
+            flex-shrink: 0; width: 295px; height: 190px; border-radius: 18px;
             overflow: hidden; background: var(--glass-bg);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             box-shadow: var(--shadow-card);
-            padding: 0.8rem 2.2rem; display: flex; align-items: center;
+            padding: 0; display: flex; align-items: center;
             justify-content: center; transition: all 0.35s;
         }
         .image-marquee-item:hover {
@@ -272,8 +309,10 @@
             border-color: var(--glass-border-hover);
         }
         .image-marquee-item img {
-            height: 100%; width: auto; object-fit: contain;
-            max-width: 220px; border-radius: 8px;
+            width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+        }
+        .image-marquee-item img[src*="001"] {
+            object-fit: contain; padding: 1.5rem;
         }
         @keyframes imgMarquee {
             0% { transform: translateX(0); }
@@ -315,7 +354,7 @@
         /* ═══════════════════════════════════════
            SECTIONS
         ═══════════════════════════════════════ */
-        .section-flow { position: relative; padding: 7rem 2rem; z-index: 12; }
+        .section-flow { position: relative; padding: 4rem 2rem; z-index: 12; }
         .section-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 5; }
         .sec-label {
             font-size: 0.72rem; text-transform: uppercase; letter-spacing: 7px;
@@ -452,19 +491,21 @@
         .clientes-marquee::after { right: 0; background: linear-gradient(-90deg, var(--white-base), transparent); }
         .clientes-track { display: flex; animation: marquee 55s linear infinite; width: max-content; }
         .clientes-chip {
-            padding: 0.6rem 1.6rem; background: var(--glass-bg); backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); border-radius: 16px;
-            border: 1px solid var(--glass-border); margin: 0 0.6rem;
+            padding: 0.5rem 1.2rem; background: var(--glass-bg); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); border-radius: 24px;
+            border: 1px solid var(--glass-border); margin: 0 0.9rem;
             display: flex; align-items: center; justify-content: center;
-            height: 64px; flex-shrink: 0; transition: all 0.3s; box-shadow: var(--shadow-card);
+            height: 96px; flex-shrink: 0; transition: all 0.3s; box-shadow: var(--shadow-card);
+            overflow: hidden;
         }
         .clientes-chip img {
-            height: 40px; width: auto; max-width: 160px; object-fit: contain; display: block;
+            height: 60px; width: auto; max-width: 240px; object-fit: contain; display: block;
         }
         .clientes-chip:hover {
             transform: translateY(-4px); border-color: var(--glass-border-hover);
             box-shadow: 0 8px 24px rgba(106, 176, 76, 0.12);
         }
+        .clientes-chip img[src*="sanatorio"] { transform: scale(2); }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* CALENDAR */
@@ -600,8 +641,9 @@
 
         /* FOOTER */
         .footer-flow {
-            background: rgba(235, 242, 235, 0.7); backdrop-filter: blur(30px) saturate(1.3);
-            -webkit-backdrop-filter: blur(30px) saturate(1.3);
+            background:
+                linear-gradient(rgba(235, 242, 235, 0.82), rgba(235, 242, 235, 0.82)),
+                url('assets/gral/forest.jpg') center / cover no-repeat;
             border-top: 1px solid rgba(150, 185, 150, 0.18);
             padding: 5rem 2rem 2.5rem; position: relative; z-index: 12;
         }
@@ -661,21 +703,31 @@
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
             .hero-slideshow { max-width: 280px; }
+            .hero-desc { max-width: 100%; }
             .nav-links { display: none; }
+            .nav-cta { display: none; }
+            .nav-hamburger { display: flex; }
+            .iso-nav-badge { display: none; }
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
             .nav-float { padding: 0.4rem 1rem; }
             #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
             .footer-grid { grid-template-columns: 1fr; }
             .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
-            .nav-logo-img { width: 26px; height: 26px; }
+            .nav-logo-img { width: 36px; height: 36px; }
             .nav-logo-text { font-size: 1.1rem; }
+            .section-flow { padding: 4rem 1.2rem; }
+            .sec-sub { max-width: 100%; }
+            .form-glass { padding: 1.8rem 1.4rem; }
+            .calendar-container { padding: 1.5rem; }
+            .time-slots { grid-template-columns: repeat(3, 1fr); }
+            .hero-canvas { padding: 8rem 1.2rem 4rem; }
         }
     </style>
 </head>
 <body>
     <!-- ISO BADGE -->
     <div class="iso-nav-badge">
-        <img src="assets/iso.png" alt="Certificaciones ISO 9001 14001 45001">
+        <img src="assets/gral/iso.png" alt="Certificaciones ISO 9001 14001 45001">
     </div>
 
     <!-- WAVE CANVAS -->
@@ -688,7 +740,7 @@
     <nav class="nav-float" id="nav">
         <div class="nav-inner">
             <a href="#inicio" class="nav-logo-wrap">
-                <img src="assets/logo.png" alt="Forest SRL Logo" class="nav-logo-img">
+                <img src="assets/gral/logo.png" alt="Forest SRL Logo" class="nav-logo-img">
                 <span class="nav-logo-text">Forest<span>.</span></span>
             </a>
             <ul class="nav-links">
@@ -699,8 +751,21 @@
                 <li><a href="#trabaja">Trabajá</a></li>
             </ul>
             <a href="#presupuesto" class="nav-cta">Presupuesto</a>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#clientes">Clientes</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#trabaja">Trabajá</a>
+        <a href="#presupuesto" class="nav-mobile-cta">Presupuesto</a>
+    </div>
 
     <div class="main-wrap">
         <!-- HERO -->
@@ -712,7 +777,7 @@
                         Limpieza que <span class="accent">se siente</span>,<br>
                         calidad que <span class="accent-line">se ve.</span>
                     </h1>
-                    <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 30 años de experiencia con certificaciones ISO que garantizan calidad real y cuidado ambiental.</p>
+                    <p class="hero-desc">Servicio integral de limpieza y mantenimiento de espacios verdes. Más de 40 años de experiencia con certificaciones ISO que garantizan calidad real y cuidado ambiental.</p>
                     <div class="btn-group">
                         <a href="#presupuesto" class="btn btn-primary">Solicitar Presupuesto</a>
                         <a href="#nosotros" class="btn btn-outline">Conocernos</a>
@@ -720,12 +785,14 @@
                 </div>
                 <div class="hero-logo-visual">
                     <div class="hero-slideshow" id="hero-slideshow">
-                        <div class="hero-slide active"><img src="assets/nosotros/1.jpg" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/nosotros/2.jpg" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/nosotros/3.jpg" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/nosotros/4.jpg" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/nosotros/5.jpg" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/nosotros/6.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide active"><img src="assets/servicios/fuero.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL"></div>
                         <div class="hero-slide-overlay"></div>
                         <div class="hero-slide-dots" id="hero-dots"></div>
                     </div>
@@ -737,7 +804,7 @@
         <section class="section-flow">
             <div class="section-inner">
                 <div class="grid-3">
-                    <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="30">0+</span><span class="stat-lbl">Años de Experiencia</span></div>
+                    <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="40">0+</span><span class="stat-lbl">Años de Experiencia</span></div>
                     <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="50">0+</span><span class="stat-lbl">Clientes Activos</span></div>
                     <div class="stat-card reveal"><div class="card-shine"></div><span class="stat-num" data-target="1000">0+</span><span class="stat-lbl">Espacios Mantenidos</span></div>
                 </div>
@@ -747,20 +814,12 @@
         <!-- CARRUSEL DE IMÁGENES -->
         <section class="image-marquee-section">
             <div class="image-marquee-track" id="image-marquee-track">
-                <div class="image-marquee-item"><img src="assets/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/logo.png" alt="Forest SRL"></div>
-                <div class="image-marquee-item"><img src="assets/personas.png" alt="Equipo Forest"></div>
-                <div class="image-marquee-item"><img src="assets/forest.jpg" alt="Forest"></div>
-                <div class="image-marquee-item"><img src="assets/forest1.png" alt="Forest"></div>
-                <div class="image-marquee-item"><img src="assets/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/logo.png" alt="Forest SRL"></div>
-                <div class="image-marquee-item"><img src="assets/personas.png" alt="Equipo Forest"></div>
-                <div class="image-marquee-item"><img src="assets/forest.jpg" alt="Forest"></div>
-                <div class="image-marquee-item"><img src="assets/forest1.png" alt="Forest"></div>
+                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
             </div>
         </section>
 
@@ -802,11 +861,33 @@
             </div>
         </section>
 
-        <!-- NOSOTROS + POLÍTICA -->
-        <section id="nosotros" class="section-flow">
+        <!-- NOSOTROS + PRESENTACIÓN -->
+        <section id="nosotros" class="section-flow cert-section">
             <div class="section-inner">
-                <p class="sec-label reveal">Esencia</p>
-                <h2 class="sec-title reveal">Compromiso <em>real</em></h2>
+                <p class="sec-label reveal">Nosotros</p>
+                <h2 class="sec-title reveal">Nuestra Presentación</h2>
+                <p class="sec-sub reveal">En Forest brindamos servicios integrales de limpieza y mantenimiento de espacios verdes. Más de 40 años de experiencia, presencia en 4 provincias y más de 280 puntos de atención nos dan solidez y respuesta rápida en todo el interior del país.</p>
+
+                <!-- DATOS DESTACADOS -->
+                <div class="grid-3 reveal" style="margin-bottom:3rem;">
+                    <div class="glass-card"><div class="card-shine"></div>
+                        <div class="card-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+                        <h3>4 Provincias</h3>
+                        <p>Córdoba, Catamarca, Tucumán y Chaco. Presencia real en el interior del país.</p>
+                    </div>
+                    <div class="glass-card"><div class="card-shine"></div>
+                        <div class="card-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                        <h3>+280 Puntos</h3>
+                        <p>Más de 280 puntos de atención activos con respuesta rápida y eficiente.</p>
+                    </div>
+                    <div class="glass-card"><div class="card-shine"></div>
+                        <div class="card-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                        <h3>+40 Años</h3>
+                        <p>Más de cuatro décadas de experiencia nos dan solidez y confianza probada.</p>
+                    </div>
+                </div>
+
+                <!-- MISIÓN Y VISIÓN -->
                 <div style="display:grid;gap:1.4rem;margin-bottom:3rem;">
                     <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);">Misión</h3><p>Servicios integrales de limpieza y mantenimiento a medida, con eficiencia y respeto ambiental genuinos.</p></div>
                     <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);">Visión</h3><p>Ser referentes en Argentina por adaptabilidad, procesos certificados y vínculos de confianza duraderos.</p></div>
@@ -818,6 +899,16 @@
                     <div class="valor-card reveal"><h3>Integridad</h3><p>Transparencia absoluta en cada compromiso asumido.</p></div>
                     <div class="valor-card reveal"><h3>Respeto</h3><p>Cuidamos personas, ambiente y la confianza depositada en nosotros.</p></div>
                 </div>
+                <!-- IMÁGENES FIJAS -->
+                <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;">
+                    <div style="border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-card);aspect-ratio:4/3;">
+                        <img src="assets/gral/personas.png" alt="Equipo Forest" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    </div>
+                    <div style="border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-card);aspect-ratio:4/3;">
+                        <img src="assets/gral/forest1.png" alt="Forest" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    </div>
+                </div>
+
                 <div class="politica-block reveal">
                     <h3><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Política Integrada de Gestión</h3>
                     <p style="color:var(--text-soft);margin-bottom:1.5rem;font-weight:300;">En Forest S.R.L. integramos calidad, medio ambiente y seguridad en cada operación, proyecto y persona.</p>
@@ -839,7 +930,7 @@
                 <p class="sec-label reveal">Contacto</p>
                 <h2 class="sec-title reveal">Hablemos de tu proyecto</h2>
                 <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:2.5rem;align-items:start;margin-top:2rem;">
-                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+543517024934" style="color:var(--text-soft);">+54 351 702-4934</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div></div></div>
+                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+5493513732964" style="color:var(--text-soft);">+54 9 351 373-2964</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div></div></div>
                     <form class="form-glass reveal" action="enviar.php" method="POST"><input type="hidden" name="tipo" value="presupuesto"><h3 style="font-weight:700;margin-bottom:1.8rem;font-size:1.3rem;">Solicitá tu Presupuesto</h3><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Empresa</label><input type="text" name="empresa" placeholder="Nombre de la empresa (opcional)"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 351 ..."></div><div class="form-group"><label>Servicio requerido *</label><textarea name="mensaje" required placeholder="Describí brevemente el servicio que necesitás..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar Solicitud</button></form>
                 </div>
             </div>
@@ -893,8 +984,8 @@
         <!-- FOOTER -->
         <footer class="footer-flow">
             <div class="footer-grid">
-                <div class="footer-brand"><img src="assets/logo.png" alt="Forest SRL" style="width:64px;height:64px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 2px 8px rgba(106,176,76,0.25));"><h4>Forest SRL</h4><p style="margin-bottom:1rem;">Servicio integral de limpieza y mantenimiento de espacios verdes desde hace más de 30 años.</p><p style="font-size:0.8rem;color:var(--text-light);">ISO 9001:2015 · ISO 14001:2015 · ISO 45001:2018</p></div>
-                <div class="footer-col"><h4>Contacto</h4><p>📍 Bv. Los Granaderos 1743, Córdoba</p><p>📞 +54 351 702-4934</p><p>✉️ info@forestsrl.com.ar</p></div>
+                <div class="footer-brand"><h4>Forest SRL</h4><p style="margin-bottom:1rem;">Servicio integral de limpieza y mantenimiento de espacios verdes desde hace más de 40 años.</p><p style="font-size:0.8rem;color:var(--text-light);">ISO 9001:2015 · ISO 14001:2015 · ISO 45001:2018</p></div>
+                <div class="footer-col"><h4>Contacto</h4><p>📍 Bv. Los Granaderos 1743, Córdoba</p><p>📞 +54 9 351 373-2964</p><p>✉️ info@forestsrl.com.ar</p></div>
                 <div class="footer-col"><h4>Navegación</h4><a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#clientes">Clientes</a><a href="#presupuesto">Presupuesto</a><a href="#trabaja">Trabajá con Nosotros</a></div>
             </div>
             <div class="footer-bottom">© 2024 Forest SRL · Todos los derechos reservados · Córdoba, Argentina</div>
@@ -1073,6 +1164,25 @@
         window.addEventListener('scroll', () => { const nav = document.getElementById('nav'); nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
 
         // ═══════════════════════════════════════
+        //  HAMBURGER MENU
+        // ═══════════════════════════════════════
+        (function() {
+            const hamburger = document.getElementById('nav-hamburger');
+            const overlay = document.getElementById('nav-mobile-overlay');
+            function closeMenu() {
+                hamburger.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            hamburger.addEventListener('click', () => {
+                const isOpen = overlay.classList.toggle('open');
+                hamburger.classList.toggle('open');
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+            });
+            overlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        })();
+
+        // ═══════════════════════════════════════
         //  NAV ACTIVE LINK ON SCROLL
         // ═══════════════════════════════════════
         (function() {
@@ -1113,7 +1223,7 @@
             { src: 'assets/clientes/mercado.png', alt: 'Mercado Norte de Córdoba' },
             { src: 'assets/clientes/tgn.png', alt: 'Transportadora Gas del Norte' },
             { src: 'assets/clientes/OnCity.png', alt: 'On City' },
-            { src: 'assets/clientes/cfn.png', alt: 'Crédito Argentino - CFN' },
+            { src: 'assets/clientes/credito.png', alt: 'Crédito Argentino' },
             { src: 'assets/clientes/svfarma.png', alt: 'Farmacias SV' },
             { src: 'assets/clientes/gralpaz.png', alt: 'Farmacias General Paz' },
             { src: 'assets/clientes/red.png', alt: 'Farmacias RED' },
