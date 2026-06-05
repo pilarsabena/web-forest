@@ -1,78 +1,96 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-require 'PHPMailer/Exception.php';
-require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $tipo = $_POST['tipo'] ?? 'presupuesto';
-    
-    $nombre   = $_POST['nombre'] ?? '';
-    $email    = $_POST['email'] ?? '';
-    $telefono = $_POST['telefono'] ?? '';
-    $mensaje  = $_POST['mensaje'] ?? '';
-    $empresa  = $_POST['empresa'] ?? '';
-    $puesto   = $_POST['puesto'] ?? '';
-    
-    $mail = new PHPMailer(true);
-    
-    try {
-        // Configuración SMTP de NutHost
-        $mail->isSMTP();
-        $mail->Host       = 'mail.forestsrl.com.ar';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'formularios@forestsrl.com.ar';
-        $mail->Password   = 'Holahola271102';   // ⚠️ Cambiá esto si es necesario
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
-        
-        $mail->setFrom('formularios@forestsrl.com.ar', 'Forest SRL');
-        $mail->addAddress('formularios@forestsrl.com.ar', 'Forest SRL');
-        
-        if ($tipo === 'presupuesto') {
-            $mail->Subject = "Solicitud de presupuesto - $nombre";
-            $cuerpo = "<h2>Nueva solicitud de presupuesto</h2>
-                       <p><strong>Nombre:</strong> $nombre</p>
-                       <p><strong>Empresa:</strong> $empresa</p>
-                       <p><strong>Email:</strong> $email</p>
-                       <p><strong>Teléfono:</strong> $telefono</p>
-                       <p><strong>Mensaje:</strong><br>$mensaje</p>";
-        } else {
-            $mail->Subject = "CV recibido - $nombre";
-            $cuerpo = "<h2>Nuevo CV recibido</h2>
-                       <p><strong>Nombre:</strong> $nombre</p>
-                       <p><strong>Email:</strong> $email</p>
-                       <p><strong>Teléfono:</strong> $telefono</p>
-                       <p><strong>Puesto al que aplica:</strong> $puesto</p>
-                       <p><strong>Mensaje:</strong><br>$mensaje</p>";
-            
-            if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
-                $mail->addAttachment($_FILES['cv']['tmp_name'], $_FILES['cv']['name']);
-            }
-        }
-        
-        $mail->isHTML(true);
-        $mail->Body = $cuerpo;
-        $mail->AltBody = strip_tags($cuerpo);
-        
-        $mail->send();
-
-        if ($tipo === 'presupuesto') {
-            $n = urlencode($nombre);
-            $e = urlencode($email);
-            header("Location: index.html?enviado=1&tipo=presupuesto&nombre={$n}&email={$e}");
-        } else {
-            header('Location: index.html?enviado=1&tipo=cv');
-        }
-        exit;
-        
-    } catch (Exception $e) {
-        echo "Error al enviar: {$mail->ErrorInfo}";
-    }
-} else {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.html');
     exit;
 }
+
+$tipo    = $_POST['tipo'] ?? '';
+$nombre  = htmlspecialchars(trim($_POST['nombre'] ?? ''), ENT_QUOTES, 'UTF-8');
+$email   = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+$telefono = htmlspecialchars(trim($_POST['telefono'] ?? ''), ENT_QUOTES, 'UTF-8');
+
+if (!$nombre || !$email) {
+    header('Location: index.html');
+    exit;
+}
+
+$destino = 'formularios@forestsrl.com.ar';
+
+// ── COTIZACIÓN ─────────────────────────────────────────────────────────────
+if ($tipo === 'presupuesto') {
+    $empresa = htmlspecialchars(trim($_POST['empresa'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $mensaje = htmlspecialchars(trim($_POST['mensaje'] ?? ''), ENT_QUOTES, 'UTF-8');
+
+    $asunto = "=?UTF-8?B?" . base64_encode("Nueva cotización – $nombre") . "?=";
+    $cuerpo  = "Nueva solicitud de cotización\n";
+    $cuerpo .= "==============================\n";
+    $cuerpo .= "Nombre:   $nombre\n";
+    $cuerpo .= "Empresa:  $empresa\n";
+    $cuerpo .= "Email:    $email\n";
+    $cuerpo .= "Teléfono: $telefono\n\n";
+    $cuerpo .= "Servicio requerido:\n$mensaje\n";
+
+    $headers  = "From: noreply@forestsrl.com.ar\r\n";
+    $headers .= "Reply-To: $email\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+
+    mail($destino, $asunto, $cuerpo, $headers);
+
+    header('Location: index.html?enviado=1&tipo=presupuesto'
+         . '&nombre=' . urlencode($nombre)
+         . '&email='  . urlencode($email));
+    exit;
+}
+
+// ── CV ─────────────────────────────────────────────────────────────────────
+if ($tipo === 'cv') {
+    $puesto = htmlspecialchars(trim($_POST['puesto'] ?? ''), ENT_QUOTES, 'UTF-8');
+
+    $asunto = "=?UTF-8?B?" . base64_encode("Nuevo CV – $nombre") . "?=";
+    $cuerpo  = "Nueva postulación\n";
+    $cuerpo .= "==============================\n";
+    $cuerpo .= "Nombre:   $nombre\n";
+    $cuerpo .= "Email:    $email\n";
+    $cuerpo .= "Teléfono: $telefono\n";
+    $cuerpo .= "Puesto:   $puesto\n";
+
+    $cvOk = isset($_FILES['cv'])
+         && $_FILES['cv']['error'] === UPLOAD_ERR_OK
+         && strtolower(pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION)) === 'pdf';
+
+    if ($cvOk) {
+        $boundary = '----=_Part_' . md5(uniqid());
+        $filename = basename($_FILES['cv']['name']);
+        $filedata = chunk_split(base64_encode(file_get_contents($_FILES['cv']['tmp_name'])));
+
+        $headers  = "From: noreply@forestsrl.com.ar\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
+
+        $body  = "--$boundary\r\n";
+        $body .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $body .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+        $body .= $cuerpo . "\r\n";
+        $body .= "--$boundary\r\n";
+        $body .= "Content-Type: application/pdf; name=\"$filename\"\r\n";
+        $body .= "Content-Transfer-Encoding: base64\r\n";
+        $body .= "Content-Disposition: attachment; filename=\"$filename\"\r\n\r\n";
+        $body .= $filedata . "\r\n";
+        $body .= "--$boundary--";
+
+        mail($destino, $asunto, $body, $headers);
+    } else {
+        $headers  = "From: noreply@forestsrl.com.ar\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        mail($destino, $asunto, $cuerpo, $headers);
+    }
+
+    header('Location: index.html?enviado=1&tipo=cv');
+    exit;
+}
+
+header('Location: index.html');
+exit;

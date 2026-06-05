@@ -235,6 +235,21 @@
             display: flex; align-items: center; justify-content: center;
             position: relative;
         }
+        /* CONTACT SLIDESHOW */
+        .contact-slideshow {
+            position: relative; border-radius: 24px; overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 24px 64px rgba(30,60,35,0.18), 0 0 0 1px rgba(106,176,76,0.10);
+            flex: 1; min-height: 240px;
+        }
+        .contact-slide {
+            position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease;
+        }
+        .contact-slide.active { opacity: 1; }
+        .contact-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .contact-slide img[src*="vidirios"] { object-fit: cover; object-position: left center; transform: scale(1.25); transform-origin: left center; }
+        .contact-slide img[src*="tribIII"] { object-fit: cover; transform: scale(1.18); }
+
         /* HERO SLIDESHOW */
         .hero-slideshow {
             position: relative; width: 100%; max-width: 500px;
@@ -250,8 +265,8 @@
         .hero-slide img {
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
-        .hero-slide img[src*="vidirios"] { object-fit: contain; }
-        .hero-slide img[src*="tribIII"] { object-fit: contain; }
+        .hero-slide img[src*="vidirios"] { object-fit: cover; object-position: left center; transform: scale(1.25); transform-origin: left center; }
+        .hero-slide img[src*="tribIII"] { object-fit: cover; transform: scale(1.18); }
         .hero-slide-overlay {
             position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
             background: linear-gradient(transparent, rgba(20, 40, 25, 0.45));
@@ -272,7 +287,7 @@
         }
         /* FOREST LOGO EN NAV */
         .nav-f-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
-        .nav-f-logo img { width: 42px; height: 42px; object-fit: contain; display: block; transition: transform 0.3s; }
+        .nav-f-logo img { width: 62px; height: 62px; object-fit: contain; display: block; transition: transform 0.3s; }
         .nav-f-logo:hover img { transform: scale(1.08); }
 
         /* ISO BADGE */
@@ -754,9 +769,13 @@
             .grid-3, .grid-2 { grid-template-columns: 1fr 1fr; }
             .hero-content { max-width: 100%; }
             .sec-label { justify-content: center; }
-            .sec-sub { margin: 0 auto 3rem; }
+            .sec-sub { margin: 0 auto 2rem; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-col:last-child { display: none; }
             .image-marquee-item { height: 65px; padding: 0.5rem 1.5rem; }
+            .contact-slideshow { min-height: 260px; }
+            .section-flow { padding: 3rem 2rem; }
+            .image-marquee-section { padding: 3rem 0; }
         }
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
@@ -769,16 +788,21 @@
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
             .nav-float { padding: 0.4rem 1rem; }
             #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
-            .footer-grid { grid-template-columns: 1fr; }
             .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
-            .nav-logo-img { width: 36px; height: 36px; }
-            .nav-logo-text { font-size: 1.1rem; }
-            .section-flow { padding: 4rem 1.2rem; }
-            .sec-sub { max-width: 100%; }
+            .section-flow { padding: 2.2rem 1.2rem; }
+            .image-marquee-section { padding: 2rem 0; }
+            .sec-sub { max-width: 100%; margin-bottom: 1.5rem; }
             .form-glass { padding: 1.8rem 1.4rem; }
             .calendar-container { padding: 1.5rem; }
             .time-slots { grid-template-columns: repeat(3, 1fr); }
-            .hero-canvas { padding: 8rem 1.2rem 4rem; }
+            .hero-canvas { padding: 7rem 1.2rem 3rem; }
+            .nav-f-logo img { width: 40px; height: 40px; }
+            .contact-slideshow { min-height: 200px; height: 200px; flex: none; }
+            .footer-flow { padding: 2.5rem 1.2rem 1.5rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+            .footer-brand p { font-size: 0.8rem; }
+            .footer-col p, .footer-col a { line-height: 1.7; font-size: 0.82rem; }
+            .footer-bottom { margin-top: 1.8rem; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -842,13 +866,13 @@
                 </div>
                 <div class="hero-logo-visual">
                     <div class="hero-slideshow" id="hero-slideshow">
-                        <div class="hero-slide active"><img src="assets/servicios/fuero.png" alt="Forest SRL"></div>
+                        <div class="hero-slide active"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
                         <div class="hero-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
                         <div class="hero-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL"></div>
                         <div class="hero-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/lvtong.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
                         <div class="hero-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL"></div>
                         <div class="hero-slide-overlay"></div>
                         <div class="hero-slide-dots" id="hero-dots"></div>
@@ -1023,8 +1047,20 @@
             <div class="section-inner">
                 <p class="sec-label reveal">Contacto</p>
                 <h2 class="sec-title reveal">Hablemos de tu proyecto</h2>
-                <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:2.5rem;align-items:start;margin-top:2rem;">
-                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743, Córdoba</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+5493513732964" style="color:var(--text-soft);">+54 9 351 373-2964</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Instagram</span><a href="https://instagram.com/informacionforest" target="_blank" style="color:var(--text-soft);">@informacionforest</a></div></div></div></div>
+                <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:2.5rem;align-items:stretch;margin-top:2rem;">
+                    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                    <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);display:block;">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743, Córdoba</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+5493513732964" style="color:var(--text-soft);">+54 9 351 373-2964</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Instagram</span><a href="https://instagram.com/informacionforest" target="_blank" style="color:var(--text-soft);">@informacionforest</a></div></div></div></div>
+                    <div class="contact-slideshow reveal" id="contact-slideshow">
+                        <div class="contact-slide active"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/lvtong.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL"></div>
+                        <div class="contact-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL"></div>
+                    </div>
+                    </div>
                     <form class="form-glass reveal" action="enviar.php" method="POST"><input type="hidden" name="tipo" value="presupuesto"><h3 style="font-weight:700;margin-bottom:1.8rem;font-size:1.3rem;">Realizá tu Cotización</h3><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Empresa</label><input type="text" name="empresa" placeholder="Nombre de la empresa (opcional)"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 ..."></div><div class="form-group"><label>Servicio requerido *</label><textarea name="mensaje" required placeholder="Describí brevemente el servicio que necesitás..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar Solicitud</button></form>
                 </div>
             </div>
@@ -1210,7 +1246,7 @@
         //  HERO SLIDESHOW
         // ═══════════════════════════════════════
         (function() {
-            const slides = Array.from(document.querySelectorAll('.hero-slide'));
+            const slides = Array.from(document.querySelectorAll('#hero-slideshow .hero-slide'));
             const dotsContainer = document.getElementById('hero-dots');
             if (!slides.length) return;
 
@@ -1236,6 +1272,23 @@
 
             function next() { goTo((current + 1) % slides.length); }
             timer = setInterval(next, 3000);
+        })();
+
+        // ═══════════════════════════════════════
+        //  CONTACT SLIDESHOW
+        // ═══════════════════════════════════════
+        (function() {
+            const container = document.getElementById('contact-slideshow');
+            if (!container) return;
+            const slides = Array.from(container.querySelectorAll('.contact-slide'));
+            if (!slides.length) return;
+            let current = 0;
+            function next() {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }
+            setInterval(next, 3500);
         })();
 
         // ═══════════════════════════════════════
