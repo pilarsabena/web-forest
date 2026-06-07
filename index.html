@@ -753,11 +753,57 @@
             background: var(--glass-bg-strong); backdrop-filter: blur(20px);
             border: 2px solid rgba(106, 176, 76, 0.2);
             box-shadow: var(--shadow-card), 0 0 30px rgba(106, 176, 76, 0.08);
-            transition: all 0.4s;
+            transition: all 0.4s; cursor: pointer;
         }
         .iso-badge:hover { transform: translateY(-6px) scale(1.05); border-color: var(--green-soft); box-shadow: 0 16px 40px rgba(106, 176, 76, 0.2); }
+        .iso-badge.active { border-color: var(--green-soft); box-shadow: 0 16px 40px rgba(106, 176, 76, 0.25); transform: translateY(-4px) scale(1.05); }
         .iso-badge .iso-num { font-weight: 900; font-size: 1rem; color: var(--green-mid); }
         .iso-badge .iso-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); text-align: center; margin-top: 2px; }
+
+        /* ISO INFO CARD */
+        .iso-info-overlay {
+            position: fixed; inset: 0; z-index: 960;
+            background: rgba(26, 38, 32, 0.35);
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .iso-info-overlay.visible { opacity: 1; pointer-events: all; }
+        .iso-info-card {
+            background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-dark) 100%);
+            border-radius: 28px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 24px 64px rgba(20,50,30,0.35), 0 0 0 1px rgba(255,255,255,0.07) inset;
+            padding: 2.5rem 2.5rem 2rem; max-width: 420px; width: 100%;
+            position: relative; overflow: hidden;
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        .iso-info-card::before {
+            content: ''; position: absolute; top: -60px; right: -60px;
+            width: 220px; height: 220px; border-radius: 50%;
+            background: rgba(255,255,255,0.04); pointer-events: none;
+        }
+        .iso-info-overlay.visible .iso-info-card { transform: translateY(0) scale(1); }
+        .iso-info-card-close {
+            position: absolute; top: 1rem; right: 1rem;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1rem; color: rgba(255,255,255,0.8);
+            transition: all 0.25s;
+        }
+        .iso-info-card-close:hover { background: rgba(255,255,255,0.25); color: #fff; }
+        .iso-info-badge-icon {
+            width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1.2rem;
+            background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .iso-info-badge-icon svg { stroke: #c8f06e !important; }
+        .iso-info-num { font-weight: 900; font-size: 1.8rem; color: #c8f06e; text-align: center; margin-bottom: 0.2rem; }
+        .iso-info-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 1.4rem; }
+        .iso-info-desc { color: rgba(255,255,255,0.82); line-height: 1.8; font-size: 0.95rem; font-weight: 300; text-align: center; }
+        .iso-info-divider { width: 40px; height: 1.5px; background: linear-gradient(90deg, transparent, rgba(200,240,110,0.5), transparent); margin: 1.2rem auto; }
 
         /* ═══════════════════════════════════════
            RESPONSIVE
@@ -853,12 +899,12 @@
         <section id="inicio" class="hero-canvas">
             <div class="hero-inner">
                 <div class="hero-content">
-                    <p class="hero-eyebrow">Facility Management · Limpieza profesional y mantenimiento de espacios verdes</p>
+                    <p class="hero-eyebrow">Servicio Integral de Limpieza, Mantenimiento de Espacios Verdes & Facility Management</p>
                     <h1 class="hero-title">
                         Limpieza que <span class="accent">se siente</span>,<br>
                         calidad que <span class="accent-line">se ve.</span>
                     </h1>
-                    <p class="hero-desc">Tu socio de Facility Management. Servicio integral de limpieza y mantenimiento de espacios verdes con más de 40 años de experiencia y certificaciones ISO que garantizan calidad real y cuidado ambiental.</p>
+                    <p class="hero-desc">40 años de know how y certificación de normas para garantizar un eficiente proceso para nuestros clientes.</p>
                     <div class="btn-group">
                         <a href="#presupuesto" class="btn btn-primary">Solicitá tu Cotización</a>
                         <a href="#nosotros" class="btn btn-outline">Conocernos</a>
@@ -898,27 +944,21 @@
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/logo.png" alt="Forest SRL"></div>
             </div>
         </section>
 
@@ -962,10 +1002,11 @@
                 <h2 class="sec-title reveal">Certificaciones & Asesoramiento</h2>
                 <p class="sec-sub reveal" style="margin:0 auto 2rem;">Triple certificación ISO que respalda cada proceso, cada resultado, cada espacio que cuidamos.</p>
                 <div class="iso-badges reveal">
-                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="iso-num">9001</span><span class="iso-label">Calidad 2015</span></div>
-                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg><span class="iso-num">14001</span><span class="iso-label">Ambiente 2015</span></div>
-                    <div class="iso-badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="iso-num">45001</span><span class="iso-label">Seguridad 2018</span></div>
+                    <div class="iso-badge" data-iso="9001"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="iso-num">9001</span><span class="iso-label">Calidad 2015</span></div>
+                    <div class="iso-badge" data-iso="14001"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg><span class="iso-num">14001</span><span class="iso-label">Ambiente 2015</span></div>
+                    <div class="iso-badge" data-iso="45001"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="iso-num">45001</span><span class="iso-label">Seguridad 2018</span></div>
                 </div>
+
             </div>
         </section>
 
@@ -1050,15 +1091,8 @@
                 <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:2.5rem;align-items:stretch;margin-top:2rem;">
                     <div style="display:flex;flex-direction:column;gap:1.5rem;">
                     <div class="glass-card reveal" style="text-align:left;"><div class="card-shine"></div><h3 style="color:var(--green-mid);font-size:1.3rem;margin-bottom:1.8rem;">Información de Contacto</h3><div style="display:flex;flex-direction:column;gap:1.2rem;"><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);display:block;">Dirección</span><span style="color:var(--text-soft);">Bv. Los Granaderos 1743, Córdoba</span></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Teléfono</span><a href="tel:+5493513732964" style="color:var(--text-soft);">+54 9 351 373-2964</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Email</span><a href="mailto:info@forestsrl.com.ar" style="color:var(--text-soft);">info@forestsrl.com.ar</a></div></div><div style="display:flex;align-items:flex-start;gap:1rem;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(106,176,76,0.1);border:1px solid rgba(106,176,76,0.15);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div><span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-light);">Instagram</span><a href="https://instagram.com/informacionforest" target="_blank" style="color:var(--text-soft);">@informacionforest</a></div></div></div></div>
-                    <div class="contact-slideshow reveal" id="contact-slideshow">
-                        <div class="contact-slide active"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/lvtong.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL"></div>
-                        <div class="contact-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL"></div>
+                    <div class="reveal" style="border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-card);height:100%;">
+                        <img src="assets/gral/facility.png" alt="Instalaciones Forest" style="width:100%;height:100%;object-fit:cover;display:block;">
                     </div>
                     </div>
                     <form class="form-glass reveal" action="enviar.php" method="POST"><input type="hidden" name="tipo" value="presupuesto"><h3 style="font-weight:700;margin-bottom:1.8rem;font-size:1.3rem;">Realizá tu Cotización</h3><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Empresa</label><input type="text" name="empresa" placeholder="Nombre de la empresa (opcional)"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 ..."></div><div class="form-group"><label>Servicio requerido *</label><textarea name="mensaje" required placeholder="Describí brevemente el servicio que necesitás..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar Solicitud</button></form>
@@ -1075,6 +1109,18 @@
                 <form class="form-glass reveal" action="enviar.php" method="POST" enctype="multipart/form-data"><input type="hidden" name="tipo" value="cv"><div class="form-group"><label>Nombre *</label><input type="text" name="nombre" required placeholder="Tu nombre completo"></div><div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="tu@email.com"></div><div class="form-group"><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="+54 ..."></div><div class="form-group"><label>Puesto de interés</label><input type="text" name="puesto" placeholder="¿En qué área te gustaría sumarte?"></div><div class="form-group"><label>CV (PDF) *</label><input type="file" name="cv" required accept=".pdf"></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none;">Enviar mi CV</button></form>
             </div>
         </section>
+
+        <!-- ISO INFO OVERLAY -->
+        <div class="iso-info-overlay" id="iso-info-overlay">
+            <div class="iso-info-card" id="iso-info-card">
+                <button class="iso-info-card-close" id="iso-info-close">✕</button>
+                <div class="iso-info-badge-icon" id="iso-info-icon"></div>
+                <div class="iso-info-num" id="iso-info-num"></div>
+                <div class="iso-info-title" id="iso-info-title"></div>
+                <div class="iso-info-divider"></div>
+                <p class="iso-info-desc" id="iso-info-desc"></p>
+            </div>
+        </div>
 
         <!-- POPUP: solicitud enviada + pregunta reunión -->
         <div id="popup-enviado" class="overlay-backdrop" role="dialog" aria-modal="true">
@@ -1490,6 +1536,61 @@
             });
             document.getElementById('modal-agendar').addEventListener('click', function(e) {
                 if (e.target === this) closeModal();
+            });
+        })();
+
+        // ═══════════════════════════════════════
+        //  ISO BADGE INFO CARDS
+        // ═══════════════════════════════════════
+        (function() {
+            const data = {
+                '9001': {
+                    num: 'ISO 9001',
+                    title: 'Sistema de Gestión de Calidad · 2015',
+                    desc: 'Certifica que nuestros procesos y servicios cumplen estándares internacionales de calidad. Implica mejora continua, control sistemático de cada operación y foco total en la satisfacción del cliente.',
+                    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
+                },
+                '14001': {
+                    num: 'ISO 14001',
+                    title: 'Sistema de Gestión Ambiental · 2015',
+                    desc: 'Certifica nuestro compromiso real con el cuidado del medioambiente: uso responsable de insumos, reducción de residuos y cumplimiento de toda la normativa medioambiental vigente en cada servicio.',
+                    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>'
+                },
+                '45001': {
+                    num: 'ISO 45001',
+                    title: 'Seguridad y Salud en el Trabajo · 2018',
+                    desc: 'Garantiza condiciones laborales seguras para todo nuestro equipo. Gestión integrada y compromiso documentado, auditado y revisado permanentemente de Cero accidentes laborales.',
+                    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+                }
+            };
+
+            const overlay = document.getElementById('iso-info-overlay');
+            const card    = document.getElementById('iso-info-card');
+
+            function openCard(iso) {
+                const d = data[iso];
+                document.getElementById('iso-info-icon').innerHTML  = d.icon;
+                document.getElementById('iso-info-num').textContent  = d.num;
+                document.getElementById('iso-info-title').textContent = d.title;
+                document.getElementById('iso-info-desc').textContent  = d.desc;
+                document.querySelectorAll('.iso-badge').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.iso-badge[data-iso="${iso}"]`).classList.add('active');
+                overlay.classList.add('visible');
+            }
+
+            function closeCard() {
+                overlay.classList.remove('visible');
+                document.querySelectorAll('.iso-badge').forEach(b => b.classList.remove('active'));
+            }
+
+            document.querySelectorAll('.iso-badge[data-iso]').forEach(badge => {
+                badge.addEventListener('click', () => openCard(badge.dataset.iso));
+            });
+
+            document.getElementById('iso-info-close').addEventListener('click', closeCard);
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closeCard();
             });
         })();
 
