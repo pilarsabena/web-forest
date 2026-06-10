@@ -835,9 +835,9 @@
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
             .nav-float { padding: 0.4rem 1rem; }
             #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
-            .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
+            .image-marquee-item { width: 180px; height: 116px; margin: 0 1rem; }
             .section-flow { padding: 2.2rem 1.2rem; }
-            .image-marquee-section { display: none; }
+            .image-marquee-section { padding: 1.5rem 0; }
             .sec-sub { max-width: 100%; margin-bottom: 1.5rem; }
             .form-glass { padding: 1.8rem 1.4rem; }
             .calendar-container { padding: 1.5rem; }
@@ -858,11 +858,11 @@
             .popup-divider { margin: 1rem auto; }
             .popup-actions { margin-top: 1rem; gap: 0.6rem; }
             /* Imágenes nosotros en columna */
-            .nosotros-img-grid { grid-template-columns: 1fr !important; }
+            div.nosotros-img-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 900px) {
-            .nosotros-img-grid { grid-template-columns: 1fr !important; }
-            .image-marquee-section { display: none; }
+            div.nosotros-img-grid { grid-template-columns: 1fr !important; }
+            .image-marquee-item { width: 200px; height: 130px; margin: 0 1.2rem; }
         }
     </style>
 </head>
