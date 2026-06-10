@@ -72,7 +72,7 @@
         ═══════════════════════════════════════ */
         #scene-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
+            z-index: 1; pointer-events: none; will-change: auto;
         }
 
         /* ═══════════════════════════════════════
@@ -80,7 +80,7 @@
         ═══════════════════════════════════════ */
         #wave-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; pointer-events: none; opacity: 0.85;
+            z-index: 2; pointer-events: none; opacity: 0.85; will-change: auto;
         }
 
 
@@ -190,7 +190,7 @@
            HERO
         ═══════════════════════════════════════ */
         .hero-canvas {
-            min-height: 100vh; display: flex; align-items: center;
+            min-height: 100vh; min-height: 100dvh; display: flex; align-items: center;
             padding: 9rem 2rem 6rem; position: relative; z-index: 12;
         }
         .hero-inner {
@@ -837,7 +837,7 @@
             #presupuesto .section-inner>div { grid-template-columns: 1fr !important; }
             .image-marquee-item { height: 50px; padding: 0.3rem 0.8rem; }
             .section-flow { padding: 2.2rem 1.2rem; }
-            .image-marquee-section { padding: 2rem 0; }
+            .image-marquee-section { display: none; }
             .sec-sub { max-width: 100%; margin-bottom: 1.5rem; }
             .form-glass { padding: 1.8rem 1.4rem; }
             .calendar-container { padding: 1.5rem; }
@@ -850,6 +850,15 @@
             .footer-brand p { font-size: 0.8rem; }
             .footer-col p, .footer-col a { line-height: 1.7; font-size: 0.82rem; }
             .footer-bottom { margin-top: 1.8rem; font-size: 0.75rem; }
+            /* Popup compacto en mobile */
+            .overlay-backdrop { padding: 0.8rem; background: rgba(26, 38, 32, 0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+            .popup-card { padding: 1.6rem 1.2rem; border-radius: 20px; }
+            .modal-card { padding: 1.4rem; max-height: 88vh; border-radius: 20px; }
+            .popup-icon-wrap { width: 50px; height: 50px; margin-bottom: 1rem; }
+            .popup-divider { margin: 1rem auto; }
+            .popup-actions { margin-top: 1rem; gap: 0.6rem; }
+            /* Imágenes nosotros en columna */
+            .nosotros-img-grid { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
@@ -914,13 +923,13 @@
                 <div class="hero-logo-visual">
                     <div class="hero-slideshow" id="hero-slideshow">
                         <div class="hero-slide active"><img src="assets/servicios/merca.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/lvtong.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/vidirios.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/past.png" alt="Forest SRL"></div>
-                        <div class="hero-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL"></div>
+                        <div class="hero-slide"><img src="assets/servicios/lavado.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/pastoo.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/tribIII.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/lvtong.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/vidirios.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/past.png" alt="Forest SRL" loading="lazy"></div>
+                        <div class="hero-slide"><img src="assets/servicios/Mercado-Norte.jpg" alt="Forest SRL" loading="lazy"></div>
                         <div class="hero-slide-overlay"></div>
                         <div class="hero-slide-dots" id="hero-dots"></div>
                     </div>
@@ -945,21 +954,9 @@
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001" loading="lazy"></div>
+                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001" loading="lazy"></div>
+                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001" loading="lazy"></div>
             </div>
         </section>
 
@@ -1060,7 +1057,7 @@
                     <div class="valor-card reveal"><h3>Respeto</h3><p>Cuidamos personas, ambiente y la confianza depositada en nosotros.</p></div>
                 </div>
                 <!-- IMÁGENES FIJAS -->
-                <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;">
+                <div class="reveal nosotros-img-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;">
                     <div style="border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-card);aspect-ratio:4/3;">
                         <img src="assets/gral/personas.png" alt="Equipo Forest" style="width:100%;height:100%;object-fit:cover;display:block;">
                     </div>
