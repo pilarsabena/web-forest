@@ -1120,6 +1120,21 @@
             </div>
         </div>
 
+        <!-- POPUP: CV enviado -->
+        <div id="popup-cv-enviado" class="overlay-backdrop" role="dialog" aria-modal="true">
+            <div class="popup-card">
+                <div class="popup-icon-wrap">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f7d5a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <p style="font-weight:800;font-size:1.5rem;color:var(--text);margin-bottom:0.6rem;">¡CV enviado!</p>
+                <p style="color:var(--text-soft);font-size:0.93rem;line-height:1.75;">Gracias por tu interés en sumarte a Forest. Revisaremos tu perfil y te contactaremos a la brevedad.</p>
+                <div class="popup-divider"></div>
+                <div class="popup-actions">
+                    <button id="btn-cerrar-cv" class="btn btn-primary" style="cursor:pointer;">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
         <!-- POPUP: solicitud enviada + pregunta reunión -->
         <div id="popup-enviado" class="overlay-backdrop" role="dialog" aria-modal="true">
             <div class="popup-card">
@@ -1511,6 +1526,18 @@
         // ═══════════════════════════════════════
         (function() {
             const params = new URLSearchParams(window.location.search);
+            if (params.get('enviado') === '1' && params.get('tipo') === 'cv') {
+                history.replaceState({}, '', window.location.pathname);
+                requestAnimationFrame(() => document.getElementById('popup-cv-enviado').classList.add('visible'));
+            }
+
+            document.getElementById('btn-cerrar-cv').addEventListener('click', function() {
+                document.getElementById('popup-cv-enviado').classList.remove('visible');
+            });
+            document.getElementById('popup-cv-enviado').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('visible');
+            });
+
             if (params.get('enviado') === '1' && params.get('tipo') === 'presupuesto') {
                 const nombre = params.get('nombre') || '';
                 const email  = params.get('email')  || '';
