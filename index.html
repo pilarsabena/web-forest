@@ -335,6 +335,8 @@
         .image-marquee-item img[src*="logo"] {
             object-fit: contain; padding: 1.5rem;
         }
+        .nosotros-img-grid { grid-template-columns: 1fr 1fr; }
+
         @keyframes imgMarquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -858,11 +860,13 @@
             .popup-divider { margin: 1rem auto; }
             .popup-actions { margin-top: 1rem; gap: 0.6rem; }
             /* Imágenes nosotros en columna */
-            div.nosotros-img-grid { grid-template-columns: 1fr !important; }
+            .nosotros-img-grid { grid-template-columns: 1fr; }
+            .image-marquee-track { animation-duration: 15s; }
+            .image-marquee-item { padding: 0; }
         }
         @media (max-width: 900px) {
-            div.nosotros-img-grid { grid-template-columns: 1fr !important; }
-            .image-marquee-item { width: 200px; height: 130px; margin: 0 1.2rem; }
+            .nosotros-img-grid { grid-template-columns: 1fr; }
+            .image-marquee-item { width: 200px; height: 130px; margin: 0 1.2rem; padding: 0; }
         }
     </style>
 </head>
@@ -958,9 +962,9 @@
                 <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
                 <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
-                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001" loading="lazy"></div>
-                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001" loading="lazy"></div>
-                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001" loading="lazy"></div>
+                <div class="image-marquee-item"><img src="assets/gral/9001.png" alt="ISO 9001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/14001.png" alt="ISO 14001"></div>
+                <div class="image-marquee-item"><img src="assets/gral/45001.png" alt="ISO 45001"></div>
             </div>
         </section>
 
@@ -1061,7 +1065,7 @@
                     <div class="valor-card reveal"><h3>Respeto</h3><p>Cuidamos personas, ambiente y la confianza depositada en nosotros.</p></div>
                 </div>
                 <!-- IMÁGENES FIJAS -->
-                <div class="reveal nosotros-img-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;">
+                <div class="reveal nosotros-img-grid" style="display:grid;gap:1.5rem;margin-bottom:2.5rem;">
                     <div style="border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-card);aspect-ratio:4/3;">
                         <img src="assets/gral/personas.png" alt="Equipo Forest" style="width:100%;height:100%;object-fit:cover;display:block;">
                     </div>
